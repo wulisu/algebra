@@ -139,8 +139,8 @@ body,
 body {
   font-family: "微软雅黑", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
-  background-color: #000;
-  color: #ccc;
+  background-color: #fafad2;
+  color: rgba(0,0,0,0.6);
   -webkit-overflow-scrolling: touch;
   background-attachment: fixed;
 }
@@ -206,10 +206,10 @@ a {
   height: 110px;
   position: absolute;
   width: 100%;
-  background: rgba(255,255,255,0.2);
+  background: #4d4d4d;
 }
 #container #mobile-nav .overlay.fixed {
-  background: #4d4d4d;
+  background: #fff;
   position: fixed;
   height: 42px;
   z-index: 99;
@@ -235,7 +235,7 @@ a {
   margin: 3px;
 }
 #container .left-col {
-  background: rgba(255,255,255,0.2);
+  background: #98fb98;
   width: 300px;
   position: fixed;
   -webkit-transition: all 0.2s ease-in;
@@ -246,12 +246,12 @@ a {
   top: 10px;
   left: 10px;
   bottom: 10px;
-  -webkit-box-shadow: 0px 0px 10px 2px #ccc inset;
-  -moz-box-shadow: 0px 0px 10px 2px #ccc inset;
-  -ms-box-shadow: 0px 0px 10px 2px #ccc inset;
-  -o-box-shadow: 0px 0px 10px 2px #ccc inset;
-  -webkit-box-shadow: 0px 0px 10px 2px #ccc inset;
-  box-shadow: 0px 0px 10px 2px #ccc inset;
+  -webkit-box-shadow: 0px 0px 10px 2px #66cd00 inset;
+  -moz-box-shadow: 0px 0px 10px 2px #66cd00 inset;
+  -ms-box-shadow: 0px 0px 10px 2px #66cd00 inset;
+  -o-box-shadow: 0px 0px 10px 2px #66cd00 inset;
+  -webkit-box-shadow: 0px 0px 10px 2px #66cd00 inset;
+  box-shadow: 0px 0px 10px 2px #66cd00 inset;
   -webkit-border-radius: 20px;
   -moz-border-radius: 20px;
   -ms-border-radius: 20px;
@@ -266,11 +266,39 @@ a {
 }
 #container .mid-col {
   position: absolute;
-  right: 0;
-  top: 0;
-  min-height: 100%;
-  left: 300px;
+  right: 30px;
+  top: 20px;
+  min-height: 80%;
+  background: #0f0;
+  left: 330px;
   width: auto;
+  background: #fff;
+  width: auto;
+  position: absolute;
+  -webkit-transition: all 0.2s ease-in;
+  -moz-transition: all 0.2s ease-in;
+  -ms-transition: all 0.2s ease-in;
+  transition: all 0.2s ease-in;
+  opacity: 0.8;
+  right: 0px;
+  top: 0px;
+  -webkit-box-shadow: 0px 0px 10px 2px #66cd00 inset;
+  -moz-box-shadow: 0px 0px 10px 2px #66cd00 inset;
+  -ms-box-shadow: 0px 0px 10px 2px #66cd00 inset;
+  -o-box-shadow: 0px 0px 10px 2px #66cd00 inset;
+  -webkit-box-shadow: 0px 0px 10px 2px #66cd00 inset;
+  box-shadow: 0px 0px 10px 2px #66cd00 inset;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
+  border-radius: 20px;
+  z-index: 50;
+}
+#container .mid-col .intrude-less {
+  width: 100%;
+  text-align: center;
+  margin: 112px auto 0;
 }
 @media screen and (max-width: 800px) {
   #container .left-col {
@@ -488,18 +516,19 @@ a {
   transition: 0.3s;
 }
 #header {
+  color: #000;
   width: 100%;
 }
 #header a {
-  color: #000;
+  color: #fff;
 }
 #header a:hover {
-  color: #b0a0aa;
+  color: #000;
 }
 #header .profilepic {
   text-align: center;
   display: block;
-  border: 2px solid #fff;
+  border: 5px solid #fff;
   border-radius: 300px;
   width: 128px;
   height: 128px;
@@ -527,9 +556,9 @@ a {
 }
 #header .header-subtitle {
   text-align: center;
-  color: #0fc;
+  color: #fff;
   font-weight: bolder;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 25px;
   overflow: hidden;
   text-overflow: ellipsis;

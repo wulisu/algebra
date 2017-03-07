@@ -28,13 +28,13 @@ require([], function (){
 		        }
 		      },
 		      "color": {
-		        "value": "#cccccc"
+		        "value": "#fff"
 		      },
 		      "shape": {
 		        "type": "circle",
 		        "stroke": {
-		          "width": 0,
-		          "color": "#000000"
+		          "width": 2,
+		          "color": "#000"
 		        },
 		        "polygon": {
 		          "nb_sides": 5
@@ -68,7 +68,7 @@ require([], function (){
 		      "line_linked": {
 		        "enable": true,
 		        "distance": 150,
-		        "color": "#ffffff",
+		        "color": "#000000",
 		        "opacity": 0.4,
 		        "width": 1
 		      },
