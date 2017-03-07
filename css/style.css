@@ -773,6 +773,25 @@ a {
 }
 .duoshuo {
   padding: 0 40px;
+  margin: 10px 30px 30px 30px;
+  position: relative;
+  -webkit-box-shadow: 0px 0px 10px 2px #ffd700 inset;
+  -moz-box-shadow: 0px 0px 10px 2px #ffd700 inset;
+  -ms-box-shadow: 0px 0px 10px 2px #ffd700 inset;
+  -o-box-shadow: 0px 0px 10px 2px #ffd700 0 inset;
+  -webkit-box-shadow: 0px 0px 10px 2px #ffd700 inset;
+  box-shadow: 0px 0px 10px 2px #ffd700 inset;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
+  border-radius: 20px;
+  z-index: 1;
+}
+.duoshuo .intrude-less {
+  width: 76%;
+  text-align: center;
+  margin: 112px auto 0;
 }
 #disqus_thread {
   padding: 0 40px;
