@@ -265,6 +265,7 @@ a {
   margin: 112px auto 0;
 }
 #container .mid-col {
+  background: #eaeaea;
   position: absolute;
   min-height: 80%;
   left: 330px;
@@ -510,6 +511,9 @@ a {
   -moz-transition: 0.3s;
   -ms-transition: 0.3s;
   transition: 0.3s;
+}
+.header-author a {
+  font-weight: bold;
 }
 #header {
   color: #000;
@@ -950,6 +954,7 @@ a {
 }
 .article {
   margin: 10px 30px 30px 30px;
+  background: #fff;
   position: relative;
   -webkit-box-shadow: 0px 0px 10px 2px #6f9 inset;
   -moz-box-shadow: 0px 0px 10px 2px #6f9 inset;
@@ -977,7 +982,7 @@ a {
   visibility: hidden;
 }
 .article img {
-  max-width: 60%;
+  max-width: 100%;
 }
 @-webkit-keyframes cd-bounce-1 {
   0% {
