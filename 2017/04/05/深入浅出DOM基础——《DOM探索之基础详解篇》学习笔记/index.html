@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title> 深入浅出DOM基础——《DOM探索之基础详解篇》学习笔记 | 前端小密圈</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="通过document.createElement(&quot;p&quot;)创建一个p元素一共溯寻了7层原型链，你知道吗？">
+<meta name="keywords" content="HTML,难点">
+<meta property="og:type" content="article">
+<meta property="og:title" content=" 深入浅出DOM基础——《DOM探索之基础详解篇》学习笔记">
+<meta property="og:url" content="http://qdxmq.com/2017/04/05/深入浅出DOM基础——《DOM探索之基础详解篇》学习笔记/index.html">
+<meta property="og:site_name" content="前端小密圈">
+<meta property="og:description" content="通过document.createElement(&quot;p&quot;)创建一个p元素一共溯寻了7层原型链，你知道吗？">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/ae49ba57gy1fe9e10ghwgj20pm0hk0u6.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/ae49ba57gy1fe9edep8yqj210w0sc14l.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/mw690/ae49ba57gy1fe9ggrlkadj218m0oi434.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/mw690/ae49ba57gy1fe9lxdxmlej21800xiaia.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/mw690/ae49ba57gy1fe9lras1icj20hs0c80ts.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/mw690/ae49ba57gy1fe9m8mrs7pj21760t2jws.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/mw690/ae49ba57gy1fe9myrp3o9j20fi09lwel.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/mw690/ae49ba57gy1fe9n2m49pqj20df07rwf0.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/mw690/ae49ba57gy1fe9rpbma12j20ls04875u.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/mw690/ae49ba57gy1fe9rz1lk2wj20ha072tbw.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/mw690/ae49ba57gy1fe9ugwpyk9j20vb0f1k0x.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/mw690/ae49ba57gy1fe9v115aubj21010abjv7.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/mw690/ae49ba57gy1fe9v5vikecj20yt0cy106.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/ae49ba57gy1fe9v7v5jdqj21000jlagv.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/ae49ba57gy1fe9zrvp230j20el04xjs6.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/ae49ba57gy1fea01pzy5pj20xc0jl47i.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/ae49ba57gy1fea138369vj20gh0b2dhp.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/ae49ba57gy1fea1ujua55j20kf0a5wgi.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/ae49ba57gy1fea2u1xfd0j20ku0l3439.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/ae49ba57gy1fea4shes2gj20iy0k8dk3.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/ae49ba57gy1fea45sadzyj20za0jhtr5.jpg">
+<meta property="og:updated_time" content="2017-05-01T16:43:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content=" 深入浅出DOM基础——《DOM探索之基础详解篇》学习笔记">
+<meta name="twitter:description" content="通过document.createElement(&quot;p&quot;)创建一个p元素一共溯寻了7层原型链，你知道吗？">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/ae49ba57gy1fe9e10ghwgj20pm0hk0u6.jpg">
+  
+    <link rel="alternative" href="/atom.xml" title="前端小密圈" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head>
+<body>
+  
+
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+
+<a href="https://github.com/jawil"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/82b228a3648bf44fc1163ef44c62fcc60081495e/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_red_aa0000.png"></a>
+
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/head.jpeg" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="搜索微信公众号:前端小密圈">前端小密圈</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">若批评无自由，则赞美无意义。</p>
+        
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">博客首页</a></li>
+                        
+                            <li><a href="/archives">所有文章</a></li>
+                        
+                            <li><a href="/thoughts">随笔</a></li>
+                        
+                            <li><a href="/works">作品展示</a></li>
+                        
+                            <li><a href="/FrontEndGuide">前端导航</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl mail" target="_blank" href="mailto:jawil1024@gmail.com" title="mail">mail</a>
+                            
+                                <a class="fl github" target="_blank" href="https://github.com/jawil" title="github">github</a>
+                            
+                                <a class="fl segmentfault" target="_blank" href="https://segmentfault.com/u/jawil" title="segmentfault">segmentfault</a>
+                            
+                                <a class="fl JueJin" target="_blank" href="https://juejin.im/user/573b702c71cfe4006c1201f0/share" title="JueJin">JueJin</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/CSS/" style="font-size: 10px;">CSS</a> <a href="/tags/ECMAScript规范/" style="font-size: 15px;">ECMAScript规范</a> <a href="/tags/HTML/" style="font-size: 10px;">HTML</a> <a href="/tags/HTTP/" style="font-size: 10px;">HTTP</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/Plugins/" style="font-size: 10px;">Plugins</a> <a href="/tags/UI设计/" style="font-size: 10px;">UI设计</a> <a href="/tags/first-article/" style="font-size: 10px;">first-article</a> <a href="/tags/三次握手/" style="font-size: 10px;">三次握手</a> <a href="/tags/小技巧/" style="font-size: 10px;">小技巧</a> <a href="/tags/工具/" style="font-size: 10px;">工具</a> <a href="/tags/性能/" style="font-size: 10px;">性能</a> <a href="/tags/掘金/" style="font-size: 10px;">掘金</a> <a href="/tags/收集/" style="font-size: 10px;">收集</a> <a href="/tags/效率/" style="font-size: 10px;">效率</a> <a href="/tags/玄学/" style="font-size: 15px;">玄学</a> <a href="/tags/记录/" style="font-size: 10px;">记录</a> <a href="/tags/难点/" style="font-size: 10px;">难点</a> <a href="/tags/面试/" style="font-size: 15px;">面试</a>
+                    </div>
+                </section>
+                
+
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://github.com/jawil/">github</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://lishuo.me/">特立独行的猪手</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">Too young,too simple.Sometimes,naive &amp; stupid.</div>
+                </section>
+                
+            </div>
+        </div>
+
+    </header>
+
+    
+        <div class="page-reward" style="position:absolute;top:73%;left:50%;margin-left:-30px;">
+          <p><a href="javascript:void(0)" onclick="dashangToggleIndex()" class="dashang" title="打赏，支持一下">赏</a></p>
+          <div class="hide_box_index"></div>
+          <div class="shang_box_index">
+            <a class="shang_close" href="javascript:void(0)" onclick="dashangToggleIndex()" title="关闭" style="position:relative;left:110px;">×</a>
+            <div class="shang_tit">
+              <p>纯属好玩</p>
+            </div>
+            <div class="shang_payimg">
+              <img src="/img/alipayimg.jpg" alt="扫码支持" title="扫一扫" />
+            </div>
+              <div class="pay_explain">扫码打赏，你说多少就多少，买房就差你们打赏之外那部分钱</div>
+            <div class="shang_payselect" style="width:100%;text-align:center;line-height:60px;">
+              
+                <div class="pay_item checked" data-id="alipay" style="display:inline-block;width:40%;float:none;width:130px;">
+                  <span class="radiobox" style="display:inline-block;float:none;margin-right:0;"></span>
+                  <span class="pay_logo" style="vertical-align:middle"><img src="/img/alipay.png" alt="支付宝" style="height:30px;" /></span>
+                </div>
+              
+              
+                <div class="pay_item" data-id="wechat" style="display:inline-block;float:none;">
+                  <span class="radiobox" style="display:inline-block;float:none;margin:0"></span>
+                  <span class="pay_logo" style="vertical-align:middle"><img src="/img/weixin.png" alt="微信" style="height:30px;" /></span>
+                </div>
+              
+            </div>
+            <div class="shang_info">
+              <p>打开<span id="shang_pay_txt">支付宝</span>扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+        <script type="text/javascript">
+          $(".pay_item").click(function(){
+            $(this).addClass('checked').siblings('.pay_item').removeClass('checked');
+            var dataid=$(this).attr('data-id');
+            $(".shang_payimg img").attr("src","/img/"+dataid+"img.jpg");
+            $("#shang_pay_txt").text(dataid=="alipay"?"支付宝":"微信");
+          });
+          function dashangToggleIndex(){
+            $(".hide_box_index").fadeToggle();
+            $(".shang_box_index").fadeToggle();
+          }
+        </script>
+      
+
+
+    <div id="music163player">
+  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=100% height=86 src="//music.163.com/outchain/player?type=2&id=29816871&auto=0&height=66">
+  </iframe>
+</div>
+
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me">前端小密圈</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head.jpeg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me">前端小密圈</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">若批评无自由，则赞美无意义。</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">博客首页</a></li>
+                
+                    <li><a href="/archives">所有文章</a></li>
+                
+                    <li><a href="/thoughts">随笔</a></li>
+                
+                    <li><a href="/works">作品展示</a></li>
+                
+                    <li><a href="/FrontEndGuide">前端导航</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="mail" target="_blank" href="mailto:jawil1024@gmail.com" title="mail">mail</a>
+                    
+                        <a class="github" target="_blank" href="https://github.com/jawil" title="github">github</a>
+                    
+                        <a class="segmentfault" target="_blank" href="https://segmentfault.com/u/jawil" title="segmentfault">segmentfault</a>
+                    
+                        <a class="JueJin" target="_blank" href="https://juejin.im/user/573b702c71cfe4006c1201f0/share" title="JueJin">JueJin</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-深入浅出DOM基础——《DOM探索之基础详解篇》学习笔记" class="article article-type-post" itemscope itemprop="blogPost">
+
+  
+    <div class="article-meta">
+      <a href="/2017/04/05/深入浅出DOM基础——《DOM探索之基础详解篇》学习笔记/" class="article-date">
+      <time datetime="2017-04-05T05:09:42.000Z" itemprop="datePublished">2017-04-05</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+       深入浅出DOM基础——《DOM探索之基础详解篇》学习笔记
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/前端三剑客/">前端三剑客</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTML/">HTML</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/难点/">难点</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+
+    <div class="tips">
+  全文总共<span class="post-count">10,567</span>字，阅读时长预计需要<span class="post-count">41</span>分钟，感谢您的阅读，有错误还望留言批评指正，一起交流学习。
+    </div>
+
+      
+          
+        <p>之前通过深入学习DOM的相关知识，看了慕课网<a href="http://www.imooc.com/video/9500" target="_blank" rel="external">DOM探索之基础详解篇</a>这个视频（<strong>在最近看第三遍的时候，准备记录一点东西，算是对自己学习的一点总结</strong>），对DOM的理解又具体了一步，因为DOM本来就是一个抽象和概念性的东西，每深入一步了解，在脑中就会稍微具体一点，通过这次的对DOM的系统学习，对DOM有一个比较深刻的理解，明白了DOM在JavaScript这门语言中举足轻重的地位，了解了DOm的发展历史，也让我明白了存在浏览器浏览器兼容性的历史原因，对DOM的结构有了进一步的认知，对DOM的一些API也更加熟悉，对比较抽象和概念性的DOM认知稍微具体了一些。下面就是自己深入学习DOM这门课程整理的一些笔记，大部分来自学习中查阅的资料以及视频中老师讲的一些关键性知识点,当然也不可或缺的有自己的一些记录和理解。</p>
+<p><strong>原文收录在我的 GitHub博客 (<a href="https://github.com/jawil/blog" target="_blank" rel="external">https://github.com/jawil/blog</a>) ，喜欢的可以关注最新动态，大家一起多交流学习，共同进步，以学习者的身份写博客，记录点滴。</strong></p>
+<p><strong>文章稍长，本文只论述DOM基础概念，不涉及DOM的一些事件原理机制，页面元素的操作和常用API的讲解以及兼容性事项，所以概念性东西比较多，稍微有点抽象，其中有笔记来大部分来自老师的口述，还有一部分是查阅的文档，最后有一部分是自己的记录和理解。</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">通过document.createElement(&quot;p&quot;)创建一个p元素一共溯寻了7层原型链，你知道吗？</div></pre></td></tr></table></figure>
+<p>学习视频地址：<a href="http://www.imooc.com/video/9500" target="_blank" rel="external">DOM探索之基础详解篇</a>，老师讲的很好，有兴趣的可以结合视频学习一下，建议看完视频再看笔记，加深印象，你会受益匪浅。</p>
+<h3 id="1、什么是DOM"><a href="#1、什么是DOM" class="headerlink" title="1、什么是DOM?"></a>1、什么是DOM?</h3><blockquote>
+<p>DOM，文档对象模型（Document Object Model）。DOM是 W3C（万维网联盟）的标准，DOM定义了访问HTML和XML文档的标准。在W3C的标准中，DOM是独于平台和语言的接口，它允许程序和脚本动态地访问和更新文档的内容、结构和样式。</p>
+</blockquote>
+<p>W3C DOM由以下三部分组成：</p>
+<ul>
+<li>核心DOM - 针对任何结构化文档的标准模型</li>
+<li>XML DOM - 针对 XML 文档的标准模型</li>
+<li>HTML DOM - 针对 HTML 文档的标准模型</li>
+</ul>
+<p>DOM（文档对象模型）是针对xml经过扩展用于html的应用程序编程接口，我们又叫API。DOM把整个页面映射为一个多层的节点结构，html或xml页面中的每个组成部分都是某种类型的节点，这些节点又包含着不同类型的数据。</p>
+<p><img width="50%" src="http://ww1.sinaimg.cn/large/ae49ba57gy1fe9e10ghwgj20pm0hk0u6.jpg"></p>
+<h3 id="2、DOM的地位"><a href="#2、DOM的地位" class="headerlink" title="2、DOM的地位"></a>2、DOM的地位</h3><blockquote>
+<p>我们知道，一个网页是由html来搭建结构的，通过css来定义网页的样式，而JavaScript赋予了页面的行为，通过它我们可以与页面进行交互，实现页面的动画效果等等。那javascript究竟通过什么来实现的呢？通过ECMAScript这个标准，我们可以编写程序让浏览器来解析，利用ECMAScript，我们可以通过BOM对象（即browser object model）来操作浏览器窗口、浏览器导航对象(navigator)、屏幕分辨率(screen)、浏览器历史(history)、cookie等等。但这个通过BOM来实现的交互远远不够。要实现页面的动态交互和效果，操作html才是核心。那如何操作html呢？对，就是DOM，简单的说，DOM给我们提供了用程序来动态控制html的接口，也就是早期的DHTMl的概念。因此，DOM处在javascript赋予html具备动态交互和效果的能力的核心地位上。</p>
+</blockquote>
+<p><img width="50%" src="http://ww1.sinaimg.cn/large/ae49ba57gy1fe9edep8yqj210w0sc14l.jpg"></p>
+<h3 id="3、DOM的发展－DOM0、DOM1、DOM2、DOM3的区别"><a href="#3、DOM的发展－DOM0、DOM1、DOM2、DOM3的区别" class="headerlink" title="3、DOM的发展－DOM0、DOM1、DOM2、DOM3的区别"></a>3、DOM的发展－DOM0、DOM1、DOM2、DOM3的区别</h3><h4 id="3-1、DOM0"><a href="#3-1、DOM0" class="headerlink" title="3.1、DOM0"></a>3.1、DOM0</h4><blockquote>
+<p>JavaScript在早期版本中提供了查询和操作Web文档的内容API（如：图像和表单），在JavaScript中定义了定义了’images’、’forms’等，因此我们可以像下这样访问第一张图片或名为“user”的表单：</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">document.images[0]document.forms[&apos;user&apos;]</div></pre></td></tr></table></figure>
+<p>这实际上是未形成标准的试验性质的初级阶段的DOM，现在习惯上被称为DOM0，即：第0级DOM。由于DOM0在W3C进行标准备化之前出现，还处于未形成标准的初期阶段，这时Netscape和Microsoft各自推出自己的第四代浏览器，自此DOM遍开始出各种问题。</p>
+<h4 id="3-2、DOM0与DHTML"><a href="#3-2、DOM0与DHTML" class="headerlink" title="3.2、DOM0与DHTML"></a>3.2、DOM0与DHTML</h4><blockquote>
+<p>Netscape Navigator 4和IE4分别发布于1997年的6月和10月，这两种浏览器都大幅扩展了DOM，使JavaScript的功能大大增加，而此时也开始出现一个新名词：DHTML。</p>
+</blockquote>
+<p>DHTML是Dynamic HTML（动态HTML）的简称。DHTML并不是一项新技术，而是将HTML、CSS、JavaScript技术组合的一种描述。即：</p>
+<ul>
+<li>利用HTML把网页标记为各种元素</li>
+<li>利用CSS设置元素样式及其显示位置</li>
+<li>利用JavaScript操控页面元素和样式</li>
+</ul>
+<p>利用DHTML，看起来可以很容易的控制页面元素，并实现一此原本很复杂的效果（如：通过改变元素位置实现动画）。但事实并非如此，因为没有规范和标准，两种浏览器对相同功能的实现确完全不一样。为了保持程序的兼容性，程序员必须写一些探查代码以检测JavaScript是运行于哪种浏览器之下，并提供与之对应的脚本。JavaScript陷入了前所未有的混乱，DHTML也因此在人们心中留下了很差的印象。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">我们在阅读DOM标准的时候，经常会看到DOM0级这样的字眼，实际上DOM0级这个标准是不存在的。所谓DOM0级只是DOM</div><div class="line">历史坐标系中的一个参照点而已，具体地说DOM0级就是指IE4.0和Netscape navigator4.0最初支持的那个DHTML。</div></pre></td></tr></table></figure>
+<h4 id="3-3、DOM1的出现"><a href="#3-3、DOM1的出现" class="headerlink" title="3.3、DOM1的出现"></a>3.3、DOM1的出现</h4><blockquote>
+<p>在浏览器厂商进行浏览器大站的同时，W3C结合大家的优点推出了一个标准化的DOM，并于1998年10月完成了第一级 DOM，即：DOM1。W3C将DOM定义为一个与平台和编程语言无关的接口，通过这个接口程序和脚本可以动态的访问和修改文档的内容、结构和样式。</p>
+</blockquote>
+<p>DOM1级主要定义了HTML和XML文档的底层结构。在DOM1中，DOM由两个模块组成：DOM Core（DOM核心）和DOM HTML。其中，DOM Core规定了基于XML的文档结构标准，通过这个标准简化了对文档中任意部分的访问和操作。DOM HTML则在DOM核心的基础上加以扩展，添加了针对HTML的对象和方法，如：JavaScript中的Document对象.</p>
+<p><img src="http://ww1.sinaimg.cn/mw690/ae49ba57gy1fe9ggrlkadj218m0oi434.jpg" alt=""></p>
+<h4 id="3-4、DOM2"><a href="#3-4、DOM2" class="headerlink" title="3.4、DOM2"></a>3.4、DOM2</h4><blockquote>
+<p>在DOM1的基础上DOM2引入了更多的交互能力，也支持了更高级的XML特性。DOM2将DOM分为更多具有联系的模块。DOM2级在原来DOM的基础上又扩充了鼠标、用户界面事件、范围、遍历等细分模块，而且通过对象接口增加了对CSS的支持。DOM1级中的DOM核心模块也经过扩展开始支持XML命名空间。在DOM2中引入了下列模块，在模块包含了众多新类型和新接口：</p>
+</blockquote>
+<ul>
+<li>DOM视图（DOM Views）：定义了跟踪不同文档视图的接口</li>
+<li>DOM事件（DOM Events）：定义了事件和事件处理的接口</li>
+<li>DOM样式（DOM Style）：定义了基于CSS为元素应用样式的接口</li>
+<li>DOM遍历和范围（DOM Traversal and Range）：定义了遍历和操作文档树的接口</li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/mw690/ae49ba57gy1fe9lxdxmlej21800xiaia.jpg" alt=""></p>
+<p>完整的DOM2标准(图片来自百度百科):</p>
+<p><img src="http://ww1.sinaimg.cn/mw690/ae49ba57gy1fe9lras1icj20hs0c80ts.jpg" alt=""></p>
+<h4 id="3-5、DOM3"><a href="#3-5、DOM3" class="headerlink" title="3.5、DOM3"></a>3.5、DOM3</h4><blockquote>
+<p>DOM3级：进一步扩展了DOM，引入了以统一方式加载和保存文档的方法，它在DOM Load And Save这个模块中定义；同时新增了验证文档的方法，是在DOM Validation这个模块中定义的。<br>DOM3进一步扩展了DOM，在DOM3中引入了以下模块：</p>
+</blockquote>
+<ul>
+<li>DOM加载和保存模块（DOM Load and Save）：引入了以统一方式加载和保存文档的方法</li>
+<li>DOM验证模块（DOM Validation）：定义了验证文档的方法</li>
+<li>DOM核心的扩展（DOM Style）：支持XML 1.0规范，涉及XML Infoset、XPath和XML Base</li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/mw690/ae49ba57gy1fe9m8mrs7pj21760t2jws.jpg" alt=""></p>
+<h3 id="4、认识DOM"><a href="#4、认识DOM" class="headerlink" title="4、认识DOM"></a>4、认识DOM</h3><blockquote>
+<p>DOM可以将任何HTML描绘成一个由多层节点构成的结构。节点分为12种不同类型，每种类型分别表示文档中不同的信息及标记。每个节点都拥有各自的特点、数据和方法，也与其他节点存在某种关系。节点之间的关系构成了层次，而所有页面标记则表现为一个以特定节点为根节点的树形结构。</p>
+</blockquote>
+<p>先看一张w3school上面的一张图:</p>
+<p><img src="http://ww1.sinaimg.cn/mw690/ae49ba57gy1fe9myrp3o9j20fi09lwel.jpg" alt=""></p>
+<p>先来看看下面代码:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">html</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">     <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">title</span>&gt;</span>DOM<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">h2</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://www.baidu.com"</span>&gt;</span>javascript DOM<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">h2</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">p</span>&gt;</span>对HTML元素进行操作，可添加、改变或移除css样式等<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">ul</span>&gt;</span></div><div class="line">          <span class="tag">&lt;<span class="name">li</span>&gt;</span>Javascript<span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">          <span class="tag">&lt;<span class="name">li</span>&gt;</span>DOM<span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">          <span class="tag">&lt;<span class="name">li</span>&gt;</span>CSS<span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>将HTML代码分解为DOM节点层次图:</p>
+<p><img src="http://ww1.sinaimg.cn/mw690/ae49ba57gy1fe9n2m49pqj20df07rwf0.jpg" alt=""></p>
+<p> <strong>HTML文档可以说由节点构成的集合，DOM节点有:</strong></p>
+<ol>
+<li>元素节点：上图中\<html\>、\<body\>、\<p\>等都是元素节点，即标签。</p\></body\></html\></li>
+<li>文本节点:向用户展示的内容，如\<li\>…\</li\>中的JavaScript、DOM、CSS等文本。</li>
+<li>属性节点:元素属性，如\<a\>标签的链接属性href=”<a href="http://www.baidu.com&quot;。" target="_blank" rel="external">http://www.baidu.com&quot;。</a></a\></li>
+</ol>
+<h3 id="5、文档类型发展史"><a href="#5、文档类型发展史" class="headerlink" title="5、文档类型发展史"></a>5、文档类型发展史</h3><p>我们说DOM文档对象模型是从文档中抽象出来的，DOM操作的对象也是文档，因此我们有必要了解一下文档的类型。文档随着历史的发展演变为多种类型，如下:</p>
+<p><img src="http://ww1.sinaimg.cn/mw690/ae49ba57gy1fe9rpbma12j20ls04875u.jpg" alt=""></p>
+<h4 id="5-1、GML"><a href="#5-1、GML" class="headerlink" title="5.1、GML"></a>5.1、GML</h4><blockquote>
+<p>GML(Generalized Markup Language, 通用标记语言)是1960年代的一种IBM文档格式化语言，用于描述文档的组织结构、各部件及其相互关系。GML在文档具体格式方面，为文档员提供了一些方便，他们不必再为IBM的打印机格式化语言SCRIPT要求的字体规范、行距以及页面设计等浪费精力。这个IBM的GML包括1960年代的GML和1980年代的ISIL。</p>
+</blockquote>
+<h4 id="5-2、SGML"><a href="#5-2、SGML" class="headerlink" title="5.2、SGML"></a>5.2、SGML</h4><blockquote>
+<p>SGML(Standard Generalized Markup Language, 标准通用标记语言)是1986年基于IBM的GML制定ISO标准(ISO 8879)。SGML是现时常用的超文本格式的最高层次标准，是可以定义标记语言的元语言，甚至可以定义不必采用”&lt;&gt;”的常规方式。由于SGML的复杂，因而难以普及。HTML和XML同样衍生于SGML，XML可以被认为是SGML的一个子集，而HTML是SGML的一个应用。</p>
+</blockquote>
+<h4 id="5-3、HTML"><a href="#5-3、HTML" class="headerlink" title="5.3、HTML"></a>5.3、HTML</h4><blockquote>
+<p>HTML(HyperText Markup Language, 超文本标记语言)是为“网页创建和其它可在网页浏览器中看到的信息”设计的一种标记语言。HTML被用来结构化信息——例如标题、段落和列表等等，也可用来在一定程度上描述文档的外观和语义。1982年，蒂姆·伯纳斯-李为使世界各地的物理学家能够方便的进行合作研究，创建了使用于其系统的HTML。之后HTML又不断地扩充和发展，成为国际标准，由万维网联盟（W3C）维护。第一个正式标准是1995年发布的RFC 1866(HTML 2.0)。</p>
+</blockquote>
+<h4 id="5-4、XML"><a href="#5-4、XML" class="headerlink" title="5.4、XML"></a>5.4、XML</h4><blockquote>
+<p>XML(eXtensible Markup Language, 可扩展标记语言)是专家们使用SGML精简制作，并依照HTML的发展经验，产生出一套使用上规则严谨，但是简单的描述数据语言。XML在1995年开始有雏形，在1998二月发布为W3C的标准(XML1.0)</p>
+</blockquote>
+<h4 id="5-5、XHTML"><a href="#5-5、XHTML" class="headerlink" title="5.5、XHTML"></a>5.5、XHTML</h4><blockquote>
+<p>XHTML(eXtensible HyperText Markup Language, 可扩展超文本标记语言)的表现方式与超文本标记语言（HTML）类似，不过语法上更加严格。从继承关系上讲，HTML是一种基于标准通用标记语言(SGML)的应用，是一种非常灵活的置标语言，而XHTML则基于可扩展标记语言(XML)，XML是SGML的一个子集。XHTML 1.0在2000年1月26日成为W3C的推荐标准。</p>
+</blockquote>
+<h3 id="6、DOM节点类型"><a href="#6、DOM节点类型" class="headerlink" title="6、DOM节点类型"></a>6、DOM节点类型</h3><blockquote>
+<p>DOM1级定义了一个Node接口，这个Node接口在javascript中是作为Node类型来实现的。除了IE以外，其他所有浏览器都可以访问这个类型。每个节点都有一个nodeType属性，用于表明节点的类型。节点类型通过定义数值常量和字符常量两种方式来表示，IE只支持数值常量。节点类型一共有12种，这里介绍常用的7种类型。如下图：</p>
+</blockquote>
+<p><img src="http://ww1.sinaimg.cn/mw690/ae49ba57gy1fe9rz1lk2wj20ha072tbw.jpg" alt=""></p>
+<p>看下面这个例子:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>DocumentFragment文档片段节点<span class="tag">&lt;/<span class="name">title</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span> </div><div class="line"><span class="comment">&lt;!-- tip区域 --&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"tip"</span>&gt;</span>test1<span class="tag">&lt;/<span class="name">div</span>&gt;</span> </div><div class="line">    <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">"list-node"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span>test2<span class="tag">&lt;<span class="name">li</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">ul</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">  </span></div><div class="line">        <span class="keyword">var</span> frag = <span class="built_in">document</span>.createDocumentFragment();  </div><div class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;  </div><div class="line">            <span class="keyword">var</span> li = <span class="built_in">document</span>.createElement(<span class="string">"li"</span>);  </div><div class="line">            li.innerHTML = <span class="string">"List item"</span> + i;  </div><div class="line">            frag.appendChild(li);  </div><div class="line">        &#125;  </div><div class="line">        <span class="built_in">document</span>.getElementById(<span class="string">"list-node"</span>).appendChild(frag);  </div><div class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>以下引用均来自老师说的话，感觉每句话都很重要，所以就写下来了。</p>
+<h4 id="1-Element-元素节点-："><a href="#1-Element-元素节点-：" class="headerlink" title="(1)Element(元素节点)："></a>(1)Element(元素节点)：</h4><blockquote>
+<p>是组成文档树的重要部分，它表示了html、xml文档中的元素。通常元素因为有子元素、文本节点或者两者的结合，元素节点是唯一能够拥有属性的节点类型。</p>
+</blockquote>
+<p><strong>例子中的:<code>html</code>、<code>heade</code>、<code>meta</code>、<code>title</code>、<code>body</code>、<code>div</code>、<code>ul</code>、<code>li</code>、<code>script</code>都属于Element(元素节点);</strong></p>
+<h4 id="2-Attr-属性节点-："><a href="#2-Attr-属性节点-：" class="headerlink" title="(2)Attr(属性节点)："></a>(2)Attr(属性节点)：</h4><blockquote>
+<p>代表了元素中的属性，因为属性实际上是附属于元素的，因此属性节点不能被看做是元素的子节点。因而在DOM中属性没有被认为是文档树的一部分。换句话说，属性节点其实被看做是包含它的元素节点的一部分，它并不作为单独的一个节点在文档树中出现。</p>
+</blockquote>
+<p><strong>例子中的:<code>lang</code>、<code>charset</code>、<code>id</code>、<code>class</code>都属于Attr(属性节点);</strong></p>
+<h4 id="3-Text-文本节点-："><a href="#3-Text-文本节点-：" class="headerlink" title="(3)Text(文本节点)："></a>(3)Text(文本节点)：</h4><blockquote>
+<p>是只包含文本内容的节点，在xml中称为字符数据，它可以由更多的信息组成，也可以只包含空白。在文档树中元素的文本内容和属性的文本内容都是由文本节点来表示的。</p>
+</blockquote>
+<p><strong>例子中的:<code>DocumentFragment文档片段节点</code>、<code>test1</code>、<code>test2</code>、<code>元素节点之后的空白区域</code>都属于Text(文本节点);</strong></p>
+<h4 id="4-Comment-注释节点-："><a href="#4-Comment-注释节点-：" class="headerlink" title="(4)Comment(注释节点)："></a>(4)Comment(注释节点)：</h4><blockquote>
+<p>表示注释的内容</p>
+</blockquote>
+<p><strong>例子中的:<code>&lt;!-- tip区域 --&gt;</code>都属于Comment(注释节点);</strong></p>
+<h4 id="5-Document-文档节点-："><a href="#5-Document-文档节点-：" class="headerlink" title="(5)Document(文档节点) ："></a>(5)Document(文档节点) ：</h4><blockquote>
+<p>是文档树的根节点，它是文档中其他所有节点的父节点。要注意的是，文档节点并不是html、xml文档的根元素，因为在xml文档中，处理指令、注释等内容可以出现在根元素之外，所以我们在构造DOM树的时候，根元素并不适合作为根节点，因此就有了文档节点，而根元素是作为文档节点的子节点出现的。</p>
+</blockquote>
+<p><strong>例子中的：<code>&lt;!DOCTYPE html&gt;</code>、<code>html</code>作为Document(文档节点)的子节点出现;</strong></p>
+<h4 id="6-DocumentType-文档类型节点-："><a href="#6-DocumentType-文档类型节点-：" class="headerlink" title="(6)DocumentType(文档类型节点)："></a>(6)DocumentType(文档类型节点)：</h4><blockquote>
+<p>每一个Document都有一个DocumentType属性，它的值或者是null，或者是DocumentType对象。比如声明文档类型时&lt;!doctype html&gt;就是文档类型节点。</p>
+</blockquote>
+<p><strong>例子中的：<code>&lt;!DOCTYPE html&gt;</code> 就属于DocumentType(文档类型节点);</strong></p>
+<h5 id="7-DocumentFragment-文档片段节点-："><a href="#7-DocumentFragment-文档片段节点-：" class="headerlink" title="(7)DocumentFragment(文档片段节点)："></a>(7)DocumentFragment(文档片段节点)：</h5><blockquote>
+<p>是轻量级的或最小的Document对象，它表示文档的一部分或者是一段，不属于文档树。不过它有一种特殊的行为，该行为使得它非常有用。比如：当请求把一个DocumentFragment节点插入到文档的时候，插入的不是DocumentFragment自身，而是它的所有的子孙节点。这使得DocumentFragment成了有用的占位符，暂时存放那些一次插入文档的节点，同时它还有利于实现文档的剪切、复制和粘贴等操作。</p>
+</blockquote>
+<p><strong>例子中的:<code>var frag = document.createDocumentFragment();</code>就属于DocumentFragment(文档片段节点);</strong></p>
+<h3 id="7、DOM的nodeType、nodeName、nodeValue"><a href="#7、DOM的nodeType、nodeName、nodeValue" class="headerlink" title="7、DOM的nodeType、nodeName、nodeValue"></a>7、DOM的nodeType、nodeName、nodeValue</h3><h4 id="7-1-nodeType"><a href="#7-1-nodeType" class="headerlink" title="7.1 nodeType"></a>7.1 nodeType</h4><blockquote>
+<p>通过DOM节点类型，我们可知，可以通过某个节点的nodeType属性来获得节点的类型，节点的类型可以是数值常量或者字符常量。示例代码如下：</p>
+</blockquote>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">head</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>nodeType<span class="tag">&lt;/<span class="name">title</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"container"</span>&gt;</span>这是一个元素节点<span class="tag">&lt;/<span class="name">div</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">  </span></div><div class="line">        <span class="keyword">var</span> divNode = <span class="built_in">document</span>.getElementById(<span class="string">'container'</span>);  </div><div class="line">        <span class="comment">/*</span></div><div class="line">        IE中只支持数值常量，因为低版本IE浏览器没有内置Node对象，其他浏览器数值常量和字符常量都支持，因此可</div><div class="line">        以直接用数值常量判断，这里为了比较两种写法，便都写在了这里  </div><div class="line">        */  </div><div class="line">        <span class="keyword">if</span> (divNode.nodeType == Node.ELEMENT_NODE || divNode.nodeType === <span class="number">1</span>) &#123;  </div><div class="line">            alert(<span class="string">"Node is an element."</span>);  </div><div class="line">        &#125;         </div><div class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+<h4 id="7-2-nodeName和nodeValue"><a href="#7-2-nodeName和nodeValue" class="headerlink" title="7.2 nodeName和nodeValue"></a>7.2 nodeName和nodeValue</h4><p>先看示例代码:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">head</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>nodeName,nodeValue<span class="tag">&lt;/<span class="name">title</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span>  </div><div class="line">    <span class="comment">&lt;!--nodeName,nodeValue实验--&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"container"</span>&gt;</span>这是一个元素节点<span class="tag">&lt;/<span class="name">div</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">  </span></div><div class="line">        <span class="keyword">var</span> divNode = <span class="built_in">document</span>.getElementById(<span class="string">'container'</span>);  </div><div class="line">        <span class="built_in">console</span>.log(divNode.nodeName + <span class="string">"/"</span> + divNode.nodeValue);     </div><div class="line">        <span class="comment">//结果:    DIV/null  </span></div><div class="line">        </div><div class="line">        <span class="keyword">var</span> attrNode = divNode.attributes[<span class="number">0</span>];  </div><div class="line">        <span class="built_in">console</span>.log(attrNode.nodeName + <span class="string">"/"</span> + attrNode.nodeValue);      </div><div class="line">        <span class="comment">//结果：   id/container  </span></div><div class="line">        </div><div class="line">        <span class="keyword">var</span> textNode = divNode.childNodes[<span class="number">0</span>];  </div><div class="line">        <span class="built_in">console</span>.log(textNode.nodeName + <span class="string">"/"</span> + textNode.nodeValue);      </div><div class="line">        <span class="comment">//结果：   #text/这是一个元素节点  </span></div><div class="line">        </div><div class="line">        <span class="keyword">var</span> commentNode = <span class="built_in">document</span>.body.childNodes[<span class="number">1</span>];  </div><div class="line">        <span class="comment">//表示取第二个注释节点，因为body下面的第一个注释节点为空白符。  </span></div><div class="line">        <span class="built_in">console</span>.log(commentNode.nodeName + <span class="string">"/"</span> +commentNode.nodeValue);  </div><div class="line">        <span class="comment">//结果：  #comment/nodeName,nodeValue实验  </span></div><div class="line">        </div><div class="line">        <span class="built_in">console</span>.log(<span class="built_in">document</span>.doctype.nodeName + <span class="string">"/"</span> + <span class="built_in">document</span>.doctype.nodeValue);   </div><div class="line">        <span class="comment">//结果： html/null  </span></div><div class="line">        </div><div class="line">        <span class="keyword">var</span> frag = <span class="built_in">document</span>.createDocumentFragment();  </div><div class="line">        <span class="built_in">console</span>.log(frag.nodeName + <span class="string">"/"</span> + frag.nodeValue);    </div><div class="line">        <span class="comment">//结果： #document-fragment/null  </span></div><div class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>根据实验，得出以下汇总表格:</p>
+<p><img src="http://ww1.sinaimg.cn/mw690/ae49ba57gy1fe9ugwpyk9j20vb0f1k0x.jpg" alt=""></p>
+<h3 id="8、domReady"><a href="#8、domReady" class="headerlink" title="8、domReady"></a>8、domReady</h3><p>还记得刚开始学习JavaScript时候，经常会犯这样的错误：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"zh-CN"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"X-UA-Compatible"</span> <span class="attr">content</span>=<span class="string">"IE=edge"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span> <span class="attr">content</span>=<span class="string">"width=device-width, initial-scale=1"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Dom not ready<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></div><div class="line">      <span class="built_in">document</span>.getElementById(<span class="string">"header"</span>).style.color = <span class="string">"red"</span>;</div><div class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">h1</span> <span class="attr">id</span>=<span class="string">"header"</span>&gt;</span>这里是h1元素包含的内容<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>最后发现结果并不是我们想要的，文字并没有变成红色，我想最先入门学习JavaScript操作DOM时候多多少少会遇到这种困惑和错误，其实出现这种问题的原因就是我们没有<strong>区分HTML标签和DOM节点的区别</strong>的缘故了,由这个问题就引出下面要说的domReady和浏览器渲染解析原理了。</p>
+<h4 id="8-1、什么是domReady？"><a href="#8-1、什么是domReady？" class="headerlink" title="8.1、什么是domReady？"></a>8.1、什么是domReady？</h4><blockquote>
+<p>html是一种标记语言，它告诉我们这个页面有什么内容，但行为交互是需要通过DOM操作来实现的。我们不要以为有两个尖括号就以为它是一个DOM了，html标签要通过浏览器解析才会变成DOM节点，当我们向地址栏传入一个url的时候，我们开始加载页面，就能看到内容，在这期间就有一个DOM节点构建的过程。节点是以树的形式组织的，当页面上所有的html都转换为节点以后，就叫做DOM树构建完毕，简称为domReady。</p>
+</blockquote>
+<h4 id="8-2、那么浏览器是如何将html标签解析变成DOM节点的呢？"><a href="#8-2、那么浏览器是如何将html标签解析变成DOM节点的呢？" class="headerlink" title="8.2、那么浏览器是如何将html标签解析变成DOM节点的呢？"></a>8.2、那么浏览器是如何将html标签解析变成DOM节点的呢？</h4><blockquote>
+<p>实际上浏览器是通过渲染引擎来实现的。渲染引擎的职责就是把请求的内容显示到浏览器屏幕上。默认情况下渲染引擎可以显示html、xml文档及图片。通过插件（浏览器扩展）它可以显示其他类型的文档，比如我们安装pdf viewer插件，我们就可以显示pdf文档。这里专注渲染引擎的主要用途，即是将css格式化的html和图片在浏览器上进行显示。</p>
+</blockquote>
+<h4 id="8-3、浏览器渲染引擎的基本渲染流程"><a href="#8-3、浏览器渲染引擎的基本渲染流程" class="headerlink" title="8.3、浏览器渲染引擎的基本渲染流程"></a>8.3、浏览器渲染引擎的基本渲染流程</h4><p>浏览器渲染要做的事就是把CSS,HTML，图片等静态资源展示到用户眼前。</p>
+<p><img src="http://ww1.sinaimg.cn/mw690/ae49ba57gy1fe9v115aubj21010abjv7.jpg" alt=""></p>
+<blockquote>
+<p>渲染引擎首先通过网络获得所请求文档的内容，通常以8k分块的方法来完成：</p>
+</blockquote>
+<p><img src="http://ww1.sinaimg.cn/mw690/ae49ba57gy1fe9v5vikecj20yt0cy106.jpg" alt=""></p>
+<p>上图就是html渲染的基本过程，但这并不包含解析过程中浏览器加载外部资源，比如图片、脚本、iframe等的一些过程。说白了，上面的4步仅仅是html结构的渲染过程。而外部资源的加载在html结构的渲染过程中是贯彻始终的，即便绘制DOM节点已经完成，而外部资源仍然可能正在加载或者尚未加载。</p>
+<h4 id="8-4、Webkit主要渲染流程"><a href="#8-4、Webkit主要渲染流程" class="headerlink" title="8.4、Webkit主要渲染流程"></a>8.4、Webkit主要渲染流程</h4><p>Firefox浏览器Gecko渲染流程跟Webkit内核渲染类似，大同小异，WebKit 和 Gecko 使用的术语略有不同，但整体流程是基本相同的。这里以Webkit内核作为例子来说明浏览器渲染的主要流程。</p>
+<p><img src="http://ww1.sinaimg.cn/large/ae49ba57gy1fe9v7v5jdqj21000jlagv.jpg" alt=""></p>
+<p>浏览器的渲染原理并非三言两语，几个图就能说明白的，上图说的只是介绍一个大环节的过程和步骤，这里抛砖引玉象征性说个大概，更多关于浏览器内部工作原理的文章，请阅读：<strong><a href="https://www.html5rocks.com/zh/tutorials/internals/howbrowserswork/#The_browsers_we_will_talk_about" target="_blank" rel="external">浏览器的工作原理：新式网络浏览器幕后揭秘</a></strong></p>
+<h4 id="8-5、domReady的实现策略"><a href="#8-5、domReady的实现策略" class="headerlink" title="8.5、domReady的实现策略"></a>8.5、domReady的实现策略</h4><blockquote>
+<p>上面的各个代码实例中，并没有考虑domReady，程序也能正常运行，因为我们把javascript代码写在了body元素最后的位置。因为浏览器是从上到下，从左向右渲染元素的，这样实例中的js代码一定在domReady之后去执行的。那为什么还要用domReady呢？事实上，我们在编写大型项目的时候，js文件往往非常多，而且之间会相互调用，大多数都是外部引用的，不把js代码直接写在页面上。这样的话，如果有个domReady这个方法，我们想用它就调用，不管逻辑代码写在哪里，都是等到domReady之后去执行的。</p>
+<p>window.onload方法，表示当页面所有的元素都加载完毕，并且所有要请求的资源也加载完毕才触发执行function这个匿名函数里边的具体内容。这样肯定保证了代码在domReady之后执行。使用window.onload方法在文档外部资源不多的情况下不会有什么问题，但是当页面中有大量远程图片或要请求的远程资源时，我们需要让js在点击每张图片时，进行相应的操作，如果此时外部资源还没有加载完毕，点击图片是不会有任何反应的，大大降低了用户体验。那既然window.onload方法不可行，又该怎么做呢？</p>
+</blockquote>
+<p>你肯定想到了jquery中的$(document).ready(function(){})方法了,其实jquery中的domReady应该和window.onload的实现原理是大同小异的。为了解决window.onload的短板，w3c 新增了一个 DOMContentLoaded 事件。</p>
+<p>这里提到了<strong>DOMContentLoaded</strong>事件，这里由于篇幅有限，就不多做介绍，这里面也有很多细节可以学习，有兴趣的童鞋，可以看看我之前收藏的两篇文章：</p>
+<p><strong><a href="https://mp.weixin.qq.com/s?__biz=MjM5MTA1MjAxMQ==&amp;mid=2651226247&amp;idx=1&amp;sn=8595a53fe98a3225d0cf0ce3f8ff2acc&amp;chksm=bd4959038a3ed015c3d03fcdadcdabf4225a7eee4efb1988becd9ae3cd87f2216a34717383bc&amp;mpshare=1&amp;scene=1&amp;srcid=0403gXzWL8aSq91TuBoqyFtm&amp;key=19bca82a00e28dcd2ee4826d029205065cd6e6bbcc6f97f2da04129789e26a00b82cc9fccc4f838fc1bda9d9935ab03cc482bfcee734dd40c175fe0d882d0518c4ecf63d82e3d78471415eee960f66cc&amp;ascene=0&amp;uin=NzM0NTM5MzQx&amp;devicetype=iMac+MacBookPro12%2C1+OSX+OSX+10.11.6+build(15G31" target="_blank" rel="external">你不知道的 DOMContentLoaded</a>&amp;version=12020110&amp;nettype=WIFI&amp;fontScale=100&amp;pass_ticket=2uOqWTPNenLxF7wD%2F%2Bi%2F0TK60XMDQLdZ%2Bk2hyDjtKZsM9jitnQM4c%2B5cVfq0SJLP)</strong><br><strong><a href="https://segmentfault.com/a/1190000005869515" target="_blank" rel="external">浅谈DOMContentLoaded事件及其封装方法</a></strong></p>
+<p><strong>学习就是一个无底洞，因为深不可测，才让人不断探索。</strong></p>
+<p>参考jquery中domReady的实现原理，来看一下javascript中domReady的实现策略。</p>
+<p>在页面的DOM树创建完成后（也就是HTML解析第一步完成）即触发，而无需等待其他资源的加载。即domReady实现策略：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">1. 支持DOMContentLoaded事件的，就使用DOMContentLoaded事件。</div><div class="line">2. 不支持的就用来自Diego Perini发现的著名Hack兼容。兼容原理大概就是通过IE中的document，</div><div class="line">documentElement.doScroll(&apos;left&apos;)来判断DOM树是否创建完毕。</div></pre></td></tr></table></figure>
+<p>JavaScript实现domReady，【domReady.js】</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">myReady</span>(<span class="params">fn</span>)</span>&#123;  </div><div class="line">    <span class="comment">//对于现代浏览器，对DOMContentLoaded事件的处理采用标准的事件绑定方式  </span></div><div class="line">    <span class="keyword">if</span> ( <span class="built_in">document</span>.addEventListener ) &#123;  </div><div class="line">        <span class="built_in">document</span>.addEventListener(<span class="string">"DOMContentLoaded"</span>, fn, <span class="literal">false</span>);  </div><div class="line">    &#125; <span class="keyword">else</span> &#123;  </div><div class="line">        IEContentLoaded(fn);  </div><div class="line">    &#125;  </div><div class="line">    <span class="comment">//IE模拟DOMContentLoaded  </span></div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">IEContentLoaded</span> (<span class="params">fn</span>) </span>&#123;  </div><div class="line">        <span class="keyword">var</span> d = <span class="built_in">window</span>.document;  </div><div class="line">        <span class="keyword">var</span> done = <span class="literal">false</span>;  </div><div class="line">  </div><div class="line">        <span class="comment">//只执行一次用户的回调函数init()  </span></div><div class="line">        <span class="keyword">var</span> init = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;  </div><div class="line">            <span class="keyword">if</span> (!done) &#123;  </div><div class="line">                done = <span class="literal">true</span>;  </div><div class="line">                fn();  </div><div class="line">            &#125;  </div><div class="line">        &#125;;  </div><div class="line">        (<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;  </div><div class="line">            <span class="keyword">try</span> &#123;  </div><div class="line">                <span class="comment">// DOM树未创建完之前调用doScroll会抛出错误  </span></div><div class="line">                d.documentElement.doScroll(<span class="string">'left'</span>);  </div><div class="line">            &#125; <span class="keyword">catch</span> (e) &#123;  </div><div class="line">                <span class="comment">//延迟再试一次~  </span></div><div class="line">                setTimeout(<span class="built_in">arguments</span>.callee, <span class="number">50</span>);  </div><div class="line">                <span class="keyword">return</span>;  </div><div class="line">            &#125;  </div><div class="line">            <span class="comment">// 没有错误就表示DOM树创建完毕，然后立马执行用户回调  </span></div><div class="line">            init();  </div><div class="line">        &#125;)();  </div><div class="line">        <span class="comment">//监听document的加载状态  </span></div><div class="line">        d.onreadystatechange = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;  </div><div class="line">            <span class="comment">// 如果用户是在domReady之后绑定的函数，就立马执行  </span></div><div class="line">            <span class="keyword">if</span> (d.readyState == <span class="string">'complete'</span>) &#123;  </div><div class="line">                d.onreadystatechange = <span class="literal">null</span>;  </div><div class="line">                init();  </div><div class="line">            &#125;  </div><div class="line">        &#125;  </div><div class="line">    &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在页面中引入donReady.js文件，引用myReady(回调函数)方法即可。</p>
+<p><strong>感兴趣的童鞋可以看看各个主流框架domReady的实现：<a href="http://www.cnblogs.com/JulyZhang/archive/2011/02/12/1952484.html" target="_blank" rel="external">点击我查看</a></strong></p>
+<h4 id="8-6、一个小栗子看二者差异性"><a href="#8-6、一个小栗子看二者差异性" class="headerlink" title="8.6、一个小栗子看二者差异性"></a>8.6、一个小栗子看二者差异性</h4><p>下面通过一个案例，来比较domReady与window.onload实现的不同，很明显，onload事件是要在所有请求都完成之后才执行，而domReady利用hack技术，在加载完dom树之后就能执行，所以domReady比onload执行时间更早，建议采用domReady。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"zh-CN"</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>domReady与window.onload<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"domReady.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"showMsg"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://ww1.sinaimg.cn/large/ae49ba57gy1fe9zofelhdj20xc0xc42s.jpg"</span> <span class="attr">alt</span>=<span class="string">""</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://ww1.sinaimg.cn/large/ae49ba57gy1fe9zofahw3j20m80etq4a.jpg"</span> <span class="attr">alt</span>=<span class="string">""</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://ww1.sinaimg.cn/large/ae49ba57gy1fe9zoi3ny6j20l20dw4gd.jpg"</span> <span class="attr">alt</span>=<span class="string">""</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://ww1.sinaimg.cn/large/ae49ba57gy1fe9zog3tauj20m80et0uw.jpg"</span> <span class="attr">alt</span>=<span class="string">""</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://ww1.sinaimg.cn/large/ae49ba57gy1fe9zofi2o5j20m80ettaq.jpg"</span> <span class="attr">alt</span>=<span class="string">""</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://ww1.sinaimg.cn/large/ae49ba57gy1fe9zohjuvhj20tb0cdwvp.jpg"</span> <span class="attr">alt</span>=<span class="string">""</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></div><div class="line">    <span class="keyword">var</span> d = <span class="built_in">document</span>;</div><div class="line">    <span class="keyword">var</span> msgBox = d.getElementById(<span class="string">"showMsg"</span>);</div><div class="line">    <span class="keyword">var</span> imgs = d.getElementsByTagName(<span class="string">"img"</span>);</div><div class="line">    <span class="keyword">var</span> time1 = <span class="literal">null</span>,</div><div class="line">        time2 = <span class="literal">null</span>;</div><div class="line">    myReady(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        msgBox.innerHTML += <span class="string">"dom已加载！&lt;br&gt;"</span>;</div><div class="line">        time1 = <span class="keyword">new</span> <span class="built_in">Date</span>().getTime();</div><div class="line">        msgBox.innerHTML += <span class="string">"时间戳："</span> + time1 + <span class="string">"&lt;br&gt;"</span>;</div><div class="line">    &#125;);</div><div class="line">    <span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        msgBox.innerHTML += <span class="string">"onload已加载！&lt;br&gt;"</span>;</div><div class="line">        time2 = <span class="keyword">new</span> <span class="built_in">Date</span>().getTime();</div><div class="line">        msgBox.innerHTML += <span class="string">"时间戳："</span> + time2 + <span class="string">"&lt;br&gt;"</span>;</div><div class="line">        msgBox.innerHTML += <span class="string">"domReady比onload快："</span> + (time2 - time1) + <span class="string">"ms&lt;br&gt;"</span>;</div><div class="line">    &#125;;</div><div class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>执行结果对比，发现DomReady比onload快乐2秒多。</p>
+<p><img src="http://ww1.sinaimg.cn/large/ae49ba57gy1fe9zrvp230j20el04xjs6.jpg" alt=""></p>
+<h3 id="9、元素节点的判断"><a href="#9、元素节点的判断" class="headerlink" title="9、元素节点的判断"></a>9、元素节点的判断</h3><p>为什么要判断元素的节点？</p>
+<blockquote>
+<p>因为要判断元素节点类型，因为属性的一系列操作与元素的节点类型息息相关，如果我们不区分它们，我们就不知道用元素的直接属性操作（例如：ele.xxx=yyy）还是用一个方法操作（el.setAttribute(xxx,yyy))。</p>
+</blockquote>
+<p><img src="http://ww1.sinaimg.cn/large/ae49ba57gy1fea01pzy5pj20xc0jl47i.jpg" alt=""></p>
+<p>设计元素类型的判定，这里给出有4个方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">(1).  isElement  ：判定某个节点是否为元素节点</div><div class="line">(2).  isHTML     ：判定某个节点是否为html文档的元素节点</div><div class="line">(3).  isXML       ： 判定某个节点是否为xml文档的元素节点</div><div class="line">(4).  contains   ：用来判定两个节点的包含关系</div></pre></td></tr></table></figure>
+<h4 id="9-1、元素节点的判定-isElement"><a href="#9-1、元素节点的判定-isElement" class="headerlink" title="9.1、元素节点的判定:isElement"></a>9.1、元素节点的判定:isElement</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>isElement<span class="tag">&lt;/<span class="name">title</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"test"</span>&gt;</span>aaa<span class="tag">&lt;/<span class="name">div</span>&gt;</span>  </div><div class="line">    <span class="comment">&lt;!--这是一个注释节点--&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">  </span></div><div class="line">        <span class="keyword">var</span> isElement = <span class="function"><span class="keyword">function</span> (<span class="params">el</span>)</span>&#123;  </div><div class="line">            <span class="keyword">return</span> !!el &amp;&amp; el.nodeType === <span class="number">1</span>;  </div><div class="line">        &#125;  </div><div class="line">        <span class="keyword">var</span> a = &#123;            <span class="comment">//随意定义一个变量，设置nodeType为1  </span></div><div class="line">           nodeType: <span class="number">1</span>  </div><div class="line">        &#125;  </div><div class="line">        <span class="built_in">console</span>.log(isElement(<span class="built_in">document</span>.getElementById(<span class="string">"test"</span>)));   </div><div class="line">        <span class="comment">//结果：  true  </span></div><div class="line">        </div><div class="line">        <span class="built_in">console</span>.log(isElement(<span class="built_in">document</span>.getElementById(<span class="string">"test"</span>).nextSibling));</div><div class="line">        <span class="comment">//这里的nextSibling属性查找下一个相邻节点，即注释节点  </span></div><div class="line">        <span class="comment">//结果：  false  </span></div><div class="line">        </div><div class="line">        <span class="built_in">console</span>.log(isElement(a));  </div><div class="line">        <span class="comment">//结果：  true  </span></div><div class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+<p><strong>注意代码中的!!用法：!!一般用来将后面的表达式转换为布尔型的数据（boolean).</strong></p>
+<p>因为javascript是弱类型的语言（变量没有固定的数据类型）所以有时需要强制转换为相应的类型,关于JavaScript的隐式转换，可以看看之前我写的一篇博客，这篇文章几乎分析到了所有的转换规则，感兴趣的童鞋可以点击查阅，学习了解一下。</p>
+<p><strong>[从++[[]][+[]]+[+[]]==10?深入浅出弱类型JS的隐式转换](<a href="https://github.com/jawil/blog/issues/5" target="_blank" rel="external">https://github.com/jawil/blog/issues/5</a>)</strong></p>
+<p>注意：上面的代码定义了一个变量a，将它的nodeType的值设为1，由于元素节点的节点类型的数值常量为1，所以这里在打印的的时候，会将a认为是元素节点，所以打印true。这种结果明显不是我们想要的，即使这种情况很少出现。下面给出解决方案:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>isElement<span class="tag">&lt;/<span class="name">title</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"test"</span>&gt;</span>aaa<span class="tag">&lt;/<span class="name">div</span>&gt;</span>  </div><div class="line">    <span class="comment">&lt;!--这是一个注释节点--&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">  </span></div><div class="line">        <span class="keyword">var</span> testDiv = <span class="built_in">document</span>.createElement(<span class="string">'div'</span>);  </div><div class="line">        <span class="keyword">var</span> isElement = <span class="function"><span class="keyword">function</span> (<span class="params">obj</span>) </span>&#123;  </div><div class="line">            <span class="keyword">if</span> (obj &amp;&amp; obj.nodeType === <span class="number">1</span>) &#123;<span class="comment">//先过滤最简单的  </span></div><div class="line">                <span class="keyword">if</span>( <span class="built_in">window</span>.Node &amp;&amp; (obj <span class="keyword">instanceof</span> Node ))&#123; </div><div class="line">                <span class="comment">//如果是IE9,则判定其是否Node的实例  </span></div><div class="line">                    <span class="keyword">return</span> <span class="literal">true</span>; <span class="comment">//由于obj可能是来自另一个文档对象，因此不能轻易返回false  </span></div><div class="line">                &#125;  </div><div class="line">                <span class="keyword">try</span> &#123;<span class="comment">//最后以这种效率非常差但肯定可行的方案进行判定  </span></div><div class="line">                    testDiv.appendChild(obj);  </div><div class="line">                    testDiv.removeChild(obj);  </div><div class="line">                &#125; <span class="keyword">catch</span> (e) &#123;  </div><div class="line">                    <span class="keyword">return</span> <span class="literal">false</span>;  </div><div class="line">                &#125;  </div><div class="line">                <span class="keyword">return</span> <span class="literal">true</span>;  </div><div class="line">            &#125;  </div><div class="line">            <span class="keyword">return</span> <span class="literal">false</span>;  </div><div class="line">        &#125;  </div><div class="line">        <span class="keyword">var</span> a = &#123;  </div><div class="line">           <span class="attr">nodeType</span>: <span class="number">1</span>  </div><div class="line">        &#125;  </div><div class="line">        <span class="built_in">console</span>.log(isElement(<span class="built_in">document</span>.getElementById(<span class="string">"test"</span>)));  </div><div class="line">        <span class="comment">//结果：  true  </span></div><div class="line">        <span class="built_in">console</span>.log(isElement(<span class="built_in">document</span>.getElementById(<span class="string">"test"</span>).nextSibling));  </div><div class="line">        <span class="comment">//结果：  false  </span></div><div class="line">        <span class="built_in">console</span>.log(isElement(a));  </div><div class="line">        <span class="comment">//结果：  false  </span></div><div class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>这样，在判断a是否是元素节点时，结果就是false了。</p>
+<p><strong>更多关于元素节点的判断请参考:<a href="http://stackoverflow.com/questions/384286/javascript-isdom-how-do-you-check-if-a-javascript-object-is-a-dom-object/27112297#27112297" target="_blank" rel="external">How do you check if a JavaScript Object is a DOM Object?</a></strong></p>
+<h4 id="9-2、HTML文档元素节点的判定和XML文档元素节点的判定-isHTML-and-isXML"><a href="#9-2、HTML文档元素节点的判定和XML文档元素节点的判定-isHTML-and-isXML" class="headerlink" title="9.2、HTML文档元素节点的判定和XML文档元素节点的判定:isHTML and isXML"></a>9.2、HTML文档元素节点的判定和XML文档元素节点的判定:isHTML and isXML</h4><blockquote>
+<p>我们可以简单的将所有的元素节点化为两类：一类是HTML，一类是XML。不过从严格意义上来说，HTML只是XML的一个子集，它拥有更多的特性，而XML在矢量绘图的处理上又派生出了两大类：SVG和VML。那么按照这种方法，我们可以简单的认为如果不是HTML，就是XML的元素节点了。而HTML是比较容易识别的，因为它有更多的特性。比如说，XML是没有className的，或者我们通过一个元素的ownerDocument得到它的文档对象，XML是没有document.getElementById()和document.getElementsByTagName()这些方法的.此外，最大的区别是HTML元素的nodeName总是大写的，当你使用createElement()方法创建HTML元素的时候，无论你传入的字母是大写还是小写，最后得到的都是大写。<br>接下来就看看各大类库是怎么实现HTML和XML文档的元素节点的判定的。</p>
+</blockquote>
+<h5 id="9-2-1、Sizzle-jQuery自带的选择器引擎-判断是否是XML文档"><a href="#9-2-1、Sizzle-jQuery自带的选择器引擎-判断是否是XML文档" class="headerlink" title="9.2.1、Sizzle, jQuery自带的选择器引擎,判断是否是XML文档"></a>9.2.1、Sizzle, jQuery自带的选择器引擎,判断是否是XML文档</h5><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>isXML<span class="tag">&lt;/<span class="name">title</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">  </span></div><div class="line">        <span class="comment">//Sizzle, jQuery自带的选择器引擎  </span></div><div class="line">        <span class="keyword">var</span> isXML = <span class="function"><span class="keyword">function</span>(<span class="params">elem</span>) </span>&#123;  </div><div class="line">            <span class="keyword">var</span> documentElement = elem &amp;&amp; (elem.ownerDocument || elem).documentElement;  </div><div class="line">            <span class="keyword">return</span> documentElement ? documentElement.nodeName !== <span class="string">"HTML"</span> : <span class="literal">false</span>;  </div><div class="line">        &#125;;  </div><div class="line">        <span class="built_in">console</span>.log(isXML(<span class="built_in">document</span>.getElementById(<span class="string">"test"</span>)));  </div><div class="line">  </div><div class="line">        <span class="comment">//但这样不严谨，因为XML的根节点，也可能是HTML标签，比如这样创建一个XML文档  </span></div><div class="line">        <span class="keyword">try</span> &#123;  </div><div class="line">            <span class="keyword">var</span> doc = <span class="built_in">document</span>.implementation.createDocument(<span class="literal">null</span>, <span class="string">'HTML'</span>, <span class="literal">null</span>);  </div><div class="line">            <span class="built_in">console</span>.log(doc.documentElement);  </div><div class="line">            <span class="built_in">console</span>.log(isXML(doc));  </div><div class="line">        &#125; <span class="keyword">catch</span> (e) &#123;  </div><div class="line">            <span class="built_in">console</span>.log(<span class="string">"不支持creatDocument方法"</span>);  </div><div class="line">        &#125;  </div><div class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>浏览器随便找个HTML页面验证一下：</p>
+<p><img src="http://ww1.sinaimg.cn/large/ae49ba57gy1fea138369vj20gh0b2dhp.jpg" alt=""></p>
+<h5 id="9-2-1、mootools的slick选择器引擎的源码-判断是否是XML文档"><a href="#9-2-1、mootools的slick选择器引擎的源码-判断是否是XML文档" class="headerlink" title="9.2.1、mootools的slick选择器引擎的源码,判断是否是XML文档"></a>9.2.1、mootools的slick选择器引擎的源码,判断是否是XML文档</h5><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>isXML<span class="tag">&lt;/<span class="name">title</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">  </span></div><div class="line">        <span class="comment">//我们看看mootools的slick选择器引擎的源码：  </span></div><div class="line">        <span class="keyword">var</span> isXML = <span class="function"><span class="keyword">function</span>(<span class="params">document</span>) </span>&#123;  </div><div class="line">            <span class="keyword">return</span> (!!<span class="built_in">document</span>.xmlVersion) || (!!<span class="built_in">document</span>.xml) || (toString.call(<span class="built_in">document</span>) == <span class="string">'[object XMLDocument]'</span>)  </div><div class="line">                    || (<span class="built_in">document</span>.nodeType == <span class="number">9</span> &amp;&amp; <span class="built_in">document</span>.documentElement.nodeName != <span class="string">'HTML'</span>);  </div><div class="line">        &#125;;  </div><div class="line">  </div><div class="line">        <span class="comment">//精简版  </span></div><div class="line">        <span class="keyword">var</span> isXML = <span class="built_in">window</span>.HTMLDocument ? <span class="function"><span class="keyword">function</span>(<span class="params">doc</span>) </span>&#123;  </div><div class="line">            <span class="keyword">return</span> !(doc <span class="keyword">instanceof</span> HTMLDocument);  </div><div class="line">        &#125; : <span class="function"><span class="keyword">function</span>(<span class="params">doc</span>) </span>&#123;  </div><div class="line">            <span class="keyword">return</span> <span class="string">"selectNodes"</span> <span class="keyword">in</span> doc;  </div><div class="line">        &#125;  </div><div class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+<p><strong>不过，这些方法都只是规范，javascript对象是可以随意添加的，属性法很容易被攻破，最好是使用功能法。功能法的实现代码如下：</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>isXML<span class="tag">&lt;/<span class="name">title</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">  </span></div><div class="line">        <span class="keyword">var</span> isXML = <span class="function"><span class="keyword">function</span>(<span class="params">doc</span>) </span>&#123;  </div><div class="line">            <span class="keyword">return</span> doc.createElement(<span class="string">"p"</span>).nodeName !== doc.createElement(<span class="string">"P"</span>).nodeName;  </div><div class="line">        &#125;  </div><div class="line">          </div><div class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>我们知道，无论是HTML文档，还是XML文档都支持createELement()方法，我们判定创建的元素的nodeName是区分大小写的还是不区分大小写的，我们就知道是XML还是HTML文档，这个方法是目前给出的最严谨的函数了。</p>
+<p>判断是不是HTML文档的方法如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>isHTML<span class="tag">&lt;/<span class="name">title</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">  </span></div><div class="line">        <span class="keyword">var</span> isHTML = <span class="function"><span class="keyword">function</span>(<span class="params">doc</span>) </span>&#123;  </div><div class="line">            <span class="keyword">return</span> doc.createElement(<span class="string">"p"</span>).nodeName === doc.createElement(<span class="string">"P"</span>).nodeName;  </div><div class="line">        &#125;  </div><div class="line">        <span class="built_in">console</span>.log(isHTML(<span class="built_in">document</span>));  </div><div class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>有了以上判断XML和HTML文档的方法，我们就可以实现一个元素节点属于HTML还是XML文档的方法了，实现代码如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>isHTMLElement<span class="tag">&lt;/<span class="name">title</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">  </span></div><div class="line">        <span class="keyword">var</span> testDiv = <span class="built_in">document</span>.createElement(<span class="string">'div'</span>);  </div><div class="line">        <span class="keyword">var</span> isElement = <span class="function"><span class="keyword">function</span> (<span class="params">obj</span>) </span>&#123;  </div><div class="line">            <span class="keyword">if</span> (obj &amp;&amp; obj.nodeType === <span class="number">1</span>) &#123;<span class="comment">//先过滤最简单的  </span></div><div class="line">                <span class="keyword">if</span>( <span class="built_in">window</span>.Node &amp;&amp; (obj <span class="keyword">instanceof</span> Node ))&#123; </div><div class="line">                <span class="comment">//如果是IE9,则判定其是否Node的实例  </span></div><div class="line">                    <span class="keyword">return</span> <span class="literal">true</span>; <span class="comment">//由于obj可能是来自另一个文档对象，因此不能轻易返回false  </span></div><div class="line">                &#125;  </div><div class="line">                <span class="keyword">try</span> &#123;<span class="comment">//最后以这种效率非常差但肯定可行的方案进行判定  </span></div><div class="line">                    testDiv.appendChild(obj);  </div><div class="line">                    testDiv.removeChild(obj);  </div><div class="line">                &#125; <span class="keyword">catch</span> (e) &#123;  </div><div class="line">                    <span class="keyword">return</span> <span class="literal">false</span>;  </div><div class="line">                &#125;  </div><div class="line">                <span class="keyword">return</span> <span class="literal">true</span>;  </div><div class="line">            &#125;  </div><div class="line">            <span class="keyword">return</span> <span class="literal">false</span>;  </div><div class="line">        &#125;  </div><div class="line">        <span class="keyword">var</span> isHTML = <span class="function"><span class="keyword">function</span>(<span class="params">doc</span>) </span>&#123;  </div><div class="line">            <span class="keyword">return</span> doc.createElement(<span class="string">"p"</span>).nodeName === doc.createElement(<span class="string">"P"</span>).nodeName;  </div><div class="line">        &#125;  </div><div class="line">        <span class="keyword">var</span> isHTMLElement = <span class="function"><span class="keyword">function</span>(<span class="params">el</span>)</span>&#123;  </div><div class="line">           <span class="keyword">if</span>(isElement)&#123;  </div><div class="line">              <span class="keyword">return</span> isHTML(el.ownerDocument);  </div><div class="line">           &#125;  </div><div class="line">           <span class="keyword">return</span> <span class="literal">false</span>;  </div><div class="line">        &#125;  </div><div class="line">        <span class="built_in">console</span>.log(isHTMLElement(testDiv));  </div><div class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+<h4 id="9-3、判断节点的包含关系"><a href="#9-3、判断节点的包含关系" class="headerlink" title="9.3、判断节点的包含关系"></a>9.3、判断节点的包含关系</h4><p>　　DOM可以将任何HTML描绘成一个由多层节点构成的结构。节点分为12种不同类型，每种类型分别表示文档中不同的信息及标记。每个节点都拥有各自的特点、数据和方法，也与其他节点存在某种关系。节点之间的关系构成了层次，而所有页面标记则表现为一个以特定节点为根节点的树形结构。DOM间的节点关系大致如下。<br><img src="http://ww1.sinaimg.cn/large/ae49ba57gy1fea1ujua55j20kf0a5wgi.jpg" alt=""><br>　　<br>节点关系不仅仅指元素节点的关系，document文档节点也包含在内。在最新的浏览器中，所有的节点都已经装备了contains()方法,<br>元素之间的包含关系，用自带的contains方法，只有两个都是元素节点，才能兼容各个浏览器，否则ie浏览器有的版本是不支持的，可以采用hack技术，自己写一个contains方法去兼容。<br>元素之间的包含关系：contains()方法.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>contains<span class="tag">&lt;/<span class="name">title</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"p-node"</span>&gt;</span>  </div><div class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"c-node"</span>&gt;</span>子节点内容<span class="tag">&lt;/<span class="name">div</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">  </span></div><div class="line">        <span class="keyword">var</span> pNode = <span class="built_in">document</span>.getElementById(<span class="string">"p-node"</span>);  </div><div class="line">        <span class="keyword">var</span> cNode = <span class="built_in">document</span>.getElementById(<span class="string">"c-node"</span>).childNodes[<span class="number">0</span>];  </div><div class="line">        alert(pNode.contains(cNode));    <span class="comment">//true  </span></div><div class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>兼容各浏览器的contains()方法</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>contains<span class="tag">&lt;/<span class="name">title</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"p-node"</span>&gt;</span>  </div><div class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"c-node"</span>&gt;</span>子节点内容<span class="tag">&lt;/<span class="name">div</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">  </span></div><div class="line">        <span class="comment">//兼容的contains方法  </span></div><div class="line">        <span class="function"><span class="keyword">function</span> <span class="title">fixContains</span>(<span class="params">a, b</span>) </span>&#123;  </div><div class="line">            <span class="keyword">try</span> &#123;  </div><div class="line">                <span class="keyword">while</span> ((b = b.parentNode))&#123;  </div><div class="line">                    <span class="keyword">if</span> (b === a)&#123;  </div><div class="line">                        <span class="keyword">return</span> <span class="literal">true</span>;  </div><div class="line">                    &#125;  </div><div class="line">                &#125;  </div><div class="line">                <span class="keyword">return</span> <span class="literal">false</span>;  </div><div class="line">            &#125; <span class="keyword">catch</span> (e) &#123;  </div><div class="line">                <span class="keyword">return</span> <span class="literal">false</span>;  </div><div class="line">            &#125;  </div><div class="line">        &#125;  </div><div class="line">        <span class="keyword">var</span> pNode = <span class="built_in">document</span>.getElementById(<span class="string">"p-node"</span>);  </div><div class="line">        <span class="keyword">var</span> cNode = <span class="built_in">document</span>.getElementById(<span class="string">"c-node"</span>).childNodes[<span class="number">0</span>];  </div><div class="line">        alert(fixContains(pNode, cNode));        <span class="comment">//true  </span></div><div class="line">        alert(fixContains(<span class="built_in">document</span>, cNode));     <span class="comment">//true  </span></div><div class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="10、DOM节点继承层次与嵌套规则"><a href="#10、DOM节点继承层次与嵌套规则" class="headerlink" title="10、DOM节点继承层次与嵌套规则"></a>10、DOM节点继承层次与嵌套规则</h3><h4 id="10-1、DOM节点继承层次"><a href="#10-1、DOM节点继承层次" class="headerlink" title="10.1、DOM节点继承层次"></a>10.1、DOM节点继承层次</h4><blockquote>
+<p>DOM节点是一个非常复杂的东西，对它的每一个属性的访问，不走运的话，就可能会向上溯寻到N多个原型链，因此DOM操作是个非常耗性能的操作。风头正盛的react为了解决这个问题，提出了虚拟DOM的概念，合并和屏蔽了很多无效的DOM操作，效果非常惊人。接下来看看DOM节点究竟是如何继承的。</p>
+</blockquote>
+<h5 id="10-1-1、创建一个元素节点（Element）的过程"><a href="#10-1-1、创建一个元素节点（Element）的过程" class="headerlink" title="10.1.1、创建一个元素节点（Element）的过程"></a>10.1.1、创建一个元素节点（Element）的过程</h5><p>使用document.createElement(“p”)创建p元素，其实document.createElement(“p”)是HTMLParagraphElement的一个实例，而HTMLParagraphElement的父类是HTMLElement，HTMLElement的父类是Element，Element的父类是Node，Node的父类是EventTarget，EventTarget的父类是Function，Function的父类是Object。</p>
+<p><strong>创建一个p元素一共溯寻了7层原型链：</strong></p>
+<p><img src="http://ww1.sinaimg.cn/large/ae49ba57gy1fea2u1xfd0j20ku0l3439.jpg" alt=""><br>下面我们来分析一下创建一个元素所继承的属性分别是啥。</p>
+<h6 id="1-document-createElement-“p”"><a href="#1-document-createElement-“p”" class="headerlink" title="1.document.createElement(“p”)"></a>1.document.createElement(“p”)</h6><p>document.createElement(“p”)首先就是一个<strong>实例对象</strong>，它是由构造函数HTMLParagraphElement产生的，你可以这么看这个问题：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">HTMLParagraphElement</span>(<span class="params"></span>) </span>&#123; </div><div class="line">    [native code] </div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="built_in">document</span>.createElement(<span class="string">"p"</span>)=<span class="keyword">new</span> HTMLParagraphElement(<span class="string">'p'</span>);</div></pre></td></tr></table></figure>
+<p>由以上继承关系可以看出来：</p>
+<p><code>document.createElement(&quot;p&quot;).constructor===HTMLParagraphElement
+document.createElement(&quot;p&quot;).__proto__===HTMLParagraphElement.prototype</code></p>
+<p>对实例对象，构造函数，以及JavaScript原型链和继承不太熟悉的童鞋，该补习一下基础看看了。</p>
+<p>我们先来看看document.createElement(“p”)自身有哪些属性，遍历对象属性方法一般有三种：</p>
+<p>先来讲一讲遍历对象属性三种方法的差异性，当做补充复习。<br>遍历数组属性目前我知道的有:<code>for-in</code>循环、<code>Object.keys()</code>和<code>Object.getOwnPropertyNames()</code>,那么三种到底有啥区别呢?</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">for-in循环:会遍历对象自身的属性,以及原型属性,包括enumerable 为 false(不可枚举属性);</div><div class="line">Object.keys():可以得到自身可枚举的属性,但得不到原型链上的属性;</div><div class="line">Object.getOwnPropertyNames():可以得到自身所有的属性(包括不可枚举),但得不到原型链上的属性,Symbols属性</div><div class="line">也得不到.</div></pre></td></tr></table></figure>
+<p><code>Object.defineProperty</code>顾名思义，就是用来定义对象属性的，<code>vue.js</code>的双向数据绑定主要在<code>getter</code>和<code>setter</code>函数里面插入一些处理方法，当对象被读写的时候处理方法就会被执行了。 关于这些方法和属性的更具体解释，可以看MDN上的解释（<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty" target="_blank" rel="external">戳我</a>）；</p>
+<p>简单看一个小demo例子加深理解,对于<code>Object.defineProperty</code>属性不太明白,可以看看上面介绍的文档学习补充一下.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"><span class="meta">'use strict'</span>;</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</div><div class="line">    <span class="keyword">constructor</span>() &#123;</div><div class="line">        <span class="keyword">this</span>.name = <span class="string">'jawil'</span>;</div><div class="line">    &#125;</div><div class="line">    getName() &#123;&#125;</div><div class="line">&#125;</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> <span class="keyword">extends</span> <span class="title">A</span> </span>&#123;</div><div class="line">    <span class="keyword">constructor</span>() &#123;</div><div class="line">            <span class="keyword">super</span>();</div><div class="line">            <span class="keyword">this</span>.age = <span class="number">22</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="comment">//getAge不可枚举</span></div><div class="line">    getAge() &#123;&#125;</div><div class="line">        [<span class="built_in">Symbol</span>(<span class="string">'fullName'</span>)]() &#123;</div><div class="line"></div><div class="line">        &#125;</div><div class="line">&#125;</div><div class="line">B.prototype.get = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line"></div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> b = <span class="keyword">new</span> B();</div><div class="line"></div><div class="line"><span class="comment">//设置b对象的info属性的enumerable: false,让其不能枚举.</span></div><div class="line"><span class="built_in">Object</span>.defineProperty(b, <span class="string">'info'</span>, &#123;</div><div class="line">    <span class="attr">value</span>: <span class="number">7</span>,</div><div class="line">    <span class="attr">writable</span>: <span class="literal">true</span>,</div><div class="line">    <span class="attr">configurable</span>: <span class="literal">true</span>,</div><div class="line">    <span class="attr">enumerable</span>: <span class="literal">false</span></div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">//Object可以得到自身可枚举的属性,但得不到原型链上的属性</span></div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.keys(b)); <span class="comment">//[ 'name', 'age' ]</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">//Object可A以得到自身所有的属性(包括不可枚举),但得不到原型链上的属性,Symbols属性也得不到</span></div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.getOwnPropertyNames(b)); <span class="comment">//[ 'name', 'age', 'info' ]</span></div><div class="line"></div><div class="line"><span class="keyword">for</span> (<span class="keyword">var</span> attr <span class="keyword">in</span> b) &#123;</div><div class="line">    <span class="built_in">console</span>.log(attr);<span class="comment">//name,age,get</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//in会遍历对象自身的属性,以及原型属性</span></div><div class="line"><span class="built_in">console</span>.log(<span class="string">'getName'</span> <span class="keyword">in</span> b); <span class="comment">//true</span></div></pre></td></tr></table></figure>
+<p>有了上面的知识作为扩充，我们就可以清晰明了的知道，创建元素P标签每一步都继承了哪些属性，继承对象自身有哪些属性，由于篇幅有限，大家可以自行子在浏览器测试，看看这些对象的一些属性和方法，便于我们理解。</p>
+<p>例如我们想看：HTMLElement对象有哪些自身属性，我们可以这么查看：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">Object</span>.getOwnPropertyNames(HTMLElement)</div></pre></td></tr></table></figure>
+<p>我们想看：HTMLElement的原型对象有哪些自身属性，我们可以这么查看：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">Object</span>.getOwnPropertyNames(HTMLElement.prototype)</div></pre></td></tr></table></figure>
+<p>HTMLElement的原型对象有哪些自身属性，根据原型链，我们也可以这么查看：</p>
+<p>因为：<code>document.createElement(&quot;p&quot;).__proto__.__proto__===HTMLElement.prototype</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">Object</span>.getOwnPropertyNames(<span class="built_in">document</span>.createElement(<span class="string">"p"</span>).__proto__.__proto__)</div></pre></td></tr></table></figure>
+<h5 id="10-1-2、创建一个文本节点（Text）的过程"><a href="#10-1-2、创建一个文本节点（Text）的过程" class="headerlink" title="10.1.2、创建一个文本节点（Text）的过程"></a>10.1.2、创建一个文本节点（Text）的过程</h5><p>使用document.createTextNode(“xxx”)创建文本节点，其实document.createTextNode(“xxx”)是Text的一个实例，而Text的父类是CharactorData，CharactorData的父类是Node，Node的父类是EventTarget，EventTarget的父类是Function，Function的父类是Object。</p>
+<p><strong>创建一个文本节点一共溯寻了6层原型链。</strong></p>
+<p><img src="http://ww1.sinaimg.cn/large/ae49ba57gy1fea4shes2gj20iy0k8dk3.jpg" alt=""></p>
+<p>因此，所有节点的继承层次都不简单，但相比较而言，元素节点是更可怕的。从HTML1升级到HTML3.2，再升级到HTML4.1，再到HTML5，除了不断地增加新类型、新的嵌套规则以外，每个元素也不断的添加新属性。<br>下面看一个例子：创建一个p元素，打印它第一层原型的固有的属性的名字，通过Object的getOwnPropertyNames()获取当前元素的一些属性，这些属性都是他的原始属性，不包含用户自定义的属性。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>DOM inheritance hierarchy<span class="tag">&lt;/<span class="name">title</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">  </span></div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.getOwnPropertyNames(<span class="built_in">document</span>.createElement(<span class="string">"p"</span>).__proto__));  </div><div class="line">        <span class="comment">//访问p元素上一层原型控制台打印：  ["align","constructor"]  </span></div><div class="line">        <span class="built_in">console</span>.log(</div><div class="line">        <span class="built_in">Object</span>.getOwnPropertyNames(<span class="built_in">document</span>.createElement(<span class="string">"p"</span>).__proto__.__proto__)</div><div class="line">        );  </div><div class="line">        <span class="comment">/*访问p元素上一层原型的再上一层原型,控制台会打印很多属性，感兴趣的伙伴可以自己贴代码到控制台看</span></div><div class="line">        一下，它要比访*问第一层原型的属性多得多。这也就是说，每往上一层，原型链就为它添加一些属性。  </div><div class="line">        */  </div><div class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+<h5 id="10-1-3、空的div元素的自有属性"><a href="#10-1-3、空的div元素的自有属性" class="headerlink" title="10.1.3、空的div元素的自有属性"></a>10.1.3、空的div元素的自有属性</h5><p>下面看一个空的div元素，并且没有插入到DOM里边，看它有多少自有属性（不包括原型链继承来的属性）</p>
+<p><img src="http://ww1.sinaimg.cn/large/ae49ba57gy1fea45sadzyj20za0jhtr5.jpg" alt=""></p>
+<p>在新的HTML规范中，许多元素的固有属性（比如value）都放到了原型链当中，数量就更加庞大了。因此，未来的发展方向是尽量使用现成的框架来实现，比如MVVM框架，将所有的DOM操作都转交给框架内部做精细处理，这些实现方案当然就包括了虚拟DOM的技术了。但是在使用MVVM框架之前，掌握底层知识是非常重要的，明白为什么这样做，为什么不这样做的目的。这也是为什么要理解DOM节点继承层次的目的。</p>
+<h4 id="10-2、HTML嵌套规则"><a href="#10-2、HTML嵌套规则" class="headerlink" title="10.2、HTML嵌套规则"></a>10.2、HTML嵌套规则</h4><blockquote>
+<p>HTML存在许多种类型的标签，有的标签下面只允许特定的标签存在，这就叫HTML嵌套规则。<br>不按HTML嵌套规则写，浏览器就不会正确解析，会将不符合嵌套规则的节点放到目标节点的下面，或者变成纯文本。<br>关于HTML嵌套规则，一定要掌握块状元素和内联元素的区别。</p>
+</blockquote>
+<p>块状元素：一般是其他元素的容器，可容纳内联元素和其他块状元素，块状元素排斥其他元素与其位于同一行，宽度（width）高度（height）起作用。常见块状元素为div和p</p>
+<p>内联元素：内联元素只能容纳文本或者其他内联元素，它允许其他内联元素与其位于同一行，但宽度（width）高度（height）不起作用。常见内联元素为a.</p>
+<p>块状元素与内联元素嵌套规则：</p>
+<p>(1).块元素可以包含内联元素或某些块元素，但内联元素却不能包含块元素，它只能包含其他的内联元素</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">例：</div><div class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;<span class="name">h1</span>&gt;</span><span class="tag">&lt;/<span class="name">h1</span>&gt;</span><span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span>&gt;</span><span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>(2).块级元素不能放在</p><p>里面</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">例：<span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">ol</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;/<span class="name">ol</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>(3).有几个特殊的块级元素提倡只能包含内联元素，不能再包含块级元素，这几个特殊的标签是:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">h1、h2、 h3、h4、 h5、 h6、 p 、dt</div></pre></td></tr></table></figure>
+<p>(4).li标签可以包含div标签</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">例：</div><div class="line"><span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>(5).块级元素与块级元素并列，内联元素与内联元素并列</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">例：</div><div class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;<span class="name">h2</span>&gt;</span><span class="tag">&lt;/<span class="name">h2</span>&gt;</span><span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+
+      
+      
+        <div class="page-reward">
+          <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang" title="打赏，支持一下">赏</a></p>
+          <div class="hide_box"></div>
+          <div class="shang_box">
+            <a class="shang_close" href="javascript:void(0)" onclick="dashangToggle()" title="关闭">×</a>
+            <div class="shang_tit">
+              <p>纯属好玩</p>
+            </div>
+            <div class="shang_payimg">
+              <img src="/img/alipayimg.jpg" alt="扫码支持" title="扫一扫" />
+            </div>
+              <div class="pay_explain">扫码打赏，你说多少就多少，买房就差你们打赏之外那部分钱</div>
+            <div class="shang_payselect">
+              
+                <div class="pay_item checked" data-id="alipay">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/alipay.png" alt="支付宝" /></span>
+                </div>
+              
+              
+                <div class="pay_item" data-id="wechat">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/weixin.png" alt="微信" /></span>
+                </div>
+              
+            </div>
+            <div class="shang_info">
+              <p>打开<span id="shang_pay_txt">支付宝</span>扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+        <script type="text/javascript">
+          $(".pay_item").click(function(){
+            $(this).addClass('checked').siblings('.pay_item').removeClass('checked');
+            var dataid=$(this).attr('data-id');
+            $(".shang_payimg img").attr("src","/img/"+dataid+"img.jpg");
+            $("#shang_pay_txt").text(dataid=="alipay"?"支付宝":"微信");
+          });
+          function dashangToggle(){
+            $(".hide_box").fadeToggle();
+            $(".shang_box").fadeToggle();
+          }
+        </script>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/04/05/深入浅出DOM基础——《DOM探索之基础详解篇》学习笔记/"> 深入浅出DOM基础——《DOM探索之基础详解篇》学习笔记</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 前端小密圈 的个人博客">前端小密圈</a></p>
+        <p><span>发布时间:</span>2017年04月05日 - 13时09分</p>
+        <p><span>最后更新:</span>2017年05月02日 - 00时43分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/04/05/深入浅出DOM基础——《DOM探索之基础详解篇》学习笔记/" title=" 深入浅出DOM基础——《DOM探索之基础详解篇》学习笔记">http://qdxmq.com/2017/04/05/深入浅出DOM基础——《DOM探索之基础详解篇》学习笔记/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://qdxmq.com/2017/04/05/深入浅出DOM基础——《DOM探索之基础详解篇》学习笔记/　　作者: 前端小密圈" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2017/04/09/工作中经常用到github上优秀、实用、轻量级、无依赖的插件和库/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          工作中经常用到github上优秀、实用、轻量级、无依赖的插件和库
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/04/01/纯CSS实现网站常用的五角星评分和分数展示交互效果/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">纯CSS实现网站常用的五角星评分和分数展示交互效果</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、什么是DOM"><span class="toc-number">1.</span> <span class="toc-text">1、什么是DOM?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、DOM的地位"><span class="toc-number">2.</span> <span class="toc-text">2、DOM的地位</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、DOM的发展－DOM0、DOM1、DOM2、DOM3的区别"><span class="toc-number">3.</span> <span class="toc-text">3、DOM的发展－DOM0、DOM1、DOM2、DOM3的区别</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1、DOM0"><span class="toc-number">3.1.</span> <span class="toc-text">3.1、DOM0</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2、DOM0与DHTML"><span class="toc-number">3.2.</span> <span class="toc-text">3.2、DOM0与DHTML</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3、DOM1的出现"><span class="toc-number">3.3.</span> <span class="toc-text">3.3、DOM1的出现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-4、DOM2"><span class="toc-number">3.4.</span> <span class="toc-text">3.4、DOM2</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-5、DOM3"><span class="toc-number">3.5.</span> <span class="toc-text">3.5、DOM3</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、认识DOM"><span class="toc-number">4.</span> <span class="toc-text">4、认识DOM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5、文档类型发展史"><span class="toc-number">5.</span> <span class="toc-text">5、文档类型发展史</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1、GML"><span class="toc-number">5.1.</span> <span class="toc-text">5.1、GML</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2、SGML"><span class="toc-number">5.2.</span> <span class="toc-text">5.2、SGML</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-3、HTML"><span class="toc-number">5.3.</span> <span class="toc-text">5.3、HTML</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-4、XML"><span class="toc-number">5.4.</span> <span class="toc-text">5.4、XML</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-5、XHTML"><span class="toc-number">5.5.</span> <span class="toc-text">5.5、XHTML</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6、DOM节点类型"><span class="toc-number">6.</span> <span class="toc-text">6、DOM节点类型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-Element-元素节点-："><span class="toc-number">6.1.</span> <span class="toc-text">(1)Element(元素节点)：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-Attr-属性节点-："><span class="toc-number">6.2.</span> <span class="toc-text">(2)Attr(属性节点)：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-Text-文本节点-："><span class="toc-number">6.3.</span> <span class="toc-text">(3)Text(文本节点)：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-Comment-注释节点-："><span class="toc-number">6.4.</span> <span class="toc-text">(4)Comment(注释节点)：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-Document-文档节点-："><span class="toc-number">6.5.</span> <span class="toc-text">(5)Document(文档节点) ：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-DocumentType-文档类型节点-："><span class="toc-number">6.6.</span> <span class="toc-text">(6)DocumentType(文档类型节点)：</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#7-DocumentFragment-文档片段节点-："><span class="toc-number">6.6.1.</span> <span class="toc-text">(7)DocumentFragment(文档片段节点)：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7、DOM的nodeType、nodeName、nodeValue"><span class="toc-number">7.</span> <span class="toc-text">7、DOM的nodeType、nodeName、nodeValue</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#7-1-nodeType"><span class="toc-number">7.1.</span> <span class="toc-text">7.1 nodeType</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-2-nodeName和nodeValue"><span class="toc-number">7.2.</span> <span class="toc-text">7.2 nodeName和nodeValue</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8、domReady"><span class="toc-number">8.</span> <span class="toc-text">8、domReady</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#8-1、什么是domReady？"><span class="toc-number">8.1.</span> <span class="toc-text">8.1、什么是domReady？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-2、那么浏览器是如何将html标签解析变成DOM节点的呢？"><span class="toc-number">8.2.</span> <span class="toc-text">8.2、那么浏览器是如何将html标签解析变成DOM节点的呢？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-3、浏览器渲染引擎的基本渲染流程"><span class="toc-number">8.3.</span> <span class="toc-text">8.3、浏览器渲染引擎的基本渲染流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-4、Webkit主要渲染流程"><span class="toc-number">8.4.</span> <span class="toc-text">8.4、Webkit主要渲染流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-5、domReady的实现策略"><span class="toc-number">8.5.</span> <span class="toc-text">8.5、domReady的实现策略</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-6、一个小栗子看二者差异性"><span class="toc-number">8.6.</span> <span class="toc-text">8.6、一个小栗子看二者差异性</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9、元素节点的判断"><span class="toc-number">9.</span> <span class="toc-text">9、元素节点的判断</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#9-1、元素节点的判定-isElement"><span class="toc-number">9.1.</span> <span class="toc-text">9.1、元素节点的判定:isElement</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#9-2、HTML文档元素节点的判定和XML文档元素节点的判定-isHTML-and-isXML"><span class="toc-number">9.2.</span> <span class="toc-text">9.2、HTML文档元素节点的判定和XML文档元素节点的判定:isHTML and isXML</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#9-2-1、Sizzle-jQuery自带的选择器引擎-判断是否是XML文档"><span class="toc-number">9.2.1.</span> <span class="toc-text">9.2.1、Sizzle, jQuery自带的选择器引擎,判断是否是XML文档</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#9-2-1、mootools的slick选择器引擎的源码-判断是否是XML文档"><span class="toc-number">9.2.2.</span> <span class="toc-text">9.2.1、mootools的slick选择器引擎的源码,判断是否是XML文档</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#9-3、判断节点的包含关系"><span class="toc-number">9.3.</span> <span class="toc-text">9.3、判断节点的包含关系</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10、DOM节点继承层次与嵌套规则"><span class="toc-number">10.</span> <span class="toc-text">10、DOM节点继承层次与嵌套规则</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#10-1、DOM节点继承层次"><span class="toc-number">10.1.</span> <span class="toc-text">10.1、DOM节点继承层次</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#10-1-1、创建一个元素节点（Element）的过程"><span class="toc-number">10.1.1.</span> <span class="toc-text">10.1.1、创建一个元素节点（Element）的过程</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#1-document-createElement-“p”"><span class="toc-number">10.1.1.1.</span> <span class="toc-text">1.document.createElement(“p”)</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#10-1-2、创建一个文本节点（Text）的过程"><span class="toc-number">10.1.2.</span> <span class="toc-text">10.1.2、创建一个文本节点（Text）的过程</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#10-1-3、空的div元素的自有属性"><span class="toc-number">10.1.3.</span> <span class="toc-text">10.1.3、空的div元素的自有属性</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#10-2、HTML嵌套规则"><span class="toc-number">10.2.</span> <span class="toc-text">10.2、HTML嵌套规则</span></a></li></ol></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+<script>
+var cloudTieConfig = {
+  url: document.location.href,
+  sourceId: "",
+  productKey: "f4eaa09d046240cfacb415bc5435e021",
+  target: "cloud-tie-wrapper"
+};
+var yunManualLoad = true;
+Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true);
+</script>
+
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/04/09/工作中经常用到github上优秀、实用、轻量级、无依赖的插件和库/" title="上一篇: 工作中经常用到github上优秀、实用、轻量级、无依赖的插件和库">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2017/04/01/纯CSS实现网站常用的五角星评分和分数展示交互效果/" title="下一篇: 纯CSS实现网站常用的五角星评分和分数展示交互效果">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/05/02/一道面试题：不用call和apply方法用原生JavaScript模拟实现ES5的bind方法/">不用call和apply方法模拟实现ES5的bind方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/01/奇文共欣赏，疑义相与析/">奇文共欣赏，疑义相与析</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/01/通俗大白话来理解TCP协议的三次握手和四次分手/">通俗大白话来理解TCP协议的三次握手和四次分手</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/20/从探究Function-proto-Function-prototype过程中的一些收获/"> 从探究Function.__proto__===Function.prototype过程中的一些收获</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/12/神器！解放你的双手——UI设计稿全自动切图和标注的工具推荐/">神器！解放你的双手——UI设计稿全自动切图和标注的工具推荐</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/09/工作中经常用到github上优秀、实用、轻量级、无依赖的插件和库/">工作中经常用到github上优秀、实用、轻量级、无依赖的插件和库</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/05/深入浅出DOM基础——《DOM探索之基础详解篇》学习笔记/"> 深入浅出DOM基础——《DOM探索之基础详解篇》学习笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/01/纯CSS实现网站常用的五角星评分和分数展示交互效果/">纯CSS实现网站常用的五角星评分和分数展示交互效果</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/16/关于Node进程管理器PM2使用技巧和需要注意的地方/">关于Node进程管理器PM2使用技巧和需要注意的地方</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/05/从-10-深入浅出弱类型JS的隐式转换 17-04-47-592/">从++[[]][+[]]+[+[]]==10?深入浅出弱类型JS的隐式转换</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/01/来自掘金的你——挖-掘-淘-金-之-前端闯关历险记学习资料汇总/">来自掘金的你——挖 掘 淘 金 之 前端闯关历险记学习资料汇总</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/26/一道JS面试题所引发的血案，透过现象寻本质，再从本质看现象/">一道JS面试题所引发的血案，透过现象寻本质，再从本质看现象</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/24/吹毛求疵的追求优雅高性能JavaScript/">吹毛求疵的追求优雅高性能JavaScript</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/22/从-为-true-来剖析-JavaScript-各种蛋疼的类型转换/">从 []==为 true 来剖析 JavaScript 各种蛋疼的类型转换</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2017 💕 前端小密圈
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/jawil/" target="_blank">hexo-theme-xmq</a> by jawil modify
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >本日小蜜蜂🐝:
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页阅读量:
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>一道JS面试题所引发的血案，透过现象寻本质，再从本质看现象 | 前端小密圈</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="从现象看本质，再从本质回归到现象。从面试题中学前端">
+<meta name="keywords" content="JavaScript,面试">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一道JS面试题所引发的血案，透过现象寻本质，再从本质看现象">
+<meta property="og:url" content="http://qdxmq.com/2017/02/26/一道JS面试题所引发的血案，透过现象寻本质，再从本质看现象/index.html">
+<meta property="og:site_name" content="前端小密圈">
+<meta property="og:description" content="从现象看本质，再从本质回归到现象。从面试题中学前端">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fd354d7z6yj20cw0m8gnc">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fd35cer5oej20ta0f2wh6">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fd3606y6tvj20se06yac0">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fd36576mc0j20nw04owew">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fd36ajv2zdj20sy0jm782">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fcyivqddwfj20he0fvq98">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fd41186xv7j20ex043t8j">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fd41abbp5oj20d006d0sn">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fd41gawsefj205u06sglo">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fd428my2nrj20g40g4gml">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fd46ftzd6zj20g20a60u8">
+<meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/1440757221622060.jpg">
+<meta property="og:updated_time" content="2017-04-30T06:30:37.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一道JS面试题所引发的血案，透过现象寻本质，再从本质看现象">
+<meta name="twitter:description" content="从现象看本质，再从本质回归到现象。从面试题中学前端">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fd354d7z6yj20cw0m8gnc">
+  
+    <link rel="alternative" href="/atom.xml" title="前端小密圈" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head>
+<body>
+  
+
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+
+<a href="https://github.com/jawil"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/82b228a3648bf44fc1163ef44c62fcc60081495e/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_red_aa0000.png"></a>
+
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/head.jpeg" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="搜索微信公众号:前端小密圈">前端小密圈</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">若批评无自由，则赞美无意义。</p>
+        
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">博客首页</a></li>
+                        
+                            <li><a href="/archives">所有文章</a></li>
+                        
+                            <li><a href="/thoughts">随笔</a></li>
+                        
+                            <li><a href="/works">作品展示</a></li>
+                        
+                            <li><a href="/FrontEndGuide">前端导航</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl mail" target="_blank" href="mailto:jawil1024@gmail.com" title="mail">mail</a>
+                            
+                                <a class="fl github" target="_blank" href="https://github.com/jawil" title="github">github</a>
+                            
+                                <a class="fl segmentfault" target="_blank" href="https://segmentfault.com/u/jawil" title="segmentfault">segmentfault</a>
+                            
+                                <a class="fl JueJin" target="_blank" href="https://juejin.im/user/573b702c71cfe4006c1201f0/share" title="JueJin">JueJin</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/CSS/" style="font-size: 10px;">CSS</a> <a href="/tags/ECMAScript规范/" style="font-size: 15px;">ECMAScript规范</a> <a href="/tags/HTML/" style="font-size: 10px;">HTML</a> <a href="/tags/HTTP/" style="font-size: 10px;">HTTP</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/Plugins/" style="font-size: 10px;">Plugins</a> <a href="/tags/UI设计/" style="font-size: 10px;">UI设计</a> <a href="/tags/first-article/" style="font-size: 10px;">first-article</a> <a href="/tags/三次握手/" style="font-size: 10px;">三次握手</a> <a href="/tags/小技巧/" style="font-size: 10px;">小技巧</a> <a href="/tags/工具/" style="font-size: 10px;">工具</a> <a href="/tags/性能/" style="font-size: 10px;">性能</a> <a href="/tags/掘金/" style="font-size: 10px;">掘金</a> <a href="/tags/收集/" style="font-size: 10px;">收集</a> <a href="/tags/效率/" style="font-size: 10px;">效率</a> <a href="/tags/玄学/" style="font-size: 15px;">玄学</a> <a href="/tags/记录/" style="font-size: 10px;">记录</a> <a href="/tags/难点/" style="font-size: 10px;">难点</a> <a href="/tags/面试/" style="font-size: 15px;">面试</a>
+                    </div>
+                </section>
+                
+
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://github.com/jawil/">github</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://lishuo.me/">特立独行的猪手</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">Too young,too simple.Sometimes,naive &amp; stupid.</div>
+                </section>
+                
+            </div>
+        </div>
+
+    </header>
+
+    
+        <div class="page-reward" style="position:absolute;top:73%;left:50%;margin-left:-30px;">
+          <p><a href="javascript:void(0)" onclick="dashangToggleIndex()" class="dashang" title="打赏，支持一下">赏</a></p>
+          <div class="hide_box_index"></div>
+          <div class="shang_box_index">
+            <a class="shang_close" href="javascript:void(0)" onclick="dashangToggleIndex()" title="关闭" style="position:relative;left:110px;">×</a>
+            <div class="shang_tit">
+              <p>纯属好玩</p>
+            </div>
+            <div class="shang_payimg">
+              <img src="/img/alipayimg.jpg" alt="扫码支持" title="扫一扫" />
+            </div>
+              <div class="pay_explain">扫码打赏，你说多少就多少，买房就差你们打赏之外那部分钱</div>
+            <div class="shang_payselect" style="width:100%;text-align:center;line-height:60px;">
+              
+                <div class="pay_item checked" data-id="alipay" style="display:inline-block;width:40%;float:none;width:130px;">
+                  <span class="radiobox" style="display:inline-block;float:none;margin-right:0;"></span>
+                  <span class="pay_logo" style="vertical-align:middle"><img src="/img/alipay.png" alt="支付宝" style="height:30px;" /></span>
+                </div>
+              
+              
+                <div class="pay_item" data-id="wechat" style="display:inline-block;float:none;">
+                  <span class="radiobox" style="display:inline-block;float:none;margin:0"></span>
+                  <span class="pay_logo" style="vertical-align:middle"><img src="/img/weixin.png" alt="微信" style="height:30px;" /></span>
+                </div>
+              
+            </div>
+            <div class="shang_info">
+              <p>打开<span id="shang_pay_txt">支付宝</span>扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+        <script type="text/javascript">
+          $(".pay_item").click(function(){
+            $(this).addClass('checked').siblings('.pay_item').removeClass('checked');
+            var dataid=$(this).attr('data-id');
+            $(".shang_payimg img").attr("src","/img/"+dataid+"img.jpg");
+            $("#shang_pay_txt").text(dataid=="alipay"?"支付宝":"微信");
+          });
+          function dashangToggleIndex(){
+            $(".hide_box_index").fadeToggle();
+            $(".shang_box_index").fadeToggle();
+          }
+        </script>
+      
+
+
+    <div id="music163player">
+  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=100% height=86 src="//music.163.com/outchain/player?type=2&id=29816871&auto=0&height=66">
+  </iframe>
+</div>
+
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me">前端小密圈</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head.jpeg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me">前端小密圈</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">若批评无自由，则赞美无意义。</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">博客首页</a></li>
+                
+                    <li><a href="/archives">所有文章</a></li>
+                
+                    <li><a href="/thoughts">随笔</a></li>
+                
+                    <li><a href="/works">作品展示</a></li>
+                
+                    <li><a href="/FrontEndGuide">前端导航</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="mail" target="_blank" href="mailto:jawil1024@gmail.com" title="mail">mail</a>
+                    
+                        <a class="github" target="_blank" href="https://github.com/jawil" title="github">github</a>
+                    
+                        <a class="segmentfault" target="_blank" href="https://segmentfault.com/u/jawil" title="segmentfault">segmentfault</a>
+                    
+                        <a class="JueJin" target="_blank" href="https://juejin.im/user/573b702c71cfe4006c1201f0/share" title="JueJin">JueJin</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-一道JS面试题所引发的血案，透过现象寻本质，再从本质看现象" class="article article-type-post" itemscope itemprop="blogPost">
+
+  
+    <div class="article-meta">
+      <a href="/2017/02/26/一道JS面试题所引发的血案，透过现象寻本质，再从本质看现象/" class="article-date">
+      <time datetime="2017-02-26T05:09:42.000Z" itemprop="datePublished">2017-02-26</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      一道JS面试题所引发的血案，透过现象寻本质，再从本质看现象
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/面试/">面试</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/面试/">面试</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+
+    <div class="tips">
+  全文总共<span class="post-count">6,161</span>字，阅读时长预计需要<span class="post-count">23</span>分钟，感谢您的阅读，有错误还望留言批评指正，一起交流学习。
+    </div>
+
+      
+          
+        <p><strong>觉得本人写的不算很烂的话，可以登录关注一下<a href="https://github.com/jawil/blog" target="_blank" rel="external">我的GitHub博客</a>，新手写东西写的不好之处，还望见谅，毕竟水平有限，写东西只为交流提高，一起学习，还望大神多加指点，指出纰漏，和提出宝贵的意见，博客会坚持写下去。</strong></p>
+<p>今天同学去面试，做了两道面试题,全部做错了，发过来给我看,我一眼就看出来了，因为这种题我做过，至于为什么结果是那样，我也之前没有深究过，他问我为什么，我也是一脸的懵逼，不能从根源上解释问题的原因，所以并不能完全让他信服。今天就借着这个机会深扒一下，如果没有耐心可以点击右上角，以看小说的心态看技术文章，走马观花，不加思考，这样的量变并不能带来质的改变。花上10+分钟认真阅读我相信你会受益匪浅，没收获你买把武昌火车站同款菜刀砍我😄。因为我是写完这篇博客再回头写这段话的，在写的过程中也学到了很多，所以在此分享一下共同学习。</p>
+<p><strong>登高自卑,与君共勉。</strong></p>
+<p>下面一起看看这道题，同学微信发给我截图：<br><img src="http://ww1.sinaimg.cn/large/a660cab2gy1fd354d7z6yj20cw0m8gnc" alt=""></p>
+<p>如果看的不太清楚，我把代码敲一遍,给大家看看：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> name = <span class="string">"jay"</span>; <span class="comment">//一看这二逼就是周杰伦的死忠粉</span></div><div class="line"><span class="keyword">var</span> person = &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">"kang"</span>,</div><div class="line">    <span class="attr">pro</span>: &#123;</div><div class="line">        <span class="attr">name</span>: <span class="string">"Michael"</span>,</div><div class="line">        <span class="attr">getName</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.name;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"><span class="built_in">console</span>.log(person.pro.getName());</div><div class="line"><span class="keyword">var</span> pepole = person.pro.getName;</div><div class="line"><span class="built_in">console</span>.log(pepole());</div></pre></td></tr></table></figure>
+<p>这里我就不卖关子了,不少童鞋也应该遇到过做过类似的题目,就是考察<strong>this</strong>,我们先看看答案:</p>
+<p><img src="http://ww1.sinaimg.cn/large/a660cab2gy1fd35cer5oej20ta0f2wh6" alt=""></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(person.pro.getName());<span class="comment">//Michael</span></div><div class="line"><span class="built_in">console</span>.log(pepole());<span class="comment">//jay</span></div></pre></td></tr></table></figure>
+<p>第一个很简单，<strong>this</strong>就是指向<strong>person.pro</strong>的引用，那么<strong>this.name</strong>就是<strong>person.pro.name</strong>，于是第一个就是输出<strong>Michael</strong>，再来看看第二个就蹊跷了，和第一个明明是一样的方法，为什么输出的结果是<strong>jay</strong>呢？</p>
+<p>既然我们知道结果是jay了，反着推理一步步来，不难推出调用<strong>people()</strong>这个方法时候的<strong>this.name</strong>就相当于和<strong>var name = “jay”</strong>，var声明的全局变量和全局环境下的this的变量有什么联系呢？；那么这个<strong>this</strong>到底是什么，总得是一个具体东西吧？</p>
+<p>我们一步步分析，<strong>this.name</strong>这个<strong>this</strong>有一个<strong>name</strong>属性，很明显就是一个对象，那具体是什么对象呢？this的指向是在函数被调用的时候确定的，于是有人说就是<strong>Window</strong>对象，没错是没错，确实是<strong>Window</strong>对象，然后<strong>var name</strong>声明的全局变量<strong>name</strong>和<strong>window.name</strong>是相同的作用；但是你只<strong>只知其然，而不知其所以然</strong>，学深一门语言就是要有刨根问底的精神，打破砂锅问到底，<strong>知其然还要知其所以然</strong>。</p>
+<p>我们就先验证一下，那个<strong>this</strong>到底是不是<strong>window</strong>对象吧。我们把代码稍微调整一下，输出<strong>this</strong>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> name = <span class="string">"jay"</span>; <span class="comment">//一看这二逼就是周杰伦的死忠粉</span></div><div class="line"><span class="keyword">var</span> person = &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">"kang"</span>,</div><div class="line">    <span class="attr">pro</span>: &#123;</div><div class="line">        <span class="attr">name</span>: <span class="string">"Michael"</span>,</div><div class="line">        <span class="attr">getName</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">            <span class="built_in">console</span>.log(<span class="keyword">this</span>);</div><div class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.name;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"><span class="built_in">console</span>.log(person.pro.getName());</div><div class="line"><span class="keyword">var</span> pepole = person.pro.getName;</div><div class="line"><span class="built_in">console</span>.log(pepole());</div></pre></td></tr></table></figure>
+<p>看看控制台输出，确实没错就是window对象。</p>
+<p><img src="http://ww1.sinaimg.cn/large/a660cab2gy1fd3606y6tvj20se06yac0" alt=""></p>
+<p>再来看看var name声明的name和window.name是否相等呢？</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> name;</div><div class="line"><span class="built_in">console</span>.log(name===<span class="built_in">window</span>.name)</div></pre></td></tr></table></figure>
+<p><img src="http://ww1.sinaimg.cn/large/a660cab2gy1fd36576mc0j20nw04owew" alt=""></p>
+<p>确实是一样的，类型和值没有任何的不同。</p>
+<p>好滴，那么你说this就是window对象，至于为什么是这样你也不清楚，是否永远是这样呢？我们看看这段代码输出又会是咋样呢？</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">'use strict'</span>;</div><div class="line"><span class="keyword">var</span> name = <span class="string">"jay"</span>; <span class="comment">//一看这二逼就是周杰伦的死忠粉</span></div><div class="line"><span class="keyword">var</span> person = &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">"kang"</span>,</div><div class="line">    <span class="attr">pro</span>: &#123;</div><div class="line">        <span class="attr">name</span>: <span class="string">"Michael"</span>,</div><div class="line">        <span class="attr">getName</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">            <span class="built_in">console</span>.log(<span class="keyword">this</span>);</div><div class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.name;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"><span class="built_in">console</span>.log(person.pro.getName());</div><div class="line"><span class="keyword">var</span> pepole = person.pro.getName;</div><div class="line"><span class="built_in">console</span>.log(pepole());</div></pre></td></tr></table></figure>
+<p>还会是跟上面一样的结果吗?我们拭目以待.</p>
+<p><img src="http://ww1.sinaimg.cn/large/a660cab2gy1fd36ajv2zdj20sy0jm782" alt=""></p>
+<p>看到结果没：<strong>Cannot read property ‘name’ of undefined</strong>,这是什么意思想必大家已经很清楚了，此时的<strong>this</strong>成了<strong>undefined</strong>了，<strong>undefined</strong>当然也就没有<strong>name</strong>这个属性，所以浏览器报错了。那么为什么会这样呢？</p>
+<p>同样换种写法再来看看这段代码输出什么呢?</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> name = <span class="string">"jay"</span>;</div><div class="line"><span class="keyword">var</span> person = &#123;</div><div class="line">　　　　<span class="attr">name</span> : <span class="string">"kang"</span>,</div><div class="line">　　　　<span class="attr">getName</span> : <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">　　　　　<span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">　　　　　　　　<span class="keyword">return</span> <span class="keyword">this</span>.name;</div><div class="line">　　　　　&#125;;</div><div class="line">　　　　&#125;</div><div class="line">&#125;;</div><div class="line"><span class="built_in">console</span>.log(person.getName()());</div></pre></td></tr></table></figure>
+<p>控制台自己输出一下看看，我想此时你的心情一定是这样的：</p>
+<p><img src="http://ww1.sinaimg.cn/large/a660cab2gy1fcyivqddwfj20he0fvq98" alt=""></p>
+<p>在弄明白这些问题之前，我们先弄清楚<strong>全局环境下的this</strong>，<strong>var声明的全局变量</strong>和<strong>window对象</strong>之间的联系与区别:<br>先看四个简单的例子对比，均在js非严格模式测试，也就是没有声明’use strict’：<br>demo1:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> name=<span class="string">"jawil"</span>;</div><div class="line"><span class="built_in">console</span>.log(name);</div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.name)</div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">this</span>.name)</div></pre></td></tr></table></figure>
+<p>demo2:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">name=<span class="string">"jawil"</span>;</div><div class="line"><span class="built_in">console</span>.log(name);</div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.name)</div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">this</span>.name)</div></pre></td></tr></table></figure>
+<p>demo3:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">window</span>.name=<span class="string">"jawil"</span>;</div><div class="line"><span class="built_in">console</span>.log(name);</div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.name)</div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">this</span>.name)</div></pre></td></tr></table></figure>
+<p>demo4:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">this</span>.name=<span class="string">"jawil"</span>;</div><div class="line"><span class="built_in">console</span>.log(name);</div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.name)</div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">this</span>.name)</div></pre></td></tr></table></figure>
+<p>其实这四个demo是一个意思，输出的结果没有任何差别，为什么没有差别呢?因为他们在同一个环境，也就是全局环境下：<br>我们换一种在不同的环境下执行这段代码看一看结果：<br>demo5:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> name=<span class="string">"jawil"</span>;</div><div class="line"><span class="keyword">var</span> test=&#123;</div><div class="line">    <span class="attr">name</span>:<span class="string">'jay'</span>,</div><div class="line">    <span class="attr">getName</span>:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(name);</div><div class="line">    <span class="built_in">console</span>.log(<span class="built_in">window</span>.name)</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">test.getName();</div></pre></td></tr></table></figure>
+<p>最后结果一次输出为:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(name);<span class="comment">//jawil</span></div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.name)<span class="comment">//jawil</span></div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">this</span>.name)<span class="comment">//jay</span></div></pre></td></tr></table></figure>
+<p>因为此处的<strong>this</strong>不再指向<strong>全局对象</strong>了，所以结果肯定不同，我们先来看看<strong>全局对象</strong>和<strong>全局环境下的this</strong>，暂不考虑<strong>其他环境下的this</strong>。</p>
+<h2 id="那么又有人会问什么是全局环境，什么又是全局对象，全局对象该怎么理解？"><a href="#那么又有人会问什么是全局环境，什么又是全局对象，全局对象该怎么理解？" class="headerlink" title="那么又有人会问什么是全局环境，什么又是全局对象，全局对象该怎么理解？"></a>那么又有人会问什么是全局环境，什么又是全局对象，全局对象该怎么理解？</h2><h3 id="题外话"><a href="#题外话" class="headerlink" title="题外话"></a>题外话</h3><p>其实我们看技术文章，总觉得似懂非懂，一知半解，不是看不懂代码，而是因为很多时候我们对一些概念没有比较深入的了解，但是也没有去认真继续下去考究，这也不能怪我们，毕竟开发时候不太深入这些概念对我们业务也没啥影响，但是我发现我自己写东西时候，不把概念说清楚，总不能让人信服和彻底明白你讲的是什么玩意，我想写博客最大的好处可以让自己进一步提高，更深层次的理解你所学过的东西，你讲的别人都看不懂，你确认你真的懂了吗？</p>
+<h3 id="说到全局环境，我们就会牵扯到另一个概念那就是执行环境和函数的作用域"><a href="#说到全局环境，我们就会牵扯到另一个概念那就是执行环境和函数的作用域" class="headerlink" title="说到全局环境，我们就会牵扯到另一个概念那就是执行环境和函数的作用域"></a>说到全局环境，我们就会牵扯到另一个概念那就是执行环境和函数的作用域</h3><p>既然扯到这么深，就顺便扯扯执行环境和作用域，这些都是js这门语言的重点和难点，没有一定的沉淀很难去深入探讨这些东西的.</p>
+<p>函数的每次调用都有与之紧密相关的作用域和执行环境。从根本上来说，作用域是基于函数的，而执行环境是基于对象的(例如：全局执行环境即全局对象window)。</p>
+<h3 id="我们还是先说一说全局对象吧，因为全局执行环境是基于全局对象的。"><a href="#我们还是先说一说全局对象吧，因为全局执行环境是基于全局对象的。" class="headerlink" title="我们还是先说一说全局对象吧，因为全局执行环境是基于全局对象的。"></a>我们还是先说一说全局对象吧，因为全局执行环境是基于全局对象的。</h3><h4 id="JavaScript-全局对象"><a href="#JavaScript-全局对象" class="headerlink" title="JavaScript 全局对象"></a>JavaScript 全局对象</h4><p><code>全局属性和函数可用于所有内建的 JavaScript 对象。</code></p>
+<h4 id="全局对象描述"><a href="#全局对象描述" class="headerlink" title="全局对象描述"></a>全局对象描述</h4><blockquote>
+<ol>
+<li><p>全局对象是预定义的对象，作为 JavaScript 的全局函数和全局属性的占位符。通过使用全局对象，可以访问所有其他所有预定义的对象、函数和属性。全局对象不是任何对象的属性，所以它没有名称。</p>
+</li>
+<li><p>在顶层 JavaScript 代码中，可以用关键字 this 引用全局对象。但通常不必用这种方式引用全局对象，因为全局对象是作用域链的头，这意味着所有非限定性的变量和函数名都会作为该对象的属性来查询。例如，当JavaScript 代码引用 parseInt() 函数时，它引用的是全局对象的 parseInt 属性。全局对象是作用域链的头，还意味着在顶层 JavaScript 代码中声明的所有变量都将成为全局对象的属性。</p>
+</li>
+<li><p>全局对象只是一个对象，而不是类。既没有构造函数，也无法实例化一个新的全局对象。</p>
+</li>
+<li><p>在 JavaScript 代码嵌入一个特殊环境中时，全局对象通常具有环境特定的属性。实际上，ECMAScript 标准没有规定全局对象的类型，JavaScript 的实现或嵌入的 JavaScript 都可以把任意类型的对象作为全局对象，只要该对象定义了这里列出的基本属性和函数。例如，在允许通过 LiveConnect 或相关的技术来脚本化 Java 的 JavaScript 实现中，全局对象被赋予了这里列出的 java 和 Package 属性以及 getClass() 方法。而在客户端 JavaScript 中，全局对象就是 Window 对象，表示允许 JavaScript 代码的 Web 浏览器窗口。</p>
+</li>
+</ol>
+</blockquote>
+<h4 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h4><p>在 JavaScript 核心语言中，全局对象的预定义属性都是不可枚举的，所有可以用 for/in 循环列出所有隐式或显式声明的全局变量，如下所示：<br>上一篇博客我就讲到遍历对象属性的三种方法:</p>
+<p><code>for-in</code>循环、<code>Object.keys()</code>以及<code>Object.getOwnPropertyNames()</code>不同的区别，想要了解可以细看我这篇博客:<a href="https://github.com/jawil/blog/issues/2" target="_blank" rel="external">传送门</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> variables = <span class="string">""</span>;</div><div class="line"></div><div class="line"><span class="keyword">for</span> (<span class="keyword">var</span> name <span class="keyword">in</span> <span class="keyword">this</span>)</div><div class="line">&#123;</div><div class="line">variables += name + <span class="string">"&lt;br /&gt;"</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="built_in">document</span>.write(variables);</div></pre></td></tr></table></figure>
+<h3 id="再回过头来谈谈执行环境和函数的作用域"><a href="#再回过头来谈谈执行环境和函数的作用域" class="headerlink" title="再回过头来谈谈执行环境和函数的作用域"></a>再回过头来谈谈执行环境和函数的作用域</h3><h4 id="一开始要明白的"><a href="#一开始要明白的" class="headerlink" title="一开始要明白的"></a>一开始要明白的</h4><ul>
+<li>首先，我们要知道执行环境和作用域是两个完全不同的概念。</li>
+<li>函数的每次调用都有与之紧密相关的作用域和执行环境。从根本上来说，作用域是基于函数类型的(当然函数也是对象，这里我们细分一下)，而执行环境是基于对象类型的(例如：全局执行环境即window对象)。</li>
+<li>换句话说，作用域涉及到所被调用函数中的变量访问，并且不同的调用场景是不一样的。执行环境始终是this关键字的值，它是拥有当前所执行代码的对象的引用。每个执行环境都有一个与之关联的变量对象，环境中定义的所有变量和函数都保存在这个对象中。虽然我们编写的代码无法访问这个对象，但解析器在处理数据时会在后台使用它。</li>
+</ul>
+<h4 id="一些概念"><a href="#一些概念" class="headerlink" title="一些概念"></a>一些概念</h4><h5 id="1-执行环境（也称执行上下文–execution-context）"><a href="#1-执行环境（也称执行上下文–execution-context）" class="headerlink" title="1. 执行环境（也称执行上下文–execution context）"></a>1. 执行环境（也称执行上下文–execution context）</h5><p>首先来说说js中的执行环境，所谓执行环境（有时也称环境）它是JavaScript中最为重要的一个概念。执行环境定义了变量或函数有权访问的其他数据 ，决定了它们各自的行为。而每个执行环境都有一个与之相关的变量对象，环境中定义的所有变量和函数都保存在这个对象中。</p>
+<p>当JavaScript解释器初始化执行代码时，它首先默认进入全局执行环境，从此刻开始，函数的每次调用都会创建一个新的执行环境。</p>
+<p>每个函数都有自己的执行环境。当执行流进入一个函数时，函数的环境就会被推入一个环境栈中（execution stack）。在函数执行完后，栈将其环境弹出，把控制权返回给之前的执行环境。ECMAScript程序中的执行流正是由这个便利的机制控制着。执行环境可以分为创建和执行两个阶段。在创建阶段，解析器首先会创建一个变量对象（variable object，也称为活动对象activation object），它由定义在执行环境中的变量、函数声明、和参数组成。在这个阶段，作用域链会被初始化，this的值也会被最终确定。在执行阶段，代码被解释执行。</p>
+<h6 id="1-1可执行的JavaScript代码分三种类型："><a href="#1-1可执行的JavaScript代码分三种类型：" class="headerlink" title="1.1可执行的JavaScript代码分三种类型："></a>1.1可执行的JavaScript代码分三种类型：</h6><ol>
+<li>Global Code，即全局的、不在任何函数里面的代码，例如：一个js文件、嵌入在HTML页面中的js代码等。</li>
+<li>Eval Code，即使用eval()函数动态执行的JS代码。</li>
+<li>Function Code，即用户自定义函数中的函数体JS代码。</li>
+</ol>
+<p>不同类型的JavaScript代码具有不同的Execution Context</p>
+<p>Demo：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">Fn1</span>(<span class="params"></span>)</span>&#123;</div><div class="line">        <span class="function"><span class="keyword">function</span> <span class="title">Fn2</span>(<span class="params"></span>)</span>&#123;</div><div class="line">            alert(<span class="built_in">document</span>.body.tagName);<span class="comment">//BODY</span></div><div class="line">            <span class="comment">//other code...</span></div><div class="line">        &#125;</div><div class="line">        Fn2();</div><div class="line">    &#125;</div><div class="line">    Fn1();</div><div class="line">    <span class="comment">//code here</span></div><div class="line">&lt;<span class="regexp">/script&gt;</span></div></pre></td></tr></table></figure>
+<p><img src="http://ww1.sinaimg.cn/large/a660cab2gy1fd41186xv7j20ex043t8j" alt=""><br>特别说明：图片来自于<a href="http://www.cnblogs.com/fool/archive/2010/10/16/1853326.html" target="_blank" rel="external">笨蛋的座右铭博客</a></p>
+<h6 id="1-2执行环境小结"><a href="#1-2执行环境小结" class="headerlink" title="1.2执行环境小结"></a>1.2执行环境小结</h6><p>当javascript代码被浏览器载入后，默认最先进入的是一个全局执行环境。当在全局执行环境中调用执行一个函数时，程序流就进入该被调用函数内，此时JS引擎就会为该函数创建一个新的执行环境，并且将其压入到执行环境堆栈的顶部。浏览器总是执行当前在堆栈顶部的执行环境，一旦执行完毕，该执行环境就会从堆栈顶部被弹出，然后，进入其下的执行环境执行代码。这样，堆栈中的执行环境就会被依次执行并且弹出堆栈，直到回到全局执行环境。<br>此外还要注意一下几点：</p>
+<ul>
+<li>单线程</li>
+<li>同步执行</li>
+<li>唯一的全局执行环境</li>
+<li>局部执行环境的个数没有限制</li>
+<li>每次某个函数被调用，就会有个新的局部执行环境为其创建，即使是多次调用的自身函数(即一个函数被调用多次，也会创建多个不同的局部执行环境)。</li>
+</ul>
+<h5 id="2-作用域-scope"><a href="#2-作用域-scope" class="headerlink" title="2. 作用域(scope)"></a>2. 作用域(scope)</h5><p>当代码在一个环境中执行时，<strong>会创建变量对象的一个作用域链（scope chain</strong>。作用域链的用途是保证对执行环境有权访问的所有变量和函数的有序访问。</p>
+<p><strong>作用域链包含了执行环境栈中的每个执行环境对应的变量对象.</strong><br>通过作用域链，可以决定变量的访问和标识符的解析。<br>注意：全局执行环境的变量对象始终都是作用域链的最后一个对象。</p>
+<p>在访问变量时，就必须存在一个可见性的问题(<strong>内层环境可以访问外层中的变量和函数，而外层环境不能访问内层的变量和函数</strong>)。更深入的说，当访问一个变量或调用一个函数时，JavaScript引擎将不同执行环境中的变量对象按照规则<strong>构建一个链表</strong>，在访问一个变量时，先在链表的第一个变量对象上查找，如果没有找到则继续在第二个变量对象上查找，直到搜索到全局执行环境的变量对象即<strong>window对象</strong>。这也就形成了<strong>Scope Chain</strong>的概念。</p>
+<p><img src="http://ww1.sinaimg.cn/large/a660cab2gy1fd41abbp5oj20d006d0sn" alt=""><br>特别说明：图片来自于<a href="http://www.cnblogs.com/fool/archive/2010/10/16/1853326.html" target="_blank" rel="external">笨蛋的座右铭博客</a></p>
+<p>作用域链图，清楚的表达了执行环境与作用域的关系(一一对应的关系)，作用域与作用域之间的关系(链表结构，由上至下的关系)。<br>Demo:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> color = <span class="string">"blue"</span>;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">changeColor</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="keyword">var</span> anotherColor = <span class="string">"red"</span>;</div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">swapColors</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> tempColor = anotherColor;</div><div class="line">    anotherColor = color;</div><div class="line">    color = tempColor;</div><div class="line">    <span class="comment">// 这里可以访问color, anotherColor, 和 tempColor</span></div><div class="line">  &#125;</div><div class="line">  <span class="comment">// 这里可以访问color 和 anotherColor，但是不能访问 tempColor</span></div><div class="line">  swapColors();</div><div class="line">&#125;</div><div class="line">changeColor();</div><div class="line"><span class="comment">// 这里只能访问color</span></div><div class="line"><span class="built_in">console</span>.log(<span class="string">"Color is now "</span> + color);</div></pre></td></tr></table></figure>
+<p>上述代码一共包括三个执行环境：全局执行环境、changeColor()的局部执行环境、swapColors()的局部执行环境。</p>
+<ul>
+<li>全局环境有一个变量color和一个函数changecolor();</li>
+<li>changecolor()函数的局部环境中具有一个anothercolor属性和一个swapcolors函数，当然，changecolor函数中可以访问自身以及它外围（即全局环境）中的变量;</li>
+<li>swapcolor()函数的局部环境中具有一个变量tempcolor。在该函数内部可以访问上面的两个环境（changecolor和window）中的所有变量，因为那两个环境都是它的父执行环境。</li>
+</ul>
+<p>上述代码的作用域链如下图所示：<br><img src="http://ww1.sinaimg.cn/large/a660cab2gy1fd41gawsefj205u06sglo" alt=""></p>
+<p>从上图发现。内部环境可以通过作用域链访问所有的外部环境，但是外部环境不能访问内部环境中的任何变量和函数。<br><strong>标识符解析</strong>（变量名或函数名搜索）是沿着作用域链一级一级地搜索标识符的过程。搜索过程始终从作用域链的前端开始，然后逐级地向后（全局执行环境）回溯，直到找到标识符为止。</p>
+<h5 id="3-执行环境与作用域的区别与联系"><a href="#3-执行环境与作用域的区别与联系" class="headerlink" title="3.执行环境与作用域的区别与联系"></a>3.执行环境与作用域的区别与联系</h5><p>执行环境为全局执行环境和局部执行环境，局部执行环境是函数执行过程中创建的。<br><strong>作用域链是基于执行环境的变量对象的</strong>，由所有执行环境的变量对象(对于函数而言是活动对象，因为在函数执行环境中，变量对象是不能直接访问的，此时由活动对象(activation object,缩写为AO)扮演VO(变量对象)的角色。)共同组成。<br>当代码在一个环境中执行时，会创建变量对象的一个作用域链。作用域链的用途：是保证对执行环境有权访问的所有变量和函数的有序访问。作用域链的前端，始终都是当前执行的代码所在环境的变量对象。</p>
+<h5 id="4-小练习"><a href="#4-小练习" class="headerlink" title="4.小练习"></a>4.小练习</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</div><div class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    a= <span class="number">5</span>;</div><div class="line">    <span class="built_in">console</span>.log(<span class="built_in">window</span>.a);<span class="comment">//undefined</span></div><div class="line">    <span class="keyword">var</span> a = <span class="number">1</span>;<span class="comment">//这里会发生变量声明提升</span></div><div class="line">    <span class="built_in">console</span>.log(a);<span class="comment">//1</span></div><div class="line">&#125;)();</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure>
+<p>window.a之所以是undefined，是因为var a = 1;发生了变量声明提升。相当于如下代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</div><div class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> a;<span class="comment">//a是局部变量</span></div><div class="line">    a = <span class="number">5</span>;<span class="comment">//这里局部环境中有a，就不会找全局中的</span></div><div class="line">    <span class="built_in">console</span>.log(<span class="built_in">window</span>.a);<span class="comment">//undefined</span></div><div class="line">    a = <span class="number">1</span>;<span class="comment">//这里会发生变量声明提升</span></div><div class="line">    <span class="built_in">console</span>.log(a);<span class="comment">//1</span></div><div class="line">&#125;)();</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure>
+<p><strong>更多关于变量提升和执行上下文详细解说这里就不多少了，不然越扯越深，有兴趣可以看看这篇图解，浅显易懂：</strong><br><a href="http://www.jianshu.com/p/a6d37c77e8db" target="_blank" rel="external">前端基础进阶（二）：执行上下文详细图解</a></p>
+<p><img src="http://ww1.sinaimg.cn/large/a660cab2gy1fd428my2nrj20g40g4gml" alt=""></p>
+<p>相信大家看到这里，也很累了，但是也有收获，大概有了一些深刻印象，对概念也有一些比较深入的理解了。<br>这里我就稍微总结一下，上面讲了一些什么，对接下来的解析应该有很大的帮助。</p>
+<p>**1. 浏览器的全局对象是window</p>
+<ol>
+<li>全局执行环境即window对象所创建的，局部执行环境是函数执行过程中创建的。</li>
+<li>全局对象，可以访问所有其他所有预定义的对象、函数和属性。</li>
+<li>当javascript代码被浏览器载入后，默认最先进入的是一个全局执行环境。</li>
+<li>明白了执行上下文和作用域的一些概念，知道其中的运行机制和原理。**</li>
+</ol>
+<p>我们再回头看看这两个demo比较,我们解释清楚这个demo执行的结果。<br>demo1：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> name=<span class="string">"jawil"</span>;</div><div class="line"><span class="built_in">console</span>.log(name);<span class="comment">//jawil</span></div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.name)<span class="comment">//jawil</span></div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">this</span>.name)<span class="comment">//jawill</span></div></pre></td></tr></table></figure>
+<p>demo2：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">name=<span class="string">"jawil"</span>;</div><div class="line"><span class="built_in">console</span>.log(name);<span class="comment">//jawil</span></div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.name)<span class="comment">//jawil</span></div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">this</span>.name)<span class="comment">//jawil</span></div></pre></td></tr></table></figure>
+<p>好，从例子看以看出，这两个name都是全局属性，未通过var声明的变量a和通过var声明的变量b，都可以通过this和window访问到.</p>
+<p>我们可以在控制台打印出windowd对象，发现name成了window对象的一个属性：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> name=<span class="string">"jawil"</span>;</div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>);</div><div class="line">name2=<span class="string">"test"</span>;</div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>);</div></pre></td></tr></table></figure>
+<p><img src="http://ww1.sinaimg.cn/large/a660cab2gy1fd46ftzd6zj20g20a60u8" alt=""></p>
+<p><code>这是其实一个作用域和上下文的问题。在JavaScript中，this指向当前的上下文，而var定义的变量值在当前作用域中有效。JavaScript有两种作用域，全局作用域和局部作用域。局部作用域就是在一个函数里。var关键字使用来在当前作用于中创建局部变量的，而在浏览器中的JavaScript全局作用域中使用var语句时，会把申明的变量挂在window上，而全局作用域中的this上下文恰好指向的又是window，因此在全局作用域中var申明的变量和window上挂的变量，即this可访问的变量有间接的联系，但没有直接联系，更不是一样的。</code></p>
+<p>上面的分析我们知道了，全局变量，全局环境下的this,还有全局对象之间的关系了，具体总结一下就是：</p>
+<p>**1. 全局环境的this会指向全局对象window，此时this===window;</p>
+<ol>
+<li>全局变量会挂载在window对象下，会成为window下的一个属性。</li>
+<li>如果你没有使用严格模式并给一个未声明的变量赋值的话，JS会自动创建一个全局变量。**</li>
+</ol>
+<p>那么用var声明的全局变量赋值和未声明的全局变量赋值到底有什么不同呢？这里不再是理解理解这道面试题的重点，想深入探究可以看看这篇文章：<a href="http://www.jb51.net/article/77585.htm" target="_blank" rel="external">javascript中加var和不加var的区别 你真的懂吗</a>.</p>
+<p>该回头了，好累😫，再来看看这道面试题：<br>    <img src="http://odssgnnpf.bkt.clouddn.com/1440757221622060.jpg" alt=""></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> name = <span class="string">"jay"</span>; <span class="comment">//一看这二逼就是周杰伦的死忠粉</span></div><div class="line"><span class="keyword">var</span> person = &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">"kang"</span>,</div><div class="line">    <span class="attr">pro</span>: &#123;</div><div class="line">        <span class="attr">name</span>: <span class="string">"Michael"</span>,</div><div class="line">        <span class="attr">getName</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.name;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"><span class="built_in">console</span>.log(person.pro.getName());</div><div class="line"><span class="keyword">var</span> pepole = person.pro.getName;</div><div class="line"><span class="built_in">console</span>.log(pepole());</div></pre></td></tr></table></figure>
+<p>最后就成了为什么person.pro.getName()的this是person.pro而pepole（）的this成了window对象。这里我们就要了解this的运行机制和原理。</p>
+<p>在这里，我们需要得出一个非常重要一定要牢记于心的结论，<strong>this的指向，是在函数被调用的时候确定的</strong>。也就是执行上下文被创建时确定的。因此我们可以很容易就能理解到，一个函数中的this指向，可以是非常灵活的。</p>
+<p>在一个函数上下文中，this由调用者提供，由调用函数的方式来决定。<br><strong>如果调用者函数，被某一个对象所拥有，那么该函数在调用时，内部的this指向该对象。如果函数独立调用，那么该函数内部的this，则指向undefined。但是在非严格模式中，当this指向undefined时，它会被自动指向全局对象。</strong></p>
+<p>person.pro.getName()中，getName是调用者，他不是独立调用，被对象person.pro所拥有，因此它的this指向了person.pro。而pepole()作为调用者，尽管他与person.pro.getName的引用相同，但是它是独立调用的，因此this指向undefined，在非严格模式，自动转向全局window。</p>
+<p>再来看一个例子，来加深理解这段话：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a = <span class="number">20</span>;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getA</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.a;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> foo = &#123;</div><div class="line">    <span class="attr">a</span>: <span class="number">10</span>,</div><div class="line">    <span class="attr">getA</span>: getA</div><div class="line">&#125;</div><div class="line"><span class="built_in">console</span>.log(foo.getA());  <span class="comment">// 10</span></div></pre></td></tr></table></figure>
+<p>灵机一动，再来一个。如下例子。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">function foo() &#123;</div><div class="line">    console.log(this.a)</div><div class="line">&#125;</div><div class="line"></div><div class="line">function active(fn) &#123;</div><div class="line">    fn(); // 真实调用者，为独立调用</div><div class="line">&#125;</div><div class="line"></div><div class="line">var a = 20;</div><div class="line">var obj = &#123;</div><div class="line">    a: 10,</div><div class="line">    getA: foo</div><div class="line">&#125;</div><div class="line">active(obj.getA);</div></pre></td></tr></table></figure>
+<p>这个例子提示一下，关于函数参数的传递赋值问题。<br><a href="http://bosn.me/js/js-call-by-sharing/" target="_blank" rel="external">JS是按值传递还是按引用传递?</a><br>这里我就不多做解答了，大家自行揣摩。</p>
+<p>以上关于this解答来自波同学的引用，我这里就偷了个懒在，直接拿来引用。<br>原文地址:<a href="http://www.jianshu.com/p/d647aa6d1ae6" target="_blank" rel="external">前端基础进阶（五）：全方位解读this</a></p>
+<p>最后把知道面试题梳理一下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(person.pro.getName());<span class="comment">//Michael</span></div><div class="line"><span class="keyword">var</span> pepole = person.pro.getName;</div><div class="line"><span class="built_in">console</span>.log(pepole());<span class="comment">//jay</span></div></pre></td></tr></table></figure>
+<p>person.pro.getName()中，getName是调用者，他不是独立调用，被对象person.pro所拥有，因此它的this指向了person.pro,所以this.name=person.pro.name=”Michael”;</p>
+<p>而pepole()作为调用者，尽管他与person.pro.getName的引用相同，但是它是独立调用的，因此this指向undefined，在非严格模式，自动转向全局window。<br>这道题实在非严格模式下，所以this指向了window，又因为全局变量挂载在window对象下，所以this.name=window.name=“jay”</p>
+<p>完毕~写的有点啰嗦，只是尽量想说明白，讲清一些概念的东西，反正我是收获很多，你呢？</p>
+<p>参考文章:<br><a href="http://www.w3school.com.cn/jsref/jsref_obj_global.asp" target="_blank" rel="external">JavaScript 全局对象</a><br><a href="http://blog.csdn.net/liujie19901217/article/details/52225025" target="_blank" rel="external">原生JS执行环境与作用域深入理解</a><br><a href="http://www.cnblogs.com/fool/archive/2010/10/16/1853326.html" target="_blank" rel="external">理解Javascript<em>12</em>执行模型浅析</a><br><a href="http://www.jianshu.com/p/a6d37c77e8db" target="_blank" rel="external">前端基础进阶（二）：执行上下文详细图解</a><br><a href="http://www.jianshu.com/p/d647aa6d1ae6" target="_blank" rel="external">前端基础进阶（五）：全方位解读this</a></p>
+
+      
+      
+        <div class="page-reward">
+          <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang" title="打赏，支持一下">赏</a></p>
+          <div class="hide_box"></div>
+          <div class="shang_box">
+            <a class="shang_close" href="javascript:void(0)" onclick="dashangToggle()" title="关闭">×</a>
+            <div class="shang_tit">
+              <p>纯属好玩</p>
+            </div>
+            <div class="shang_payimg">
+              <img src="/img/alipayimg.jpg" alt="扫码支持" title="扫一扫" />
+            </div>
+              <div class="pay_explain">扫码打赏，你说多少就多少，买房就差你们打赏之外那部分钱</div>
+            <div class="shang_payselect">
+              
+                <div class="pay_item checked" data-id="alipay">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/alipay.png" alt="支付宝" /></span>
+                </div>
+              
+              
+                <div class="pay_item" data-id="wechat">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/weixin.png" alt="微信" /></span>
+                </div>
+              
+            </div>
+            <div class="shang_info">
+              <p>打开<span id="shang_pay_txt">支付宝</span>扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+        <script type="text/javascript">
+          $(".pay_item").click(function(){
+            $(this).addClass('checked').siblings('.pay_item').removeClass('checked');
+            var dataid=$(this).attr('data-id');
+            $(".shang_payimg img").attr("src","/img/"+dataid+"img.jpg");
+            $("#shang_pay_txt").text(dataid=="alipay"?"支付宝":"微信");
+          });
+          function dashangToggle(){
+            $(".hide_box").fadeToggle();
+            $(".shang_box").fadeToggle();
+          }
+        </script>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/02/26/一道JS面试题所引发的血案，透过现象寻本质，再从本质看现象/">一道JS面试题所引发的血案，透过现象寻本质，再从本质看现象</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 前端小密圈 的个人博客">前端小密圈</a></p>
+        <p><span>发布时间:</span>2017年02月26日 - 13时09分</p>
+        <p><span>最后更新:</span>2017年04月30日 - 14时30分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/02/26/一道JS面试题所引发的血案，透过现象寻本质，再从本质看现象/" title="一道JS面试题所引发的血案，透过现象寻本质，再从本质看现象">http://qdxmq.com/2017/02/26/一道JS面试题所引发的血案，透过现象寻本质，再从本质看现象/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://qdxmq.com/2017/02/26/一道JS面试题所引发的血案，透过现象寻本质，再从本质看现象/　　作者: 前端小密圈" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2017/03/01/来自掘金的你——挖-掘-淘-金-之-前端闯关历险记学习资料汇总/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          来自掘金的你——挖 掘 淘 金 之 前端闯关历险记学习资料汇总
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/02/24/吹毛求疵的追求优雅高性能JavaScript/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">吹毛求疵的追求优雅高性能JavaScript</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#那么又有人会问什么是全局环境，什么又是全局对象，全局对象该怎么理解？"><span class="toc-number">1.</span> <span class="toc-text">那么又有人会问什么是全局环境，什么又是全局对象，全局对象该怎么理解？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题外话"><span class="toc-number">1.1.</span> <span class="toc-text">题外话</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#说到全局环境，我们就会牵扯到另一个概念那就是执行环境和函数的作用域"><span class="toc-number">1.2.</span> <span class="toc-text">说到全局环境，我们就会牵扯到另一个概念那就是执行环境和函数的作用域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#我们还是先说一说全局对象吧，因为全局执行环境是基于全局对象的。"><span class="toc-number">1.3.</span> <span class="toc-text">我们还是先说一说全局对象吧，因为全局执行环境是基于全局对象的。</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#JavaScript-全局对象"><span class="toc-number">1.3.1.</span> <span class="toc-text">JavaScript 全局对象</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#全局对象描述"><span class="toc-number">1.3.2.</span> <span class="toc-text">全局对象描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#例子"><span class="toc-number">1.3.3.</span> <span class="toc-text">例子</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#再回过头来谈谈执行环境和函数的作用域"><span class="toc-number">1.4.</span> <span class="toc-text">再回过头来谈谈执行环境和函数的作用域</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#一开始要明白的"><span class="toc-number">1.4.1.</span> <span class="toc-text">一开始要明白的</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#一些概念"><span class="toc-number">1.4.2.</span> <span class="toc-text">一些概念</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-执行环境（也称执行上下文–execution-context）"><span class="toc-number">1.4.2.1.</span> <span class="toc-text">1. 执行环境（也称执行上下文–execution context）</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#1-1可执行的JavaScript代码分三种类型："><span class="toc-number">1.4.2.1.1.</span> <span class="toc-text">1.1可执行的JavaScript代码分三种类型：</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#1-2执行环境小结"><span class="toc-number">1.4.2.1.2.</span> <span class="toc-text">1.2执行环境小结</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-作用域-scope"><span class="toc-number">1.4.2.2.</span> <span class="toc-text">2. 作用域(scope)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-执行环境与作用域的区别与联系"><span class="toc-number">1.4.2.3.</span> <span class="toc-text">3.执行环境与作用域的区别与联系</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-小练习"><span class="toc-number">1.4.2.4.</span> <span class="toc-text">4.小练习</span></a></li></ol></li></ol></li></ol></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+<script>
+var cloudTieConfig = {
+  url: document.location.href,
+  sourceId: "",
+  productKey: "f4eaa09d046240cfacb415bc5435e021",
+  target: "cloud-tie-wrapper"
+};
+var yunManualLoad = true;
+Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true);
+</script>
+
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/03/01/来自掘金的你——挖-掘-淘-金-之-前端闯关历险记学习资料汇总/" title="上一篇: 来自掘金的你——挖 掘 淘 金 之 前端闯关历险记学习资料汇总">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2017/02/24/吹毛求疵的追求优雅高性能JavaScript/" title="下一篇: 吹毛求疵的追求优雅高性能JavaScript">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/05/02/一道面试题：不用call和apply方法用原生JavaScript模拟实现ES5的bind方法/">不用call和apply方法模拟实现ES5的bind方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/01/奇文共欣赏，疑义相与析/">奇文共欣赏，疑义相与析</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/01/通俗大白话来理解TCP协议的三次握手和四次分手/">通俗大白话来理解TCP协议的三次握手和四次分手</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/20/从探究Function-proto-Function-prototype过程中的一些收获/"> 从探究Function.__proto__===Function.prototype过程中的一些收获</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/12/神器！解放你的双手——UI设计稿全自动切图和标注的工具推荐/">神器！解放你的双手——UI设计稿全自动切图和标注的工具推荐</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/09/工作中经常用到github上优秀、实用、轻量级、无依赖的插件和库/">工作中经常用到github上优秀、实用、轻量级、无依赖的插件和库</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/05/深入浅出DOM基础——《DOM探索之基础详解篇》学习笔记/"> 深入浅出DOM基础——《DOM探索之基础详解篇》学习笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/01/纯CSS实现网站常用的五角星评分和分数展示交互效果/">纯CSS实现网站常用的五角星评分和分数展示交互效果</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/16/关于Node进程管理器PM2使用技巧和需要注意的地方/">关于Node进程管理器PM2使用技巧和需要注意的地方</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/05/从-10-深入浅出弱类型JS的隐式转换 17-04-47-592/">从++[[]][+[]]+[+[]]==10?深入浅出弱类型JS的隐式转换</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/01/来自掘金的你——挖-掘-淘-金-之-前端闯关历险记学习资料汇总/">来自掘金的你——挖 掘 淘 金 之 前端闯关历险记学习资料汇总</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/26/一道JS面试题所引发的血案，透过现象寻本质，再从本质看现象/">一道JS面试题所引发的血案，透过现象寻本质，再从本质看现象</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/24/吹毛求疵的追求优雅高性能JavaScript/">吹毛求疵的追求优雅高性能JavaScript</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/22/从-为-true-来剖析-JavaScript-各种蛋疼的类型转换/">从 []==为 true 来剖析 JavaScript 各种蛋疼的类型转换</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2017 💕 前端小密圈
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/jawil/" target="_blank">hexo-theme-xmq</a> by jawil modify
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >本日小蜜蜂🐝:
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页阅读量:
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+</body>
+</html>

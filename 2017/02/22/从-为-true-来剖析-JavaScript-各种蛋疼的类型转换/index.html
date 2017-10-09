@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>从 []==为 true 来剖析 JavaScript 各种蛋疼的类型转换 | 前端小密圈</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="从ECMAScript规范来解读JavaScript的弱类型隐式转换">
+<meta name="keywords" content="JavaScript,ECMAScript规范,first-article">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从 []==为 true 来剖析 JavaScript 各种蛋疼的类型转换">
+<meta property="og:url" content="http://qdxmq.com/2017/02/22/从-为-true-来剖析-JavaScript-各种蛋疼的类型转换/index.html">
+<meta property="og:site_name" content="前端小密圈">
+<meta property="og:description" content="从ECMAScript规范来解读JavaScript的弱类型隐式转换">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fcyivqddwfj20he0fvq98">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fcyi20xam2j20fa0bh426">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fcyi2jg2t6j20go0b4t9j">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fcyiwuiu4cj20yg0izaba">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fcyiyaxri0j20b706wmx5">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fcyiz360huj20go0b4aaq">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fcyj146yqpj20cy0aywgs">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fcy8lmuwr1j21au0kswjj">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fcy9omb2ucj20v20vigpo">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fcyhngm80hj20a00a03yp">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fcy9rnlv51j20v40ao40a">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fcy8qs1kysj21dk11q48u">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fcy92pvsquj21a80hgn0y">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fcya3mnee7j216g0logpy">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fcycf5tjn2j21fe0k0dm2">
+<meta property="og:image" content="https://gss0.baidu.com/7Po3dSag_xI4khGko9WTAnF6hhy/zhidao/wh%3D600%2C800/sign=618965f65543fbf2c579ae25804ee6b8/6f061d950a7b0208dc217f1f64d9f2d3562cc860.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fcyegnfjpij210m11mqan">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fcyj2c4dv4j205k05kt8l">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fcyj3ahyznj206j06fdfu">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fcy8qs1kysj21dk11q48u">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fcyhhn5tppj20vy09240w">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fcyhmvo222j20c80c874n">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fcyjfmwc03j20xs0gyjv0">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fcyj463ngvj20c80b8mxt">
+<meta property="og:updated_time" content="2017-04-30T06:15:30.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从 []==为 true 来剖析 JavaScript 各种蛋疼的类型转换">
+<meta name="twitter:description" content="从ECMAScript规范来解读JavaScript的弱类型隐式转换">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/a660cab2gy1fcyivqddwfj20he0fvq98">
+  
+    <link rel="alternative" href="/atom.xml" title="前端小密圈" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head>
+<body>
+  
+
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+
+<a href="https://github.com/jawil"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/82b228a3648bf44fc1163ef44c62fcc60081495e/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_red_aa0000.png"></a>
+
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/head.jpeg" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="搜索微信公众号:前端小密圈">前端小密圈</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">若批评无自由，则赞美无意义。</p>
+        
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">博客首页</a></li>
+                        
+                            <li><a href="/archives">所有文章</a></li>
+                        
+                            <li><a href="/thoughts">随笔</a></li>
+                        
+                            <li><a href="/works">作品展示</a></li>
+                        
+                            <li><a href="/FrontEndGuide">前端导航</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl mail" target="_blank" href="mailto:jawil1024@gmail.com" title="mail">mail</a>
+                            
+                                <a class="fl github" target="_blank" href="https://github.com/jawil" title="github">github</a>
+                            
+                                <a class="fl segmentfault" target="_blank" href="https://segmentfault.com/u/jawil" title="segmentfault">segmentfault</a>
+                            
+                                <a class="fl JueJin" target="_blank" href="https://juejin.im/user/573b702c71cfe4006c1201f0/share" title="JueJin">JueJin</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/CSS/" style="font-size: 10px;">CSS</a> <a href="/tags/ECMAScript规范/" style="font-size: 15px;">ECMAScript规范</a> <a href="/tags/HTML/" style="font-size: 10px;">HTML</a> <a href="/tags/HTTP/" style="font-size: 10px;">HTTP</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/Plugins/" style="font-size: 10px;">Plugins</a> <a href="/tags/UI设计/" style="font-size: 10px;">UI设计</a> <a href="/tags/first-article/" style="font-size: 10px;">first-article</a> <a href="/tags/三次握手/" style="font-size: 10px;">三次握手</a> <a href="/tags/小技巧/" style="font-size: 10px;">小技巧</a> <a href="/tags/工具/" style="font-size: 10px;">工具</a> <a href="/tags/性能/" style="font-size: 10px;">性能</a> <a href="/tags/掘金/" style="font-size: 10px;">掘金</a> <a href="/tags/收集/" style="font-size: 10px;">收集</a> <a href="/tags/效率/" style="font-size: 10px;">效率</a> <a href="/tags/玄学/" style="font-size: 15px;">玄学</a> <a href="/tags/记录/" style="font-size: 10px;">记录</a> <a href="/tags/难点/" style="font-size: 10px;">难点</a> <a href="/tags/面试/" style="font-size: 15px;">面试</a>
+                    </div>
+                </section>
+                
+
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://github.com/jawil/">github</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://lishuo.me/">特立独行的猪手</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">Too young,too simple.Sometimes,naive &amp; stupid.</div>
+                </section>
+                
+            </div>
+        </div>
+
+    </header>
+
+    
+        <div class="page-reward" style="position:absolute;top:73%;left:50%;margin-left:-30px;">
+          <p><a href="javascript:void(0)" onclick="dashangToggleIndex()" class="dashang" title="打赏，支持一下">赏</a></p>
+          <div class="hide_box_index"></div>
+          <div class="shang_box_index">
+            <a class="shang_close" href="javascript:void(0)" onclick="dashangToggleIndex()" title="关闭" style="position:relative;left:110px;">×</a>
+            <div class="shang_tit">
+              <p>纯属好玩</p>
+            </div>
+            <div class="shang_payimg">
+              <img src="/img/alipayimg.jpg" alt="扫码支持" title="扫一扫" />
+            </div>
+              <div class="pay_explain">扫码打赏，你说多少就多少，买房就差你们打赏之外那部分钱</div>
+            <div class="shang_payselect" style="width:100%;text-align:center;line-height:60px;">
+              
+                <div class="pay_item checked" data-id="alipay" style="display:inline-block;width:40%;float:none;width:130px;">
+                  <span class="radiobox" style="display:inline-block;float:none;margin-right:0;"></span>
+                  <span class="pay_logo" style="vertical-align:middle"><img src="/img/alipay.png" alt="支付宝" style="height:30px;" /></span>
+                </div>
+              
+              
+                <div class="pay_item" data-id="wechat" style="display:inline-block;float:none;">
+                  <span class="radiobox" style="display:inline-block;float:none;margin:0"></span>
+                  <span class="pay_logo" style="vertical-align:middle"><img src="/img/weixin.png" alt="微信" style="height:30px;" /></span>
+                </div>
+              
+            </div>
+            <div class="shang_info">
+              <p>打开<span id="shang_pay_txt">支付宝</span>扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+        <script type="text/javascript">
+          $(".pay_item").click(function(){
+            $(this).addClass('checked').siblings('.pay_item').removeClass('checked');
+            var dataid=$(this).attr('data-id');
+            $(".shang_payimg img").attr("src","/img/"+dataid+"img.jpg");
+            $("#shang_pay_txt").text(dataid=="alipay"?"支付宝":"微信");
+          });
+          function dashangToggleIndex(){
+            $(".hide_box_index").fadeToggle();
+            $(".shang_box_index").fadeToggle();
+          }
+        </script>
+      
+
+
+    <div id="music163player">
+  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=100% height=86 src="//music.163.com/outchain/player?type=2&id=29816871&auto=0&height=66">
+  </iframe>
+</div>
+
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me">前端小密圈</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head.jpeg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me">前端小密圈</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">若批评无自由，则赞美无意义。</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">博客首页</a></li>
+                
+                    <li><a href="/archives">所有文章</a></li>
+                
+                    <li><a href="/thoughts">随笔</a></li>
+                
+                    <li><a href="/works">作品展示</a></li>
+                
+                    <li><a href="/FrontEndGuide">前端导航</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="mail" target="_blank" href="mailto:jawil1024@gmail.com" title="mail">mail</a>
+                    
+                        <a class="github" target="_blank" href="https://github.com/jawil" title="github">github</a>
+                    
+                        <a class="segmentfault" target="_blank" href="https://segmentfault.com/u/jawil" title="segmentfault">segmentfault</a>
+                    
+                        <a class="JueJin" target="_blank" href="https://juejin.im/user/573b702c71cfe4006c1201f0/share" title="JueJin">JueJin</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-从-为-true-来剖析-JavaScript-各种蛋疼的类型转换" class="article article-type-post" itemscope itemprop="blogPost">
+
+  
+    <div class="article-meta">
+      <a href="/2017/02/22/从-为-true-来剖析-JavaScript-各种蛋疼的类型转换/" class="article-date">
+      <time datetime="2017-02-22T05:09:42.000Z" itemprop="datePublished">2017-02-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      从 []==为 true 来剖析 JavaScript 各种蛋疼的类型转换
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/玄学/">玄学</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ECMAScript规范/">ECMAScript规范</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/first-article/">first-article</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+
+    <div class="tips">
+  全文总共<span class="post-count">2,533</span>字，阅读时长预计需要<span class="post-count">10</span>分钟，感谢您的阅读，有错误还望留言批评指正，一起交流学习。
+    </div>
+
+      
+          
+        <h3 id="方便大家查阅-本文已首发在segmentfault社区-已上热门-谢谢大家支持-点我查阅"><a href="#方便大家查阅-本文已首发在segmentfault社区-已上热门-谢谢大家支持-点我查阅" class="headerlink" title="方便大家查阅,本文已首发在segmentfault社区,已上热门,谢谢大家支持.点我查阅"></a>方便大家查阅,本文已首发在<a href="https://segmentfault.com/" target="_blank" rel="external">segmentfault</a>社区,已上热门,谢谢大家支持.<a href="https://segmentfault.com/a/1190000008432611" target="_blank" rel="external">点我查阅</a></h3><p><strong>你是否在面试中遇到过各种奇葩和比较细节的问题?</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">[]==[]</div><div class="line"><span class="comment">//false</span></div><div class="line">[]==![]</div><div class="line"><span class="comment">//true</span></div><div class="line">&#123;&#125;==!&#123;&#125;</div><div class="line"><span class="comment">//false</span></div><div class="line">&#123;&#125;==![]</div><div class="line"><span class="comment">//VM1896:1 Uncaught SyntaxError: Unexpected token ==</span></div><div class="line">![]==&#123;&#125;</div><div class="line"><span class="comment">//false</span></div><div class="line">[]==!&#123;&#125;</div><div class="line"><span class="comment">//true</span></div><div class="line"><span class="literal">undefined</span>==<span class="literal">null</span></div><div class="line"><span class="comment">//true</span></div></pre></td></tr></table></figure>
+<p><strong>看了这种题目,是不是想抽面试官几耳光呢?哈哈,是不是看了之后一脸懵逼,两脸茫然呢?心想这什么玩意</strong></p>
+<p><img src="http://ww1.sinaimg.cn/large/a660cab2gy1fcyivqddwfj20he0fvq98" alt=""></p>
+<p><strong>其实这些都是纸老虎,知道原理和转换规则,理解明白这些很容易的,炒鸡容易的,真的一点都不难,我们要打到一切纸老虎,不信?</strong></p>
+<p><img src="http://ww1.sinaimg.cn/large/a660cab2gy1fcyi20xam2j20fa0bh426" alt=""><br><img src="http://ww1.sinaimg.cn/large/a660cab2gy1fcyi2jg2t6j20go0b4t9j" alt=""></p>
+<p><strong>我们就从[] == []和[] == ![]例子切入分析一下为什么输出的结果是true而不是其它的呢?</strong></p>
+<h2 id="为什么是false"><a href="#为什么是false" class="headerlink" title="[]==[]为什么是false?"></a>[]==[]为什么是false?</h2><p>有点js基础应该知道对象是引用类型,就会一眼看出来[] == []会输出false,因为左边的[]和右边的[]看起来长的一样,但是他们引用的地址并不同,这个是同一类型的比较,所以相对没那么麻烦,暂时不理解[] == []为false的童鞋这里就不细说,想要弄清楚可以通过这篇文章来了解JavaScript的内存空间详解.</p>
+<p><a href="http://www.jianshu.com/p/996671d4dcc4" target="_blank" rel="external">前端基础进阶（一）：内存空间详细图解</a></p>
+<p><img src="http://ww1.sinaimg.cn/large/a660cab2gy1fcyiwuiu4cj20yg0izaba" alt=""></p>
+<p><strong>变量对象与堆内存</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">简单类型都放在栈（stack）里</div><div class="line">对象类型都放在堆（heap）里</div><div class="line">var a = 20;</div><div class="line">var b = &apos;abc&apos;;</div><div class="line">var c = true;</div><div class="line">var d = &#123; m: 20 &#125;//地址假设为0x0012ff7c</div><div class="line">var e = &#123; m: 20 &#125;//重新开辟一段内存空间假设为0x0012ff8f</div><div class="line">console.log(e==d);//false</div></pre></td></tr></table></figure>
+<h5 id="那为什么引用值要放在堆中，而原始值要放在栈中，不都是在内存中吗，为什么不放在一起呢-那接下来，让我们来探索问题的答案！-扯远了"><a href="#那为什么引用值要放在堆中，而原始值要放在栈中，不都是在内存中吗，为什么不放在一起呢-那接下来，让我们来探索问题的答案！-扯远了" class="headerlink" title="那为什么引用值要放在堆中，而原始值要放在栈中，不都是在内存中吗，为什么不放在一起呢?那接下来，让我们来探索问题的答案！(扯远了)"></a>那为什么引用值要放在堆中，而原始值要放在栈中，不都是在内存中吗，为什么不放在一起呢?那接下来，让我们来探索问题的答案！(扯远了)</h5><p><code>首先，我们来看一下代码：</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">id,name,age</span>)</span>&#123;</div><div class="line">    <span class="keyword">this</span>.id = id;</div><div class="line">    <span class="keyword">this</span>.name = name;</div><div class="line">    <span class="keyword">this</span>.age = age;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> num = <span class="number">10</span>;</div><div class="line"><span class="keyword">var</span> bol = <span class="literal">true</span>;</div><div class="line"><span class="keyword">var</span> str = <span class="string">"abc"</span>;</div><div class="line"><span class="keyword">var</span> obj = <span class="keyword">new</span> <span class="built_in">Object</span>();</div><div class="line"><span class="keyword">var</span> arr = [<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>];</div><div class="line"><span class="keyword">var</span> person = <span class="keyword">new</span> Person(<span class="number">100</span>,<span class="string">"笨蛋的座右铭"</span>,<span class="number">25</span>);</div></pre></td></tr></table></figure>
+<p>然后我们来看一下内存分析图：</p>
+<p><img src="http://ww1.sinaimg.cn/large/a660cab2gy1fcyiyaxri0j20b706wmx5" alt=""></p>
+<p><code>变量num,bol,str为基本数据类型，它们的值，直接存放在栈中，obj,person,arr为复合数据类型，他们的引用变量存储在栈中，指向于存储在堆中的实际对象。
+由上图可知，我们无法直接操纵堆中的数据，也就是说我们无法直接操纵对象，但我们可以通过栈中对对象的引用来操作对象，就像我们通过遥控机操作电视机一样，区别在于这个电视机本身并没有控制按钮。</code></p>
+<h5 id="现在让我们来回答为什么引用值要放在堆中，而原始值要放在栈中的问题："><a href="#现在让我们来回答为什么引用值要放在堆中，而原始值要放在栈中的问题：" class="headerlink" title="现在让我们来回答为什么引用值要放在堆中，而原始值要放在栈中的问题："></a>现在让我们来回答为什么引用值要放在堆中，而原始值要放在栈中的问题：</h5><p><code>记住一句话：能量是守衡的，无非是时间换空间，空间换时间的问题
+堆比栈大，栈比堆的运算速度快,对象是一个复杂的结构，并且可以自由扩展，如：数组可以无限扩充，对象可以自由添加属性。将他们放在堆中是为了不影响栈的效率。而是通过引用的方式查找到堆中的实际对象再进行操作。相对于简单数据类型而言，简单数据类型就比较稳定，并且它只占据很小的内存。不将简单数据类型放在堆是因为通过引用到堆中查找实际对象是要花费时间的，而这个综合成本远大于直接从栈中取得实际值的成本。所以简单数据类型的值直接存放在栈中。</code></p>
+<p>搬运文章:<a href="http://blog.sina.com.cn/s/blog_8ecde0fe0102vy6e.html" target="_blank" rel="external">理解js内存分配</a></p>
+<p><img src="http://ww1.sinaimg.cn/large/a660cab2gy1fcyiz360huj20go0b4aaq" alt=""></p>
+<h5 id="知道的大神当然可以飘过-这里主要给计算机基础薄弱的童鞋补一下课"><a href="#知道的大神当然可以飘过-这里主要给计算机基础薄弱的童鞋补一下课" class="headerlink" title="知道的大神当然可以飘过,这里主要给计算机基础薄弱的童鞋补一下课."></a>知道的大神当然可以飘过,这里主要给计算机基础薄弱的童鞋补一下课.</h5><p><img src="http://ww1.sinaimg.cn/large/a660cab2gy1fcyj146yqpj20cy0aywgs" alt=""></p>
+<h2 id="为什么是true"><a href="#为什么是true" class="headerlink" title="[]==![]为什么是true?"></a>[]==![]为什么是true?</h2><p><strong>首先第一步:你要明白ECMAScript规范里面==的真正含义</strong><br><img src="http://ww1.sinaimg.cn/large/a660cab2gy1fcy8lmuwr1j21au0kswjj" alt=""><br><strong>GetValue 会获取一个子表达式的值（消除掉左值引用），在表达式 [] == ![] 中，[] 的结果就是一个空数组的引用(上文已经介绍到数组是引用类型)，而 ![] 就有意思了，它会按照 11.4.9 和 9.2 节的要求得到 false。</strong></p>
+<p>首先我们了解一下运算符的优先级:<br><img src="http://ww1.sinaimg.cn/large/a660cab2gy1fcy9omb2ucj20v20vigpo" alt=""></p>
+<p>刚看到这里是不是就咬牙切齿了,好戏还在后头呢,哈哈</p>
+<p><img src="http://ww1.sinaimg.cn/large/a660cab2gy1fcyhngm80hj20a00a03yp" alt=""></p>
+<p><strong>!取反运算符的优先级会高于==,所以我们先看看!在ECAMScript是怎么定义的?</strong></p>
+<p><img src="http://ww1.sinaimg.cn/large/a660cab2gy1fcy9rnlv51j20v40ao40a" alt=""></p>
+<p><strong>所以![]最后会是一个Boolean类型的值(这点很关键,涉及到下面的匹配选择).</strong></p>
+<p><strong>两者比较的行为在 11.9.3 节里，所以翻到 11.9.3：</strong><br><img src="http://ww1.sinaimg.cn/large/a660cab2gy1fcy8qs1kysj21dk11q48u" alt=""></p>
+<p><strong>在这段算法里，[]是Object,![]是Boolean,两者的类型不同,y是Boolean类型,由此可知[] == ![]匹配的是条件 8，所以会递归地调用[] == ToNumber(Boolean)进行比较。</strong></p>
+<p><code>[]空数组转化成Boolean,那么这个结果到底是true还是false呢,这个当然不是你说了算,也不是我说了算,ECMAScript定义的规范说了算:我们来看看规范:</code></p>
+<p><img src="http://ww1.sinaimg.cn/large/a660cab2gy1fcy92pvsquj21a80hgn0y" alt=""></p>
+<p><strong>[]是一个对象</strong>,所以对应转换成<em>Boolean</em>对象的值为<code>true</code>;那么<strong>![]</strong>对应的<em>Boolean</em>值就是<code>false</code><br>进而就成了比较<strong>[] == ToNumber(false)</strong>了</p>
+<p>再来看看ECMAScipt规范中对于Number的转换<br><img src="http://ww1.sinaimg.cn/large/a660cab2gy1fcya3mnee7j216g0logpy" alt=""></p>
+<p>由此可以得出此时的比较成了<strong>[]==0</strong>;</p>
+<p>在此处因为 [] 是对象，0是数字Number,比较过程走分支 10(若Type(x)为Object且Type(y)为String或Number， 返回比较<strong>ToPrimitive(x) == y</strong>的结果。),可以对比上面那张图.</p>
+<p><code>ToPrimitive</code> 默认是调用 <code>toString</code> 方法的（依 8.2.8），于是 <strong>ToPrimitice([]) 等于空字符串</strong>。</p>
+<p>再来看看<em>ECMAScript</em>标准怎么定义<strong>ToPrimitice</strong>方法的:</p>
+<p><img src="http://ww1.sinaimg.cn/large/a660cab2gy1fcycf5tjn2j21fe0k0dm2" alt=""></p>
+<p>是不是看了这个定义,还是一脸懵逼,ToPrimitive这尼玛什么玩意啊?这不是等于没说吗?<br><img src="https://gss0.baidu.com/7Po3dSag_xI4khGko9WTAnF6hhy/zhidao/wh%3D600%2C800/sign=618965f65543fbf2c579ae25804ee6b8/6f061d950a7b0208dc217f1f64d9f2d3562cc860.jpg" alt=""></p>
+<p>再来看看火狐MDN上面文档的介绍:<br><a href="&#39;https://developer.mozilla.org/zh-CN/docs/Mozilla/Projects/SpiderMonkey/JSAPI_Reference/JS::ToPrimitive">JS::ToPrimitive</a><br><img src="http://ww1.sinaimg.cn/large/a660cab2gy1fcyegnfjpij210m11mqan" alt=""></p>
+<p><img src="http://ww1.sinaimg.cn/large/a660cab2gy1fcyj2c4dv4j205k05kt8l" alt=""></p>
+<p>查了一下资料,上面要说的可以概括成:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">ToPrimitive(obj,preferredType)</div><div class="line"></div><div class="line">JS引擎内部转换为原始值ToPrimitive(obj,preferredType)函数接受两个参数，第一个obj为被转换的对象，第二个</div><div class="line">preferredType为希望转换成的类型（默认为空，接受的值为Number或String）</div><div class="line"></div><div class="line">在执行ToPrimitive(obj,preferredType)时如果第二个参数为空并且obj为Date的事例时，此时preferredType会</div><div class="line">被设置为String，其他情况下preferredType都会被设置为Number如果preferredType为Number，ToPrimitive执</div><div class="line">行过程如</div><div class="line">下：</div><div class="line">1. 如果obj为原始值，直接返回；</div><div class="line">2. 否则调用 obj.valueOf()，如果执行结果是原始值，返回之；</div><div class="line">3. 否则调用 obj.toString()，如果执行结果是原始值，返回之；</div><div class="line">4. 否则抛异常。</div><div class="line"></div><div class="line">如果preferredType为String，将上面的第2步和第3步调换，即：</div><div class="line">1. 如果obj为原始值，直接返回；</div><div class="line">2. 否则调用 obj.toString()，如果执行结果是原始值，返回之；</div><div class="line">3. 否则调用 obj.valueOf()，如果执行结果是原始值，返回之；</div><div class="line">4. 否则抛异常。</div></pre></td></tr></table></figure>
+<p><img src="http://ww1.sinaimg.cn/large/a660cab2gy1fcyj3ahyznj206j06fdfu" alt=""></p>
+<p>首先我们要明白<strong>obj.valueOf()</strong>和 <strong>obj.toString()</strong>还有原始值分别是什么意思,这是弄懂上面描述的前提之一:</p>
+<p><strong>toString用来返回对象的字符串表示。</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> obj = &#123;&#125;;</div><div class="line"><span class="built_in">console</span>.log(obj.toString());<span class="comment">//[object Object]</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> arr2 = [];</div><div class="line"><span class="built_in">console</span>.log(arr2.toString());<span class="comment">//""空字符串</span></div><div class="line">  </div><div class="line"><span class="keyword">var</span> date = <span class="keyword">new</span> <span class="built_in">Date</span>();</div><div class="line"><span class="built_in">console</span>.log(date.toString());<span class="comment">//Sun Feb 28 2016 13:40:36 GMT+0800 (中国标准时间)</span></div></pre></td></tr></table></figure>
+<p><strong>valueOf方法返回对象的原始值，可能是字符串、数值或bool值等，看具体的对象。</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">var obj = &#123;</div><div class="line">  name: &quot;obj&quot;</div><div class="line">&#125;;</div><div class="line">console.log(obj.valueOf());//Object &#123;name: &quot;obj&quot;&#125;</div><div class="line"></div><div class="line">var arr1 = [1];</div><div class="line">console.log(arr1.valueOf());//[1]</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">var date = new Date();</div><div class="line">console.log(date.valueOf());//1456638436303</div><div class="line">如代码所示，三个不同的对象实例调用valueOf返回不同的数据</div></pre></td></tr></table></figure>
+<p><strong>原始值指的是[‘Null’,’Undefined’,’String’,’Boolean’,’Number’]五种基本数据类型之一(我猜的,查了一下<br>确实是这样的)</strong></p>
+<p>弄清楚这些以后,举个简单的例子:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">var a=&#123;&#125;;</div><div class="line">ToPrimitive(a)</div><div class="line"></div><div class="line">分析:a是对象类型但不是Date实例对象,所以preferredType默认是Number,先调用a.valueOf()不是原始值,继续来调</div><div class="line">用a.toString()得到string字符串,此时为原始值,返回之.所以最后ToPrimitive(a)得到就是&quot;[object Object]&quot;.</div></pre></td></tr></table></figure>
+<p>如果觉得描述还不好明白,一大堆描述晦涩又难懂,我们用代码说话:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">const</span> toPrimitive = <span class="function">(<span class="params">obj, preferredType=<span class="string">'Number'</span></span>) =&gt;</span> &#123;</div><div class="line">    <span class="keyword">let</span> Utils = &#123;</div><div class="line">        <span class="attr">typeOf</span>: <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">            <span class="keyword">return</span> <span class="built_in">Object</span>.prototype.toString.call(obj).slice(<span class="number">8</span>, <span class="number">-1</span>);</div><div class="line">        &#125;,</div><div class="line">        <span class="attr">isPrimitive</span>: <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">            <span class="keyword">let</span> types = [<span class="string">'Null'</span>, <span class="string">'String'</span>, <span class="string">'Boolean'</span>, <span class="string">'Undefined'</span>, <span class="string">'Number'</span>];</div><div class="line">            <span class="keyword">return</span> types.indexOf(<span class="keyword">this</span>.typeOf(obj)) !== <span class="number">-1</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line">   </div><div class="line">    <span class="keyword">if</span> (Utils.isPrimitive(obj)) &#123;</div><div class="line">        <span class="keyword">return</span> obj;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    preferredType = (preferredType === <span class="string">'String'</span> || Utils.typeOf(obj) === <span class="string">'Date'</span>) ?</div><div class="line">     <span class="string">'String'</span> : <span class="string">'Number'</span>;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (preferredType === <span class="string">'Number'</span>) &#123;</div><div class="line">        <span class="keyword">if</span> (Utils.isPrimitive(obj.valueOf())) &#123;</div><div class="line">            <span class="keyword">return</span> obj.valueOf()</div><div class="line">        &#125;;</div><div class="line">        <span class="keyword">if</span> (Utils.isPrimitive(obj.toString())) &#123;</div><div class="line">            <span class="keyword">return</span> obj.toString()</div><div class="line">        &#125;;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">if</span> (Utils.isPrimitive(obj.toString())) &#123;</div><div class="line">            <span class="keyword">return</span> obj.toString()</div><div class="line">        &#125;;</div><div class="line">        <span class="keyword">if</span> (Utils.isPrimitive(obj.valueOf())) &#123;</div><div class="line">            <span class="keyword">return</span> obj.valueOf()</div><div class="line">        &#125;;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> a=&#123;&#125;;</div><div class="line">ToPrimitive(a);<span class="comment">//"[object Object]",与上面文字分析的一致</span></div></pre></td></tr></table></figure>
+<p>分析了这么多,刚才分析到哪里了,好像到了比较<strong>ToPrimitive([]) == 0</strong>现在我们知道<strong>ToPrimitive([])=””</strong>,也就是空字符串;</p>
+<p>那么最后就变成了<strong>“”==0</strong>这种状态,继续看和比较这张图<br><img src="http://ww1.sinaimg.cn/large/a660cab2gy1fcy8qs1kysj21dk11q48u" alt=""></p>
+<p>发现<strong>typeof(“”)为string,0为number</strong>,发现第5条满足规则,最后就成了<strong>toNumber(“”)==0</strong>的比较了,根据toNumber的转换规则:</p>
+<p><img src="http://ww1.sinaimg.cn/large/a660cab2gy1fcyhhn5tppj20vy09240w" alt=""></p>
+<p><strong>所以toNumber(“”)=0,最后也就成了0 == 0的问题,于是[]==![]最后成了0 == 0的问题,答案显而易见为true,一波三折</strong></p>
+<p><img src="http://ww1.sinaimg.cn/large/a660cab2gy1fcyhmvo222j20c80c874n" alt=""></p>
+<h3 id="最后总结一下"><a href="#最后总结一下" class="headerlink" title="最后总结一下"></a>最后总结一下</h3><p>==运算规则的图形化表示</p>
+<p><img src="http://ww1.sinaimg.cn/large/a660cab2gy1fcyjfmwc03j20xs0gyjv0" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">前面说得很乱，根据我们得到的最终的图3，我们总结一下==运算的规则：</div><div class="line"></div><div class="line">1. undefined == null，结果是true。且它俩与所有其他值比较的结果都是false。</div><div class="line"></div><div class="line">2. String == Boolean，需要两个操作数同时转为Number。</div><div class="line"></div><div class="line">3. String/Boolean == Number，需要String/Boolean转为Number。</div><div class="line"></div><div class="line">4. Object == Primitive，需要Object转为Primitive(具体通过valueOf和toString方法)。</div><div class="line"></div><div class="line">瞧见没有，一共只有4条规则！是不是很清晰、很简单。</div></pre></td></tr></table></figure>
+<h3 id="主要参考文章和文献"><a href="#主要参考文章和文献" class="headerlink" title="主要参考文章和文献"></a>主要参考文章和文献</h3><p><a href="http://yanhaijing.com/es5/#about" target="_blank" rel="external">ECMAScript5.1规范中文版</a></p>
+<p><a href="http://www.admin10000.com/document/9242.html" target="_blank" rel="external">通过一张简单的图，让你彻底地、永久地搞懂JS的==运算</a></p>
+<p><a href="https://www.zhihu.com/question/21484710" target="_blank" rel="external">JavaScript中加号运算符的类型转换优先级是什么？</a></p>
+<p><img src="http://ww1.sinaimg.cn/large/a660cab2gy1fcyj463ngvj20c80b8mxt" alt=""></p>
+<p>喜欢我总结的文章对你有帮助有收获的话麻烦点个star<br>我的<a href="https://github.com/jawil/blog" target="_blank" rel="external">github博客</a>地址,总结的第一篇,不好之处和借鉴不得到之处还望见谅,您的支持就是我的动力!</p>
+
+      
+      
+        <div class="page-reward">
+          <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang" title="打赏，支持一下">赏</a></p>
+          <div class="hide_box"></div>
+          <div class="shang_box">
+            <a class="shang_close" href="javascript:void(0)" onclick="dashangToggle()" title="关闭">×</a>
+            <div class="shang_tit">
+              <p>纯属好玩</p>
+            </div>
+            <div class="shang_payimg">
+              <img src="/img/alipayimg.jpg" alt="扫码支持" title="扫一扫" />
+            </div>
+              <div class="pay_explain">扫码打赏，你说多少就多少，买房就差你们打赏之外那部分钱</div>
+            <div class="shang_payselect">
+              
+                <div class="pay_item checked" data-id="alipay">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/alipay.png" alt="支付宝" /></span>
+                </div>
+              
+              
+                <div class="pay_item" data-id="wechat">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/weixin.png" alt="微信" /></span>
+                </div>
+              
+            </div>
+            <div class="shang_info">
+              <p>打开<span id="shang_pay_txt">支付宝</span>扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+        <script type="text/javascript">
+          $(".pay_item").click(function(){
+            $(this).addClass('checked').siblings('.pay_item').removeClass('checked');
+            var dataid=$(this).attr('data-id');
+            $(".shang_payimg img").attr("src","/img/"+dataid+"img.jpg");
+            $("#shang_pay_txt").text(dataid=="alipay"?"支付宝":"微信");
+          });
+          function dashangToggle(){
+            $(".hide_box").fadeToggle();
+            $(".shang_box").fadeToggle();
+          }
+        </script>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/02/22/从-为-true-来剖析-JavaScript-各种蛋疼的类型转换/">从 []==为 true 来剖析 JavaScript 各种蛋疼的类型转换</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 前端小密圈 的个人博客">前端小密圈</a></p>
+        <p><span>发布时间:</span>2017年02月22日 - 13时09分</p>
+        <p><span>最后更新:</span>2017年04月30日 - 14时15分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/02/22/从-为-true-来剖析-JavaScript-各种蛋疼的类型转换/" title="从 []==为 true 来剖析 JavaScript 各种蛋疼的类型转换">http://qdxmq.com/2017/02/22/从-为-true-来剖析-JavaScript-各种蛋疼的类型转换/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://qdxmq.com/2017/02/22/从-为-true-来剖析-JavaScript-各种蛋疼的类型转换/　　作者: 前端小密圈" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2017/02/24/吹毛求疵的追求优雅高性能JavaScript/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          吹毛求疵的追求优雅高性能JavaScript
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#方便大家查阅-本文已首发在segmentfault社区-已上热门-谢谢大家支持-点我查阅"><span class="toc-number">1.</span> <span class="toc-text">方便大家查阅,本文已首发在segmentfault社区,已上热门,谢谢大家支持.点我查阅</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么是false"><span class="toc-number"></span> <span class="toc-text">[]==[]为什么是false?</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#那为什么引用值要放在堆中，而原始值要放在栈中，不都是在内存中吗，为什么不放在一起呢-那接下来，让我们来探索问题的答案！-扯远了"><span class="toc-number">0.0.1.</span> <span class="toc-text">那为什么引用值要放在堆中，而原始值要放在栈中，不都是在内存中吗，为什么不放在一起呢?那接下来，让我们来探索问题的答案！(扯远了)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#现在让我们来回答为什么引用值要放在堆中，而原始值要放在栈中的问题："><span class="toc-number">0.0.2.</span> <span class="toc-text">现在让我们来回答为什么引用值要放在堆中，而原始值要放在栈中的问题：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#知道的大神当然可以飘过-这里主要给计算机基础薄弱的童鞋补一下课"><span class="toc-number">0.0.3.</span> <span class="toc-text">知道的大神当然可以飘过,这里主要给计算机基础薄弱的童鞋补一下课.</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么是true"><span class="toc-number"></span> <span class="toc-text">[]==![]为什么是true?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#最后总结一下"><span class="toc-number">1.</span> <span class="toc-text">最后总结一下</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#主要参考文章和文献"><span class="toc-number">2.</span> <span class="toc-text">主要参考文章和文献</span></a></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+<script>
+var cloudTieConfig = {
+  url: document.location.href,
+  sourceId: "",
+  productKey: "f4eaa09d046240cfacb415bc5435e021",
+  target: "cloud-tie-wrapper"
+};
+var yunManualLoad = true;
+Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true);
+</script>
+
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/02/24/吹毛求疵的追求优雅高性能JavaScript/" title="上一篇: 吹毛求疵的追求优雅高性能JavaScript">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/05/02/一道面试题：不用call和apply方法用原生JavaScript模拟实现ES5的bind方法/">不用call和apply方法模拟实现ES5的bind方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/01/奇文共欣赏，疑义相与析/">奇文共欣赏，疑义相与析</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/01/通俗大白话来理解TCP协议的三次握手和四次分手/">通俗大白话来理解TCP协议的三次握手和四次分手</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/20/从探究Function-proto-Function-prototype过程中的一些收获/"> 从探究Function.__proto__===Function.prototype过程中的一些收获</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/12/神器！解放你的双手——UI设计稿全自动切图和标注的工具推荐/">神器！解放你的双手——UI设计稿全自动切图和标注的工具推荐</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/09/工作中经常用到github上优秀、实用、轻量级、无依赖的插件和库/">工作中经常用到github上优秀、实用、轻量级、无依赖的插件和库</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/05/深入浅出DOM基础——《DOM探索之基础详解篇》学习笔记/"> 深入浅出DOM基础——《DOM探索之基础详解篇》学习笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/01/纯CSS实现网站常用的五角星评分和分数展示交互效果/">纯CSS实现网站常用的五角星评分和分数展示交互效果</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/16/关于Node进程管理器PM2使用技巧和需要注意的地方/">关于Node进程管理器PM2使用技巧和需要注意的地方</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/05/从-10-深入浅出弱类型JS的隐式转换 17-04-47-592/">从++[[]][+[]]+[+[]]==10?深入浅出弱类型JS的隐式转换</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/01/来自掘金的你——挖-掘-淘-金-之-前端闯关历险记学习资料汇总/">来自掘金的你——挖 掘 淘 金 之 前端闯关历险记学习资料汇总</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/26/一道JS面试题所引发的血案，透过现象寻本质，再从本质看现象/">一道JS面试题所引发的血案，透过现象寻本质，再从本质看现象</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/24/吹毛求疵的追求优雅高性能JavaScript/">吹毛求疵的追求优雅高性能JavaScript</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/22/从-为-true-来剖析-JavaScript-各种蛋疼的类型转换/">从 []==为 true 来剖析 JavaScript 各种蛋疼的类型转换</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2017 💕 前端小密圈
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/jawil/" target="_blank">hexo-theme-xmq</a> by jawil modify
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >本日小蜜蜂🐝:
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页阅读量:
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+</body>
+</html>

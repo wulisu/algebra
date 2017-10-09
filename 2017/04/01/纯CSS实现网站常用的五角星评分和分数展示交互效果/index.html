@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>纯CSS实现网站常用的五角星评分和分数展示交互效果 | 前端小密圈</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="本文方法好处在于，纯CSS驱动，各种切换根本不需要JS，省了不少JS，对于类似这种需求大家也可以举一反三，这里只提供一些思路，没有细说；同时图片背景比较小或者可以直接不使用图片，比起使用图片节省不少资源，和提高些许性能。但是，学习以及理解成本稍高，可能并不适用于所有同行，因此，此文适合喜欢“折腾”的童鞋。">
+<meta name="keywords" content="CSS,小技巧">
+<meta property="og:type" content="article">
+<meta property="og:title" content="纯CSS实现网站常用的五角星评分和分数展示交互效果">
+<meta property="og:url" content="http://qdxmq.com/2017/04/01/纯CSS实现网站常用的五角星评分和分数展示交互效果/index.html">
+<meta property="og:site_name" content="前端小密圈">
+<meta property="og:description" content="本文方法好处在于，纯CSS驱动，各种切换根本不需要JS，省了不少JS，对于类似这种需求大家也可以举一反三，这里只提供一些思路，没有细说；同时图片背景比较小或者可以直接不使用图片，比起使用图片节省不少资源，和提高些许性能。但是，学习以及理解成本稍高，可能并不适用于所有同行，因此，此文适合喜欢“折腾”的童鞋。">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/ae49ba57gy1fe56mkmigfj200u02i0na.jpg">
+<meta property="og:image" content="http://p1.pstatp.com/large/106c00024a844dd53299">
+<meta property="og:image" content="http://ww1.sinaimg.cn/thumbnail/ae49ba57gy1fe5883ltlij20bg0beglm.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/thumbnail/ae49ba57gy1fe58fj48w6j20es0c6wei.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/thumbnail/ae49ba57gy1fe58jf2fg2j20dk0ck0sr.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/thumbnail/ae49ba57gy1fe58rply7sj20cq0c23yl.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/thumbnail/ae49ba57gy1fe58w466daj20e00c60sr.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/thumbnail/ae49ba57gy1fe593j209kj206q048jrb.jpg">
+<meta property="og:image" content="http://oo2r9rnzp.bkt.clouddn.com/68747470733a2f2f757365722d676f6c642d63646e2e786974752e696f2f323031372f332f33312f3536633032323239373765303436663032663238386466393137333537396538.gif">
+<meta property="og:image" content="http://ww1.sinaimg.cn/mw690/ae49ba57gy1fe5cjil2qaj20o20ioq35.jpg">
+<meta property="og:updated_time" content="2017-04-30T08:48:05.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="纯CSS实现网站常用的五角星评分和分数展示交互效果">
+<meta name="twitter:description" content="本文方法好处在于，纯CSS驱动，各种切换根本不需要JS，省了不少JS，对于类似这种需求大家也可以举一反三，这里只提供一些思路，没有细说；同时图片背景比较小或者可以直接不使用图片，比起使用图片节省不少资源，和提高些许性能。但是，学习以及理解成本稍高，可能并不适用于所有同行，因此，此文适合喜欢“折腾”的童鞋。">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/ae49ba57gy1fe56mkmigfj200u02i0na.jpg">
+  
+    <link rel="alternative" href="/atom.xml" title="前端小密圈" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head>
+<body>
+  
+
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+
+<a href="https://github.com/jawil"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/82b228a3648bf44fc1163ef44c62fcc60081495e/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_red_aa0000.png"></a>
+
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/head.jpeg" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="搜索微信公众号:前端小密圈">前端小密圈</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">若批评无自由，则赞美无意义。</p>
+        
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">博客首页</a></li>
+                        
+                            <li><a href="/archives">所有文章</a></li>
+                        
+                            <li><a href="/thoughts">随笔</a></li>
+                        
+                            <li><a href="/works">作品展示</a></li>
+                        
+                            <li><a href="/FrontEndGuide">前端导航</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl mail" target="_blank" href="mailto:jawil1024@gmail.com" title="mail">mail</a>
+                            
+                                <a class="fl github" target="_blank" href="https://github.com/jawil" title="github">github</a>
+                            
+                                <a class="fl segmentfault" target="_blank" href="https://segmentfault.com/u/jawil" title="segmentfault">segmentfault</a>
+                            
+                                <a class="fl JueJin" target="_blank" href="https://juejin.im/user/573b702c71cfe4006c1201f0/share" title="JueJin">JueJin</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/CSS/" style="font-size: 10px;">CSS</a> <a href="/tags/ECMAScript规范/" style="font-size: 15px;">ECMAScript规范</a> <a href="/tags/HTML/" style="font-size: 10px;">HTML</a> <a href="/tags/HTTP/" style="font-size: 10px;">HTTP</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/Plugins/" style="font-size: 10px;">Plugins</a> <a href="/tags/UI设计/" style="font-size: 10px;">UI设计</a> <a href="/tags/first-article/" style="font-size: 10px;">first-article</a> <a href="/tags/三次握手/" style="font-size: 10px;">三次握手</a> <a href="/tags/小技巧/" style="font-size: 10px;">小技巧</a> <a href="/tags/工具/" style="font-size: 10px;">工具</a> <a href="/tags/性能/" style="font-size: 10px;">性能</a> <a href="/tags/掘金/" style="font-size: 10px;">掘金</a> <a href="/tags/收集/" style="font-size: 10px;">收集</a> <a href="/tags/效率/" style="font-size: 10px;">效率</a> <a href="/tags/玄学/" style="font-size: 15px;">玄学</a> <a href="/tags/记录/" style="font-size: 10px;">记录</a> <a href="/tags/难点/" style="font-size: 10px;">难点</a> <a href="/tags/面试/" style="font-size: 15px;">面试</a>
+                    </div>
+                </section>
+                
+
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://github.com/jawil/">github</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://lishuo.me/">特立独行的猪手</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">Too young,too simple.Sometimes,naive &amp; stupid.</div>
+                </section>
+                
+            </div>
+        </div>
+
+    </header>
+
+    
+        <div class="page-reward" style="position:absolute;top:73%;left:50%;margin-left:-30px;">
+          <p><a href="javascript:void(0)" onclick="dashangToggleIndex()" class="dashang" title="打赏，支持一下">赏</a></p>
+          <div class="hide_box_index"></div>
+          <div class="shang_box_index">
+            <a class="shang_close" href="javascript:void(0)" onclick="dashangToggleIndex()" title="关闭" style="position:relative;left:110px;">×</a>
+            <div class="shang_tit">
+              <p>纯属好玩</p>
+            </div>
+            <div class="shang_payimg">
+              <img src="/img/alipayimg.jpg" alt="扫码支持" title="扫一扫" />
+            </div>
+              <div class="pay_explain">扫码打赏，你说多少就多少，买房就差你们打赏之外那部分钱</div>
+            <div class="shang_payselect" style="width:100%;text-align:center;line-height:60px;">
+              
+                <div class="pay_item checked" data-id="alipay" style="display:inline-block;width:40%;float:none;width:130px;">
+                  <span class="radiobox" style="display:inline-block;float:none;margin-right:0;"></span>
+                  <span class="pay_logo" style="vertical-align:middle"><img src="/img/alipay.png" alt="支付宝" style="height:30px;" /></span>
+                </div>
+              
+              
+                <div class="pay_item" data-id="wechat" style="display:inline-block;float:none;">
+                  <span class="radiobox" style="display:inline-block;float:none;margin:0"></span>
+                  <span class="pay_logo" style="vertical-align:middle"><img src="/img/weixin.png" alt="微信" style="height:30px;" /></span>
+                </div>
+              
+            </div>
+            <div class="shang_info">
+              <p>打开<span id="shang_pay_txt">支付宝</span>扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+        <script type="text/javascript">
+          $(".pay_item").click(function(){
+            $(this).addClass('checked').siblings('.pay_item').removeClass('checked');
+            var dataid=$(this).attr('data-id');
+            $(".shang_payimg img").attr("src","/img/"+dataid+"img.jpg");
+            $("#shang_pay_txt").text(dataid=="alipay"?"支付宝":"微信");
+          });
+          function dashangToggleIndex(){
+            $(".hide_box_index").fadeToggle();
+            $(".shang_box_index").fadeToggle();
+          }
+        </script>
+      
+
+
+    <div id="music163player">
+  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=100% height=86 src="//music.163.com/outchain/player?type=2&id=29816871&auto=0&height=66">
+  </iframe>
+</div>
+
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me">前端小密圈</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head.jpeg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me">前端小密圈</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">若批评无自由，则赞美无意义。</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">博客首页</a></li>
+                
+                    <li><a href="/archives">所有文章</a></li>
+                
+                    <li><a href="/thoughts">随笔</a></li>
+                
+                    <li><a href="/works">作品展示</a></li>
+                
+                    <li><a href="/FrontEndGuide">前端导航</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="mail" target="_blank" href="mailto:jawil1024@gmail.com" title="mail">mail</a>
+                    
+                        <a class="github" target="_blank" href="https://github.com/jawil" title="github">github</a>
+                    
+                        <a class="segmentfault" target="_blank" href="https://segmentfault.com/u/jawil" title="segmentfault">segmentfault</a>
+                    
+                        <a class="JueJin" target="_blank" href="https://juejin.im/user/573b702c71cfe4006c1201f0/share" title="JueJin">JueJin</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-纯CSS实现网站常用的五角星评分和分数展示交互效果" class="article article-type-post" itemscope itemprop="blogPost">
+
+  
+    <div class="article-meta">
+      <a href="/2017/04/01/纯CSS实现网站常用的五角星评分和分数展示交互效果/" class="article-date">
+      <time datetime="2017-04-01T05:09:42.000Z" itemprop="datePublished">2017-04-01</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      纯CSS实现网站常用的五角星评分和分数展示交互效果
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/前端三剑客/">前端三剑客</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CSS/">CSS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/小技巧/">小技巧</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+
+    <div class="tips">
+  全文总共<span class="post-count">2,217</span>字，阅读时长预计需要<span class="post-count">10</span>分钟，感谢您的阅读，有错误还望留言批评指正，一起交流学习。
+    </div>
+
+      
+          
+        <p>最近在做一个项目涉及到评分和展示分数的模块，UI设计师也给了几个切好的图片，实现五角星评分方式很多，本质爱折腾的精神和对性能追求以及便于维护的考虑，搜集和尝试了很多方式，最终采用了纯css驱动的实现方式完成评分和展示分数的功能，没有js,也就意味着没判断逻辑，代码出错的几率更少，也更便于维护，在此，把这个功能的实现的过程记录和分享一下，一起学习交流。</p>
+<p><strong>原文收录在我的 GitHub博客 (<a href="https://github.com/jawil/blog" target="_blank" rel="external">https://github.com/jawil/blog</a>) ，喜欢的可以关注最新动态，大家一起多交流学习，共同进步。</strong></p>
+<h3 id="五角星的实现"><a href="#五角星的实现" class="headerlink" title="五角星的实现"></a>五角星的实现</h3><h4 id="1-图片或者字体图标"><a href="#1-图片或者字体图标" class="headerlink" title="1.图片或者字体图标"></a>1.图片或者字体图标</h4><p>不极致追求性能的话,直接利用设计师给的png或者jpg啥的,或者直接转成base64.</p>
+<p><img src="http://ww1.sinaimg.cn/large/ae49ba57gy1fe56mkmigfj200u02i0na.jpg" alt=""></p>
+<h4 id="2-利用Fontawesome-图标库，其实只是一种矢量字体。"><a href="#2-利用Fontawesome-图标库，其实只是一种矢量字体。" class="headerlink" title="2:利用Fontawesome 图标库，其实只是一种矢量字体。"></a>2:利用Fontawesome 图标库，其实只是一种矢量字体。</h4><p>HTML:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"icon"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>CSS:</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">@<span class="keyword">import</span> url(http://netdna.bootstrapcdn.com/font-awesome/<span class="number">3.2</span>.<span class="number">1</span>/css/font-awesome.css);</div><div class="line"></div><div class="line"><span class="selector-class">.icon</span><span class="selector-pseudo">:before</span> &#123;</div><div class="line">    <span class="attribute">content</span>: <span class="string">'\f005'</span>;</div><div class="line">    <span class="attribute">font-family</span>: FontAwesome;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><a href="http://codepen.io/weixun/pen/PpxxrE" target="_blank" rel="external">在线预览地址</a></p>
+<h4 id="3-利用css3描绘拼凑一个五角星。"><a href="#3-利用css3描绘拼凑一个五角星。" class="headerlink" title="3.利用css3描绘拼凑一个五角星。"></a>3.利用css3描绘拼凑一个五角星。</h4><p>基本原理：利用transparent的透明不可见和transform转换拼接一个正五角星。</p>
+<p>HTML:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"star-five"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>CSS:</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.star-five</span>&#123;</div><div class="line"><span class="attribute">width</span>: <span class="number">0</span>;</div><div class="line"><span class="attribute">height</span>: <span class="number">0</span>;</div><div class="line"><span class="attribute">color</span>: red;</div><div class="line"><span class="attribute">margin</span>: <span class="number">50px</span> <span class="number">0</span>;</div><div class="line"><span class="attribute">position</span>: relative;</div><div class="line"><span class="attribute">display</span>: block;</div><div class="line"><span class="attribute">border-left</span>: <span class="number">100px</span> solid transparent;</div><div class="line"><span class="attribute">border-right</span>: <span class="number">100px</span> solid transparent;</div><div class="line"><span class="attribute">border-bottom</span>: <span class="number">70px</span> solid red;</div><div class="line"><span class="attribute">transform</span>:<span class="built_in">rotate</span>(35deg);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-class">.star-five</span><span class="selector-pseudo">:before</span>&#123;</div><div class="line"><span class="attribute">width</span>: <span class="number">0</span>;</div><div class="line"><span class="attribute">height</span>: <span class="number">0</span>;</div><div class="line"><span class="attribute">border-left</span>: <span class="number">30px</span> solid transparent;</div><div class="line"><span class="attribute">border-right</span>: <span class="number">30px</span> solid transparent;</div><div class="line"><span class="attribute">border-bottom</span>: <span class="number">80px</span> solid red;</div><div class="line"><span class="attribute">position</span>: absolute;</div><div class="line"><span class="attribute">top</span>: -<span class="number">45px</span>;</div><div class="line"><span class="attribute">left</span>: -<span class="number">65px</span>;</div><div class="line"><span class="attribute">color</span>: white;</div><div class="line"><span class="attribute">display</span>: block;</div><div class="line"><span class="attribute">content</span>: <span class="string">""</span>;</div><div class="line"><span class="attribute">transform</span>:<span class="built_in">rotate</span>(-35deg);</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.star-five</span><span class="selector-pseudo">:after</span>&#123;</div><div class="line"><span class="attribute">width</span>: <span class="number">0</span>;</div><div class="line"><span class="attribute">height</span>: <span class="number">0</span>;</div><div class="line"><span class="attribute">display</span>: block;</div><div class="line"><span class="attribute">position</span>: absolute;</div><div class="line"><span class="attribute">color</span>: red;</div><div class="line"><span class="attribute">top</span>: <span class="number">3px</span>;</div><div class="line"><span class="attribute">left</span>: -<span class="number">105px</span>;</div><div class="line"><span class="attribute">border-left</span>: <span class="number">100px</span> solid transparent;</div><div class="line"><span class="attribute">border-right</span>: <span class="number">100px</span> solid transparent;</div><div class="line"><span class="attribute">border-bottom</span>: <span class="number">70px</span> solid red;</div><div class="line"><span class="attribute">content</span>: <span class="string">""</span>;</div><div class="line"><span class="attribute">transform</span>:<span class="built_in">rotate</span>(-70deg);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><a href="http://codepen.io/weixun/pen/oZQQqj" target="_blank" rel="external">在线预览地址</a></p>
+<p>不建议使用这种，因为选择之后改变颜色状态比较麻烦，改起来很不方便，不如前面几种方便好维护。</p>
+<h5 id="4-直接使用五角星符号"><a href="#4-直接使用五角星符号" class="headerlink" title="4.直接使用五角星符号"></a>4.直接使用五角星符号</h5><p>★😄<br>简单粗暴，容易控制，品相协调，下面实现方式以★为准。</p>
+<h3 id="关于CSS的一些选择器"><a href="#关于CSS的一些选择器" class="headerlink" title="关于CSS的一些选择器"></a>关于CSS的一些选择器</h3><p>不用js来控制评分，当然不能错过强大的css选择器，这里就先介绍一下关于实现这个功能要用到的一些css选择器。</p>
+<p>在介绍css强大的选择器之前，先普及一下“CSS radio/checkbox单复选框元素显隐技术”，又称“checkbox hack技术”。</p>
+<h4 id="1-checkbox-hack技术"><a href="#1-checkbox-hack技术" class="headerlink" title="1.checkbox hack技术"></a>1.checkbox hack技术</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">我们使用CSS一些特殊的选择器，然后配合单选框以及复选框自带的一些特性，可以实现元素的显示隐藏效果。然后通过一</div><div class="line">些简单的扩展，我们可以不使用任何JavaScript代码实现类似：自定义的单复选框，“更多”展开与收起效果，选项卡切换</div><div class="line">效果，或是多级下拉列表效果等等。</div><div class="line"></div><div class="line">相信很多前端开发人员都会遇到boss让修改checkbox和radio样式，毕竟自带的样式太丑了。后来我们发现修改自带样式</div><div class="line">并不是那么容易，最后直接使出杀手锏——点击之后替换图片。</div><div class="line">今天教大家一种方法，不用替换图片，随意修改样式。还是先看效果图：</div></pre></td></tr></table></figure>
+<p><img src="http://p1.pstatp.com/large/106c00024a844dd53299" alt=""></p>
+<p><code>先讲一下原理：两个关键东东，一是伪类选择器:checked，表示对应控件元素（单选框或是复选框）选中时的样式；二就是加号+  相邻兄弟选择器，这个符号表示选择后面的兄弟节点。于是，两者配合，就可以轻松自如控制后面元素的显示或者隐藏，或是其他样式了。
+而如何让单复选框选中和不选中了，那就是label标签了哈，for属性锚定对应的单选框或是复选框，然后点击这里的label标签元素的时候，对应的单复选框就会选中或是取消选中。然后，就有上面的效果啦！</code></p>
+<p>这里只给一个radio单选框的代码,仅供参考:</p>
+<p>HTML:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"radio-beauty-container"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">label</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"radio-name"</span>&gt;</span>前端工程师<span class="tag">&lt;/<span class="name">span</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"radio"</span> <span class="attr">name</span>=<span class="string">"radioName"</span> <span class="attr">id</span>=<span class="string">"radioName1"</span> <span class="attr">hidden</span>/&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">"radioName1"</span> <span class="attr">class</span>=<span class="string">"radio-beauty"</span>&gt;</span><span class="tag">&lt;/<span class="name">label</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">label</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">label</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"radio-name"</span>&gt;</span>后端工程师<span class="tag">&lt;/<span class="name">span</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"radio"</span> <span class="attr">name</span>=<span class="string">"radioName"</span> <span class="attr">id</span>=<span class="string">"radioName2"</span> <span class="attr">hidden</span>/&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">"radioName2"</span> <span class="attr">class</span>=<span class="string">"radio-beauty"</span>&gt;</span><span class="tag">&lt;/<span class="name">label</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">label</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">label</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"radio-name"</span>&gt;</span>全栈工程师<span class="tag">&lt;/<span class="name">span</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"radio"</span> <span class="attr">name</span>=<span class="string">"radioName"</span> <span class="attr">id</span>=<span class="string">"radioName3"</span> <span class="attr">hidden</span>/&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">"radioName3"</span> <span class="attr">class</span>=<span class="string">"radio-beauty"</span>&gt;</span><span class="tag">&lt;/<span class="name">label</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">label</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>SCSS:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">.radio-beauty-container &#123;</div><div class="line">    font-size: 0;</div><div class="line">    $bgc: green;</div><div class="line">    %common &#123;</div><div class="line">        padding: 2px;</div><div class="line">        background-color: $bgc;</div><div class="line">        background-clip: content-box;</div><div class="line">    &#125;</div><div class="line">    .radio-name &#123;</div><div class="line">        vertical-align: middle;</div><div class="line">        font-size: 16px;</div><div class="line">    &#125;</div><div class="line">    .radio-beauty &#123;</div><div class="line">        width: 18px;</div><div class="line">        height: 18px;</div><div class="line">        box-sizing: border-box;</div><div class="line">        display: inline-block;</div><div class="line">        border: 1px solid $bgc;</div><div class="line">        vertical-align: middle;</div><div class="line">        margin: 0 15px 0 3px;</div><div class="line">        border-radius: 50%;</div><div class="line">        &amp;:hover &#123;</div><div class="line">            box-shadow: 0 0 7px $bgc;</div><div class="line">            @extend %common;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    input[type="radio"]:checked+.radio-beauty &#123;</div><div class="line">        @extend %common;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>美化radio单选框在线预览地址：<a href="http://codepen.io/jawil/pen/NRYRrw" target="_blank" rel="external">点击我呀</a><br>美化checkbox复选框在线预览地址：<a href="http://codepen.io/jawil/pen/qaoarB" target="_blank" rel="external">点击我呀</a></p>
+<p>更多关于这方面的介绍和例子可以参看<strong>张鑫旭</strong>大神的这篇文章：<a href="http://www.zhangxinxu.com/wordpress/2012/01/css-css3-selector-element-display-tab-listdown/" target="_blank" rel="external">CSS radio/checkbox单复选框元素显隐技术</a></p>
+<h4 id="2-CSS一些选择器"><a href="#2-CSS一些选择器" class="headerlink" title="2.CSS一些选择器"></a>2.CSS一些选择器</h4><p>HTML:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"wrapper"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"test1"</span>&gt;</span>1<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"test2"</span>&gt;</span>2<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"test3"</span>&gt;</span>3<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"test4"</span>&gt;</span>4<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"test5"</span>&gt;</span>5<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>CSS:</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">p</span>&#123;</div><div class="line">  <span class="attribute">width</span>:<span class="number">20px</span>;</div><div class="line">  <span class="attribute">line-height</span>:<span class="number">20px</span>;</div><div class="line">  <span class="attribute">border</span>:<span class="number">1px</span> solid gray;</div><div class="line">  <span class="attribute">text-align</span>:center;</div><div class="line">  <span class="attribute">font-weight</span>: <span class="number">700</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="E-F-相邻兄弟选择器-选择匹配F的元素，且该元素为所匹配E元素后面相邻的位置。"><a href="#E-F-相邻兄弟选择器-选择匹配F的元素，且该元素为所匹配E元素后面相邻的位置。" class="headerlink" title="E + F:    相邻兄弟选择器 选择匹配F的元素，且该元素为所匹配E元素后面相邻的位置。"></a>E + F:    相邻兄弟选择器 选择匹配F的元素，且该元素为所匹配E元素后面相邻的位置。</h5><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.test1</span>+<span class="selector-tag">p</span>&#123;</div><div class="line">  <span class="attribute">background-color</span>:green;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><img src="http://ww1.sinaimg.cn/thumbnail/ae49ba57gy1fe5883ltlij20bg0beglm.jpg" alt=""></p>
+<h5 id="E-gt-F-子包含选择器-选择匹配F的元素，且该元素为所匹配E元素的子元素。"><a href="#E-gt-F-子包含选择器-选择匹配F的元素，且该元素为所匹配E元素的子元素。" class="headerlink" title="E &gt; F:子包含选择器  选择匹配F的元素，且该元素为所匹配E元素的子元素。"></a>E &gt; F:子包含选择器  选择匹配F的元素，且该元素为所匹配E元素的子元素。</h5><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.wrapper</span>&gt;<span class="selector-tag">p</span>&#123;</div><div class="line">  <span class="attribute">background-color</span>:green;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><img src="http://ww1.sinaimg.cn/thumbnail/ae49ba57gy1fe58fj48w6j20es0c6wei.jpg" alt=""></p>
+<h5 id="E-F-选择后面的兄弟节点们"><a href="#E-F-选择后面的兄弟节点们" class="headerlink" title="E ~ F: 选择后面的兄弟节点们"></a>E ~ F: 选择后面的兄弟节点们</h5><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.test2</span>~<span class="selector-tag">p</span>&#123;</div><div class="line">  <span class="attribute">background-color</span>:green;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><img src="http://ww1.sinaimg.cn/thumbnail/ae49ba57gy1fe58jf2fg2j20dk0ck0sr.jpg" alt=""></p>
+<h5 id="E-after-E-before-伪元素选择器-在匹配E的元素后面-前面-插入内容"><a href="#E-after-E-before-伪元素选择器-在匹配E的元素后面-前面-插入内容" class="headerlink" title="E::after,E::before: 伪元素选择器 在匹配E的元素后面(前面)插入内容"></a>E::after,E::before: 伪元素选择器 在匹配E的元素后面(前面)插入内容</h5><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.test2</span><span class="selector-pseudo">::before</span>&#123;</div><div class="line">  <span class="attribute">background-color</span>:green;</div><div class="line">  <span class="attribute">content</span>:<span class="string">"前"</span></div><div class="line">&#125;</div><div class="line"><span class="selector-class">.test2</span><span class="selector-pseudo">::after</span>&#123;</div><div class="line">  <span class="attribute">background-color</span>:green;</div><div class="line">  <span class="attribute">content</span>:<span class="string">"后"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><img src="http://ww1.sinaimg.cn/thumbnail/ae49ba57gy1fe58rply7sj20cq0c23yl.jpg" alt=""></p>
+<h5 id="not-E-选择非-元素的每个元素。"><a href="#not-E-选择非-元素的每个元素。" class="headerlink" title=":not(E) 选择非  元素的每个元素。"></a>:not(E) 选择非 <e> 元素的每个元素。</e></h5><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.wrapper</span>&gt;<span class="selector-pseudo">:not(.test2)</span>&#123;</div><div class="line">  <span class="attribute">background-color</span>:green;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><img src="http://ww1.sinaimg.cn/thumbnail/ae49ba57gy1fe58w466daj20e00c60sr.jpg" alt=""></p>
+<h5 id="checked-input-checked-选择每个被选中的input元素。"><a href="#checked-input-checked-选择每个被选中的input元素。" class="headerlink" title=":checked  input:checked   选择每个被选中的input元素。"></a>:checked  input:checked   选择每个被选中的input元素。</h5><p>HTML:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"radio"</span> <span class="attr">name</span>=<span class="string">""</span> <span class="attr">id</span>=<span class="string">""</span> /&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">span</span>&gt;</span>3333<span class="tag">&lt;/<span class="name">span</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>CSS:</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">input</span><span class="selector-pseudo">:checked+span</span>&#123;</div><div class="line">  <span class="attribute">border</span>:<span class="number">10px</span> solid red;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><img src="http://ww1.sinaimg.cn/thumbnail/ae49ba57gy1fe593j209kj206q048jrb.jpg" alt=""></p>
+<p><strong>这里只提一下本文要用到的CSS选择器，更多关于CSS3强大的选择器请移步这里：</strong> <a href="https://github.com/Wscats/Good-text-Share/issues/38" target="_blank" rel="external">全面整理 CSS3 选择器的用法</a></p>
+<h3 id="实现评分模块"><a href="#实现评分模块" class="headerlink" title="实现评分模块"></a>实现评分模块</h3><p>HTML:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"rating"</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"radio"</span> <span class="attr">id</span>=<span class="string">"star5"</span> <span class="attr">name</span>=<span class="string">"rating"</span> <span class="attr">value</span>=<span class="string">"5"</span> <span class="attr">hidden</span>/&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">"star5"</span>&gt;</span><span class="tag">&lt;/<span class="name">label</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"radio"</span> <span class="attr">id</span>=<span class="string">"star4"</span> <span class="attr">name</span>=<span class="string">"rating"</span> <span class="attr">value</span>=<span class="string">"4"</span> <span class="attr">hidden</span>/&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">"star4"</span>&gt;</span><span class="tag">&lt;/<span class="name">label</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"radio"</span> <span class="attr">id</span>=<span class="string">"star3"</span> <span class="attr">name</span>=<span class="string">"rating"</span> <span class="attr">value</span>=<span class="string">"3"</span> <span class="attr">hidden</span>/&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">"star3"</span>&gt;</span><span class="tag">&lt;/<span class="name">label</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"radio"</span> <span class="attr">id</span>=<span class="string">"star2"</span> <span class="attr">name</span>=<span class="string">"rating"</span> <span class="attr">value</span>=<span class="string">"2"</span> <span class="attr">hidden</span>/&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">"star2"</span>&gt;</span><span class="tag">&lt;/<span class="name">label</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"radio"</span> <span class="attr">id</span>=<span class="string">"star1"</span> <span class="attr">name</span>=<span class="string">"rating"</span> <span class="attr">value</span>=<span class="string">"1"</span> <span class="attr">hidden</span>/&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">"star1"</span>&gt;</span><span class="tag">&lt;/<span class="name">label</span>&gt;</span></div><div class="line">   <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>关于input标签的隐藏,我这里只要用hidden属性实现隐藏,当然还有很多实现方式,只要input不占据文档的位置但是看不见就OK,我们需要隐藏单选框，且为可用性隐藏。这里还有几种方式仅供大家参考:</p>
+<h4 id="1-display-none"><a href="#1-display-none" class="headerlink" title="1. display: none;"></a>1. display: none;</h4><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.rating</span> &gt;<span class="selector-tag">input</span> &#123;</div><div class="line">       <span class="attribute">display</span>: none;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<h4 id="2-css3的clip"><a href="#2-css3的clip" class="headerlink" title="2. css3的clip"></a>2. css3的clip</h4><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.rating</span> &gt;<span class="selector-tag">input</span> &#123;</div><div class="line">       <span class="attribute">position</span>: absolute;</div><div class="line">       <span class="attribute">clip</span>: <span class="built_in">rect</span>(0 0 0 0);</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<h4 id="3-opcity"><a href="#3-opcity" class="headerlink" title="3.opcity"></a>3.opcity</h4><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.rating</span> &gt;<span class="selector-tag">input</span> &#123;</div><div class="line">        <span class="attribute">position</span>: absolute;</div><div class="line">        <span class="attribute">opacity</span>: <span class="number">0</span>;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>CSS:</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.rating</span> &#123;</div><div class="line">    <span class="attribute">font-size</span>: <span class="number">0</span>;</div><div class="line">    <span class="attribute">display</span>: table;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-class">.rating</span> &gt; <span class="selector-tag">label</span> &#123;</div><div class="line">    <span class="attribute">color</span>: <span class="number">#ddd</span>;</div><div class="line">    <span class="attribute">float</span>: right;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-class">.rating</span> &gt; <span class="selector-tag">label</span><span class="selector-pseudo">:before</span> &#123;</div><div class="line">    <span class="attribute">padding</span>: <span class="number">5px</span>;</div><div class="line">    <span class="attribute">font-size</span>: <span class="number">24px</span>;</div><div class="line">    <span class="attribute">line-height</span>: <span class="number">1em</span>;</div><div class="line">    <span class="attribute">display</span>: inline-block;</div><div class="line">    <span class="attribute">content</span>: <span class="string">"★"</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-class">.rating</span> &gt; <span class="selector-tag">input</span><span class="selector-pseudo">:checked</span> ~ <span class="selector-tag">label</span>,</div><div class="line"><span class="selector-class">.rating</span><span class="selector-pseudo">:not(</span><span class="selector-pseudo">:checked)</span> &gt; <span class="selector-tag">label</span><span class="selector-pseudo">:hover</span>,</div><div class="line"><span class="selector-class">.rating</span><span class="selector-pseudo">:not(</span><span class="selector-pseudo">:checked)</span> &gt; <span class="selector-tag">label</span><span class="selector-pseudo">:hover</span> ~ <span class="selector-tag">label</span> &#123;</div><div class="line">    <span class="attribute">color</span>: <span class="number">#FFD700</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-class">.rating</span> &gt; <span class="selector-tag">input</span><span class="selector-pseudo">:checked</span> ~ <span class="selector-tag">label</span><span class="selector-pseudo">:hover</span>,</div><div class="line"><span class="selector-class">.rating</span> &gt; <span class="selector-tag">label</span><span class="selector-pseudo">:hover</span> ~ <span class="selector-tag">input</span><span class="selector-pseudo">:checked</span> ~ <span class="selector-tag">label</span>,</div><div class="line"><span class="selector-class">.rating</span> &gt; <span class="selector-tag">input</span><span class="selector-pseudo">:checked</span> ~ <span class="selector-tag">label</span><span class="selector-pseudo">:hover</span> ~ <span class="selector-tag">label</span> &#123;</div><div class="line">    <span class="attribute">opacity</span>: <span class="number">0.5</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><a href="http://codepen.io/weixun/pen/LWXayP" target="_blank" rel="external">在线预览地址</a></p>
+<p><img src="http://oo2r9rnzp.bkt.clouddn.com/68747470733a2f2f757365722d676f6c642d63646e2e786974752e696f2f323031372f332f33312f3536633032323239373765303436663032663238386466393137333537396538.gif"></p>
+<h3 id="展示评分模块"><a href="#展示评分模块" class="headerlink" title="展示评分模块"></a>展示评分模块</h3><p>用户评完分之后，会看到展示的分数，假设五个星星，满分10分。</p>
+<p>展示评分就比较简单，放两个一模一样的html，五角星颜色不同，灰色的放在下面，评分的亮色放在上面，然后按照百分比显示分数。</p>
+<p>HTML:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"star-rating"</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"star-rating-top"</span> <span class="attr">style</span>=<span class="string">"width:50%"</span>&gt;</span></div><div class="line">           <span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></div><div class="line">           <span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></div><div class="line">           <span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></div><div class="line">           <span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></div><div class="line">           <span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></div><div class="line">       <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"star-rating-bottom"</span>&gt;</span></div><div class="line">           <span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></div><div class="line">           <span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></div><div class="line">           <span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></div><div class="line">           <span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></div><div class="line">           <span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></div><div class="line">       <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">   <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>CSS:</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.star-rating</span> &#123;</div><div class="line">        <span class="attribute">unicode-bidi</span>: bidi-override;</div><div class="line">        <span class="attribute">color</span>: <span class="number">#ddd</span>;</div><div class="line">        <span class="attribute">font-size</span>: <span class="number">0</span>;</div><div class="line">        <span class="attribute">height</span>: <span class="number">25px</span>;</div><div class="line">        <span class="attribute">margin</span>: <span class="number">0</span> auto;</div><div class="line">        <span class="attribute">position</span>: relative;</div><div class="line">        <span class="attribute">display</span>: table;</div><div class="line">        <span class="attribute">padding</span>: <span class="number">0</span>;</div><div class="line">        <span class="attribute">text-shadow</span>: <span class="number">0px</span> <span class="number">1px</span> <span class="number">0</span> <span class="number">#a2a2a2</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="selector-class">.star-rating</span> <span class="selector-tag">span</span> &#123;</div><div class="line">        <span class="attribute">padding</span>: <span class="number">5px</span>;</div><div class="line">        <span class="attribute">font-size</span>: <span class="number">20px</span>;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="selector-class">.star-rating</span> <span class="selector-tag">span</span><span class="selector-pseudo">:after</span> &#123;</div><div class="line">        <span class="attribute">content</span>: <span class="string">"★"</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="selector-class">.star-rating-top</span> &#123;</div><div class="line">        <span class="attribute">color</span>: <span class="number">#FFD700</span>;</div><div class="line">        <span class="attribute">padding</span>: <span class="number">0</span>;</div><div class="line">        <span class="attribute">position</span>: absolute;</div><div class="line">        <span class="attribute">z-index</span>: <span class="number">1</span>;</div><div class="line">        <span class="attribute">display</span>: block;</div><div class="line">        <span class="attribute">top</span>: <span class="number">0</span>;</div><div class="line">        <span class="attribute">left</span>: <span class="number">0</span>;</div><div class="line">        <span class="attribute">overflow</span>: hidden;</div><div class="line">        <span class="attribute">white-space</span>: nowrap;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="selector-class">.star-rating-bottom</span> &#123;</div><div class="line">        <span class="attribute">padding</span>: <span class="number">0</span>;</div><div class="line">        <span class="attribute">display</span>: block;</div><div class="line">        <span class="attribute">z-index</span>: <span class="number">0</span>;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>当接口返回的分数是5分的时候，刚好占据一半的星星，2星半，只要计算出百分比就行，只用管数据，用上vue.js数据驱动的特点来动态展示样式这个简直不要太容易。</p>
+<p><img width="50%" src="http://ww1.sinaimg.cn/mw690/ae49ba57gy1fe5cjil2qaj20o20ioq35.jpg"></p>
+<p><a href="http://codepen.io/weixun/pen/peQmqw" target="_blank" rel="external">在线预览地址:</a></p>
+<p>本文方法好处在于，纯CSS驱动，各种切换根本不需要JS，省了不少JS，对于类似这种需求大家也可以举一反三，这里只提供一些思路，没有细说；同时图片背景比较小或者可以直接不使用图片，比起使用图片节省不少资源，和提高些许性能。但是，学习以及理解成本稍高，可能并不适用于所有同行，因此，此文适合喜欢“折腾”的童鞋。</p>
+
+      
+      
+        <div class="page-reward">
+          <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang" title="打赏，支持一下">赏</a></p>
+          <div class="hide_box"></div>
+          <div class="shang_box">
+            <a class="shang_close" href="javascript:void(0)" onclick="dashangToggle()" title="关闭">×</a>
+            <div class="shang_tit">
+              <p>纯属好玩</p>
+            </div>
+            <div class="shang_payimg">
+              <img src="/img/alipayimg.jpg" alt="扫码支持" title="扫一扫" />
+            </div>
+              <div class="pay_explain">扫码打赏，你说多少就多少，买房就差你们打赏之外那部分钱</div>
+            <div class="shang_payselect">
+              
+                <div class="pay_item checked" data-id="alipay">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/alipay.png" alt="支付宝" /></span>
+                </div>
+              
+              
+                <div class="pay_item" data-id="wechat">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/weixin.png" alt="微信" /></span>
+                </div>
+              
+            </div>
+            <div class="shang_info">
+              <p>打开<span id="shang_pay_txt">支付宝</span>扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+        <script type="text/javascript">
+          $(".pay_item").click(function(){
+            $(this).addClass('checked').siblings('.pay_item').removeClass('checked');
+            var dataid=$(this).attr('data-id');
+            $(".shang_payimg img").attr("src","/img/"+dataid+"img.jpg");
+            $("#shang_pay_txt").text(dataid=="alipay"?"支付宝":"微信");
+          });
+          function dashangToggle(){
+            $(".hide_box").fadeToggle();
+            $(".shang_box").fadeToggle();
+          }
+        </script>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/04/01/纯CSS实现网站常用的五角星评分和分数展示交互效果/">纯CSS实现网站常用的五角星评分和分数展示交互效果</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 前端小密圈 的个人博客">前端小密圈</a></p>
+        <p><span>发布时间:</span>2017年04月01日 - 13时09分</p>
+        <p><span>最后更新:</span>2017年04月30日 - 16时48分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/04/01/纯CSS实现网站常用的五角星评分和分数展示交互效果/" title="纯CSS实现网站常用的五角星评分和分数展示交互效果">http://qdxmq.com/2017/04/01/纯CSS实现网站常用的五角星评分和分数展示交互效果/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://qdxmq.com/2017/04/01/纯CSS实现网站常用的五角星评分和分数展示交互效果/　　作者: 前端小密圈" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2017/04/05/深入浅出DOM基础——《DOM探索之基础详解篇》学习笔记/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+           深入浅出DOM基础——《DOM探索之基础详解篇》学习笔记
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/03/16/关于Node进程管理器PM2使用技巧和需要注意的地方/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">关于Node进程管理器PM2使用技巧和需要注意的地方</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#五角星的实现"><span class="toc-number">1.</span> <span class="toc-text">五角星的实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-图片或者字体图标"><span class="toc-number">1.1.</span> <span class="toc-text">1.图片或者字体图标</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-利用Fontawesome-图标库，其实只是一种矢量字体。"><span class="toc-number">1.2.</span> <span class="toc-text">2:利用Fontawesome 图标库，其实只是一种矢量字体。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-利用css3描绘拼凑一个五角星。"><span class="toc-number">1.3.</span> <span class="toc-text">3.利用css3描绘拼凑一个五角星。</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#4-直接使用五角星符号"><span class="toc-number">1.3.1.</span> <span class="toc-text">4.直接使用五角星符号</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于CSS的一些选择器"><span class="toc-number">2.</span> <span class="toc-text">关于CSS的一些选择器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-checkbox-hack技术"><span class="toc-number">2.1.</span> <span class="toc-text">1.checkbox hack技术</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-CSS一些选择器"><span class="toc-number">2.2.</span> <span class="toc-text">2.CSS一些选择器</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#E-F-相邻兄弟选择器-选择匹配F的元素，且该元素为所匹配E元素后面相邻的位置。"><span class="toc-number">2.2.1.</span> <span class="toc-text">E + F:    相邻兄弟选择器 选择匹配F的元素，且该元素为所匹配E元素后面相邻的位置。</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#E-gt-F-子包含选择器-选择匹配F的元素，且该元素为所匹配E元素的子元素。"><span class="toc-number">2.2.2.</span> <span class="toc-text">E > F:子包含选择器  选择匹配F的元素，且该元素为所匹配E元素的子元素。</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#E-F-选择后面的兄弟节点们"><span class="toc-number">2.2.3.</span> <span class="toc-text">E ~ F: 选择后面的兄弟节点们</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#E-after-E-before-伪元素选择器-在匹配E的元素后面-前面-插入内容"><span class="toc-number">2.2.4.</span> <span class="toc-text">E::after,E::before: 伪元素选择器 在匹配E的元素后面(前面)插入内容</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#not-E-选择非-元素的每个元素。"><span class="toc-number">2.2.5.</span> <span class="toc-text">:not(E) 选择非  元素的每个元素。</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#checked-input-checked-选择每个被选中的input元素。"><span class="toc-number">2.2.6.</span> <span class="toc-text">:checked  input:checked   选择每个被选中的input元素。</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实现评分模块"><span class="toc-number">3.</span> <span class="toc-text">实现评分模块</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-display-none"><span class="toc-number">3.1.</span> <span class="toc-text">1. display: none;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-css3的clip"><span class="toc-number">3.2.</span> <span class="toc-text">2. css3的clip</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-opcity"><span class="toc-number">3.3.</span> <span class="toc-text">3.opcity</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#展示评分模块"><span class="toc-number">4.</span> <span class="toc-text">展示评分模块</span></a></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+<script>
+var cloudTieConfig = {
+  url: document.location.href,
+  sourceId: "",
+  productKey: "f4eaa09d046240cfacb415bc5435e021",
+  target: "cloud-tie-wrapper"
+};
+var yunManualLoad = true;
+Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true);
+</script>
+
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/04/05/深入浅出DOM基础——《DOM探索之基础详解篇》学习笔记/" title="上一篇:  深入浅出DOM基础——《DOM探索之基础详解篇》学习笔记">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2017/03/16/关于Node进程管理器PM2使用技巧和需要注意的地方/" title="下一篇: 关于Node进程管理器PM2使用技巧和需要注意的地方">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/05/02/一道面试题：不用call和apply方法用原生JavaScript模拟实现ES5的bind方法/">不用call和apply方法模拟实现ES5的bind方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/01/奇文共欣赏，疑义相与析/">奇文共欣赏，疑义相与析</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/01/通俗大白话来理解TCP协议的三次握手和四次分手/">通俗大白话来理解TCP协议的三次握手和四次分手</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/20/从探究Function-proto-Function-prototype过程中的一些收获/"> 从探究Function.__proto__===Function.prototype过程中的一些收获</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/12/神器！解放你的双手——UI设计稿全自动切图和标注的工具推荐/">神器！解放你的双手——UI设计稿全自动切图和标注的工具推荐</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/09/工作中经常用到github上优秀、实用、轻量级、无依赖的插件和库/">工作中经常用到github上优秀、实用、轻量级、无依赖的插件和库</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/05/深入浅出DOM基础——《DOM探索之基础详解篇》学习笔记/"> 深入浅出DOM基础——《DOM探索之基础详解篇》学习笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/01/纯CSS实现网站常用的五角星评分和分数展示交互效果/">纯CSS实现网站常用的五角星评分和分数展示交互效果</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/16/关于Node进程管理器PM2使用技巧和需要注意的地方/">关于Node进程管理器PM2使用技巧和需要注意的地方</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/05/从-10-深入浅出弱类型JS的隐式转换 17-04-47-592/">从++[[]][+[]]+[+[]]==10?深入浅出弱类型JS的隐式转换</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/01/来自掘金的你——挖-掘-淘-金-之-前端闯关历险记学习资料汇总/">来自掘金的你——挖 掘 淘 金 之 前端闯关历险记学习资料汇总</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/26/一道JS面试题所引发的血案，透过现象寻本质，再从本质看现象/">一道JS面试题所引发的血案，透过现象寻本质，再从本质看现象</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/24/吹毛求疵的追求优雅高性能JavaScript/">吹毛求疵的追求优雅高性能JavaScript</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/22/从-为-true-来剖析-JavaScript-各种蛋疼的类型转换/">从 []==为 true 来剖析 JavaScript 各种蛋疼的类型转换</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2017 💕 前端小密圈
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/jawil/" target="_blank">hexo-theme-xmq</a> by jawil modify
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >本日小蜜蜂🐝:
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页阅读量:
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+</body>
+</html>

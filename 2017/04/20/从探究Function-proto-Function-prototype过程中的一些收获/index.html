@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title> 从探究Function.__proto__===Function.prototype过程中的一些收获 | 前端小密圈</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="其实深究这种问题开发没多大用处，但是探寻事物的本质却收获不少。了解了本质，开发的时候很多问题才能解决得更加灵活、优雅。">
+<meta name="keywords" content="JavaScript,玄学">
+<meta property="og:type" content="article">
+<meta property="og:title" content=" 从探究Function.__proto__===Function.prototype过程中的一些收获">
+<meta property="og:url" content="http://qdxmq.com/2017/04/20/从探究Function-proto-Function-prototype过程中的一些收获/index.html">
+<meta property="og:site_name" content="前端小密圈">
+<meta property="og:description" content="其实深究这种问题开发没多大用处，但是探寻事物的本质却收获不少。了解了本质，开发的时候很多问题才能解决得更加灵活、优雅。">
+<meta property="og:image" content="http://oo2r9rnzp.bkt.clouddn.com/WX20170420-232353.png">
+<meta property="og:updated_time" content="2017-04-30T09:55:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content=" 从探究Function.__proto__===Function.prototype过程中的一些收获">
+<meta name="twitter:description" content="其实深究这种问题开发没多大用处，但是探寻事物的本质却收获不少。了解了本质，开发的时候很多问题才能解决得更加灵活、优雅。">
+<meta name="twitter:image" content="http://oo2r9rnzp.bkt.clouddn.com/WX20170420-232353.png">
+  
+    <link rel="alternative" href="/atom.xml" title="前端小密圈" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head>
+<body>
+  
+
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+
+<a href="https://github.com/jawil"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/82b228a3648bf44fc1163ef44c62fcc60081495e/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_red_aa0000.png"></a>
+
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/head.jpeg" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="搜索微信公众号:前端小密圈">前端小密圈</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">若批评无自由，则赞美无意义。</p>
+        
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">博客首页</a></li>
+                        
+                            <li><a href="/archives">所有文章</a></li>
+                        
+                            <li><a href="/thoughts">随笔</a></li>
+                        
+                            <li><a href="/works">作品展示</a></li>
+                        
+                            <li><a href="/FrontEndGuide">前端导航</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl mail" target="_blank" href="mailto:jawil1024@gmail.com" title="mail">mail</a>
+                            
+                                <a class="fl github" target="_blank" href="https://github.com/jawil" title="github">github</a>
+                            
+                                <a class="fl segmentfault" target="_blank" href="https://segmentfault.com/u/jawil" title="segmentfault">segmentfault</a>
+                            
+                                <a class="fl JueJin" target="_blank" href="https://juejin.im/user/573b702c71cfe4006c1201f0/share" title="JueJin">JueJin</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/CSS/" style="font-size: 10px;">CSS</a> <a href="/tags/ECMAScript规范/" style="font-size: 15px;">ECMAScript规范</a> <a href="/tags/HTML/" style="font-size: 10px;">HTML</a> <a href="/tags/HTTP/" style="font-size: 10px;">HTTP</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/Plugins/" style="font-size: 10px;">Plugins</a> <a href="/tags/UI设计/" style="font-size: 10px;">UI设计</a> <a href="/tags/first-article/" style="font-size: 10px;">first-article</a> <a href="/tags/三次握手/" style="font-size: 10px;">三次握手</a> <a href="/tags/小技巧/" style="font-size: 10px;">小技巧</a> <a href="/tags/工具/" style="font-size: 10px;">工具</a> <a href="/tags/性能/" style="font-size: 10px;">性能</a> <a href="/tags/掘金/" style="font-size: 10px;">掘金</a> <a href="/tags/收集/" style="font-size: 10px;">收集</a> <a href="/tags/效率/" style="font-size: 10px;">效率</a> <a href="/tags/玄学/" style="font-size: 15px;">玄学</a> <a href="/tags/记录/" style="font-size: 10px;">记录</a> <a href="/tags/难点/" style="font-size: 10px;">难点</a> <a href="/tags/面试/" style="font-size: 15px;">面试</a>
+                    </div>
+                </section>
+                
+
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://github.com/jawil/">github</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://lishuo.me/">特立独行的猪手</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">Too young,too simple.Sometimes,naive &amp; stupid.</div>
+                </section>
+                
+            </div>
+        </div>
+
+    </header>
+
+    
+        <div class="page-reward" style="position:absolute;top:73%;left:50%;margin-left:-30px;">
+          <p><a href="javascript:void(0)" onclick="dashangToggleIndex()" class="dashang" title="打赏，支持一下">赏</a></p>
+          <div class="hide_box_index"></div>
+          <div class="shang_box_index">
+            <a class="shang_close" href="javascript:void(0)" onclick="dashangToggleIndex()" title="关闭" style="position:relative;left:110px;">×</a>
+            <div class="shang_tit">
+              <p>纯属好玩</p>
+            </div>
+            <div class="shang_payimg">
+              <img src="/img/alipayimg.jpg" alt="扫码支持" title="扫一扫" />
+            </div>
+              <div class="pay_explain">扫码打赏，你说多少就多少，买房就差你们打赏之外那部分钱</div>
+            <div class="shang_payselect" style="width:100%;text-align:center;line-height:60px;">
+              
+                <div class="pay_item checked" data-id="alipay" style="display:inline-block;width:40%;float:none;width:130px;">
+                  <span class="radiobox" style="display:inline-block;float:none;margin-right:0;"></span>
+                  <span class="pay_logo" style="vertical-align:middle"><img src="/img/alipay.png" alt="支付宝" style="height:30px;" /></span>
+                </div>
+              
+              
+                <div class="pay_item" data-id="wechat" style="display:inline-block;float:none;">
+                  <span class="radiobox" style="display:inline-block;float:none;margin:0"></span>
+                  <span class="pay_logo" style="vertical-align:middle"><img src="/img/weixin.png" alt="微信" style="height:30px;" /></span>
+                </div>
+              
+            </div>
+            <div class="shang_info">
+              <p>打开<span id="shang_pay_txt">支付宝</span>扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+        <script type="text/javascript">
+          $(".pay_item").click(function(){
+            $(this).addClass('checked').siblings('.pay_item').removeClass('checked');
+            var dataid=$(this).attr('data-id');
+            $(".shang_payimg img").attr("src","/img/"+dataid+"img.jpg");
+            $("#shang_pay_txt").text(dataid=="alipay"?"支付宝":"微信");
+          });
+          function dashangToggleIndex(){
+            $(".hide_box_index").fadeToggle();
+            $(".shang_box_index").fadeToggle();
+          }
+        </script>
+      
+
+
+    <div id="music163player">
+  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=100% height=86 src="//music.163.com/outchain/player?type=2&id=29816871&auto=0&height=66">
+  </iframe>
+</div>
+
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me">前端小密圈</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head.jpeg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me">前端小密圈</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">若批评无自由，则赞美无意义。</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">博客首页</a></li>
+                
+                    <li><a href="/archives">所有文章</a></li>
+                
+                    <li><a href="/thoughts">随笔</a></li>
+                
+                    <li><a href="/works">作品展示</a></li>
+                
+                    <li><a href="/FrontEndGuide">前端导航</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="mail" target="_blank" href="mailto:jawil1024@gmail.com" title="mail">mail</a>
+                    
+                        <a class="github" target="_blank" href="https://github.com/jawil" title="github">github</a>
+                    
+                        <a class="segmentfault" target="_blank" href="https://segmentfault.com/u/jawil" title="segmentfault">segmentfault</a>
+                    
+                        <a class="JueJin" target="_blank" href="https://juejin.im/user/573b702c71cfe4006c1201f0/share" title="JueJin">JueJin</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-从探究Function-proto-Function-prototype过程中的一些收获" class="article article-type-post" itemscope itemprop="blogPost">
+
+  
+    <div class="article-meta">
+      <a href="/2017/04/20/从探究Function-proto-Function-prototype过程中的一些收获/" class="article-date">
+      <time datetime="2017-04-20T05:09:42.000Z" itemprop="datePublished">2017-04-20</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+       从探究Function.__proto__===Function.prototype过程中的一些收获
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/前端三剑客/">前端三剑客</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/玄学/">玄学</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+
+    <div class="tips">
+  全文总共<span class="post-count">4,057</span>字，阅读时长预计需要<span class="post-count">15</span>分钟，感谢您的阅读，有错误还望留言批评指正，一起交流学习。
+    </div>
+
+      
+          
+        <p><strong>在引出下面要阐述的问题答案之前，先深入了解几个重要慨念，之前这些概念也是模模糊糊，从最原始的一步步搞清楚。</strong></p>
+<h3 id="什么是函数-function-？"><a href="#什么是函数-function-？" class="headerlink" title="什么是函数(function)？"></a>什么是函数(function)？</h3><p>解释定义最好的地方就是它的起源，这里便是ECMAScript规范，我们看看规范怎么定义函数(function)的。</p>
+<p><a href="http://yanhaijing.com/es5/#199" target="_blank" rel="external">摘录来自ECMAScript 5.1规范的4.3.24小节：</a></p>
+<blockquote>
+<p>对象类型的成员，标准内置构造器 <code>Function</code>的一个实例，并且可做为子程序被调用。</p>
+<p>注： 函数除了拥有命名的属性，还包含可执行代码、状态，用来确定被调用时的行为。函数的代码不限于 ECMAScript。</p>
+</blockquote>
+<p><strong>至于什么是实例对象，什么构造器（构造函数）下面的会详细讲，这里我们只引用定义，知道有这么个东西它叫这个名字就够了。</strong></p>
+<p><strong>函数使用function 关键字来定义，其后跟随，函数名称标识符、 一对圆括号、一对花括号。</strong></p>
+<p>结合一个栗子理解这句话：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">demo</span>(<span class="params"></span>)</span>&#123;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(<span class="string">'jawil'</span>);</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面这几行代码就是一个函数，这个函数是标准内置构造器 <code>Function</code>的一个实例，因此函数是一个对象。<code>demo</code>就是这个函数的名字，对象是保存在内存中的，函数名<code>demo</code>则是指向这个对象的指针。<code>console.log(&#39;jawil&#39;)</code>则是可执行代码。</p>
+<p>对于内存，引用，指针不太明白，没有任何认知的童鞋可以去尝试搜索补习一下这些概念，其实都是一些概念，花点时间理解一下就好了。</p>
+<p>在浏览器我们也可以检验一下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">demo <span class="keyword">instanceof</span> <span class="built_in">Function</span></div><div class="line"><span class="comment">//true</span></div></pre></td></tr></table></figure>
+<p>上面只是创建函数的一种方式， JavaScript 中有三种创建形式，分别是：<br>①声明式 </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>)</span>&#123; &#125;;      <span class="comment">//这种定义的方式，无论在哪儿定义，别处都可以调用 ；</span></div></pre></td></tr></table></figure>
+<p>②函数的字面量或叫直接量或称表达式</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> fn=<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; &#125;; <span class="comment">//此时函数作为表达式存在，调用只能在定义的后面；</span></div><div class="line"><span class="comment">//解释一下表达式：凡是将数据和运算符等联系起来有值得式子就是表达式。</span></div></pre></td></tr></table></figure>
+<p>③以new Function 的形式</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> fn = <span class="keyword">new</span> <span class="built_in">Function</span> (arg1 , arg2 ,arg3 ,…, argN , body) </div><div class="line"><span class="comment">/*Function 构造函数所有的参数都是字符串类型。除了最后一个参数, 其余的参数都作为生成函数的参数即形参。</span></div><div class="line">这里可以没有参数。最后一个参数, 表示的是要创建函数的函数体。</div><div class="line"></div><div class="line">使用Function构造器生成的Function对象是在函数创建时解析的。这比你使用函数声明或者函数表达式(function)</div><div class="line">并在你的代码中调用更为低效，因为使用后者创建的函数是跟其他代码一起解析的。</div><div class="line">*/</div></pre></td></tr></table></figure>
+<p>上面三种创建方式，第三种<code>var fn = new Function (arg1 , arg2 ,arg3 ,…, argN , body)</code>是最直观的，<br>很容易就联想到<code>fn instanceof Function</code>，<code>fn</code>一眼就看出来就是<code>Function</code>的实例，但是为什么JavaScript还要创造用<code>function</code>来创建一个函数呢？</p>
+<p>答案显而易见，用function创建一个函数更优雅，灵活，书写方便，浏览器看到function时候其实已经帮你做了new Function()这一步了，function和new Function()创建的函数都是Function的一个实例，只是方式不一样，其实本质都是一样。就如同创建一个对象一样，我们可以<code>var obj=new Object()</code>,当然我们也可以<code>var obj={}</code>;</p>
+<p>我觉得function创建函数只是new Function()创建函数的一个语法糖，不对之处还望指出，反正我是这么理解的。</p>
+<h3 id="JavaScript函数的new关键字到底是干什么的？"><a href="#JavaScript函数的new关键字到底是干什么的？" class="headerlink" title="JavaScript函数的new关键字到底是干什么的？"></a>JavaScript函数的new关键字到底是干什么的？</h3><p><a href="https://zhuanlan.zhihu.com/p/23987456?utm_medium=social&amp;utm_source=wechat_session" target="_blank" rel="external">JS 的 new 到底是干什么的？</a></p>
+<h3 id="什么是构造函数？"><a href="#什么是构造函数？" class="headerlink" title="什么是构造函数？"></a>什么是构造函数？</h3><p>我们看看ECMAScript规范怎么定义构造函数(constructor)的。</p>
+<p><a href="http://yanhaijing.com/es5/#199" target="_blank" rel="external">摘录来自ECMAScript 5.1规范的4.3.4小节：</a></p>
+<blockquote>
+<p>创建和初始化对象的函数对象。</p>
+<p>注：构造器的“prototype”属性值是一个原型对象，它用来实现继承和共享属性。</p>
+</blockquote>
+<p><strong>构造函数</strong>就是初始化一个<strong>实例对象</strong>，对象的<code>prototype</code>属性是<strong>继承一个实例对象</strong>。</p>
+<p>这些抽象的东西其实不好讲，不好写，讲一个抽象的概念，又引出好几个抽象的概念，情何以堪，<strong>实例对象</strong>和<strong>原型prototype</strong>下一节讲，了解概念尽量多结合栗子加深理解，理解构造函数，首先就要理解上面函数的一个概念和定义。</p>
+<p>这种抽象的东西不是很好记忆，我们通过一个示例来说明可能更好了解。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name</span>)</span>&#123;</div><div class="line">    <span class="keyword">this</span>.name=name;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在javascript中，你可以把上面的代码看做一个函数，一个类，一个方法，都没有问题。</p>
+<p>其实,在JavaScript中，首先，它是函数，任何一个函数你都可以把它看做是构造函数，它没有明显的特征。那什么时候它就明显了呢？实例化的时候。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> jawil=<span class="keyword">new</span> Person(<span class="string">'微醺岁月'</span>);</div></pre></td></tr></table></figure>
+<p>当这一句代码结束，你就可以肯定的认为 Person 函数是一个构造函数，因为它 new 了”微醺岁月”。<br>那么,”微醺岁月” 是什么？”微醺岁月”是一个人，一个实实在在的人，是被构造函数初始化出来的。所以 var  jawil 就变成了一个实例。</p>
+<h3 id="什么是实例对象，什么是原型对象？"><a href="#什么是实例对象，什么是原型对象？" class="headerlink" title="什么是实例对象，什么是原型对象？"></a>什么是实例对象，什么是原型对象？</h3><h4 id="原型"><a href="#原型" class="headerlink" title="原型"></a>原型</h4><p>我们看看ECMAScript规范怎么定义构造函数(constructor)的。</p>
+<p><a href="http://yanhaijing.com/es5/#199" target="_blank" rel="external">摘录来自ECMAScript 5.1规范的4.3.5小节：</a></p>
+<blockquote>
+<p>为其他对象提供共享属性的对象。</p>
+<p>当构造器创建一个对象，为了解决对象的属性引用，该对象会隐式引用构造器的“prototype”属性。通过程序表达式 constructor.prototype 可以引用到构造器的“prototype”属性，并且添加到对象原型里的属性，会通过继承与所有共享此原型的对象共享。另外，可使用 Object.create 内置函数，通过明确指定原型来创建一个新对象。</p>
+</blockquote>
+<p>首先说一下，只有函数才有prototype(原型)属性。为什么只有函数才有prototype属性？ECMAScript规范就这么定的。</p>
+<p>但是不是所有的函数都有prototype属性呢？答案是否定的，这可不一定。我们看个简单的栗子：</p>
+<p><img src="http://oo2r9rnzp.bkt.clouddn.com/WX20170420-232353.png" alt=""></p>
+<p><strong>用 Function.prototype.bind 创建的函数对象没有 prototype 属性。</strong></p>
+<p>那么prototype(原型)到底有啥作用呢？</p>
+<blockquote>
+<p>prototype对象是实现面向对象的一个重要机制。每个函数也是一个对象，它们对应的类就是Function，每个函数对象都具有一个子对象prototype。Prototype 表示了该函数的原型，prototype表示了一个类的属性的集合。当通过new来生成一个类的对象时，prototype对象的属性就会成为实例化对象的属性。</p>
+</blockquote>
+<p>这些概念简单了解一下，这不是本人要讲的重点，这里一笔带过，不太懂的可以自己去查相关资料补习一下基础。</p>
+<h4 id="proto"><a href="#proto" class="headerlink" title="__proto__"></a>__proto__</h4><p>引用《JavaScript权威指南》的一段描述：</p>
+<blockquote>
+<p>Every JavaScript object has a second JavaScript object (or null ,<br>but this is rare) associated with it. This second object is known as a prototype, and the first object inherits properties from the prototype.</p>
+</blockquote>
+<p>翻译出来就是每个JS对象一定对应一个原型对象，并从原型对象继承属性和方法。好啦，既然有这么一个原型对象，那么对象怎么和它对应的？</p>
+<p><strong>对象<strong>proto</strong>属性的值就是它所对应的原型对象：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> one = &#123;<span class="attr">x</span>: <span class="number">1</span>&#125;;</div><div class="line"><span class="keyword">var</span> two = <span class="keyword">new</span> <span class="built_in">Object</span>();</div><div class="line">one.__proto__ === <span class="built_in">Object</span>.prototype <span class="comment">// true</span></div><div class="line">two.__proto__ === <span class="built_in">Object</span>.prototype <span class="comment">// true</span></div><div class="line">one.toString === one.__proto__.toString <span class="comment">// true</span></div></pre></td></tr></table></figure>
+<p>上面的代码应该已经足够解释清楚<code>__proto__</code>了。</p>
+<h4 id="实例对象"><a href="#实例对象" class="headerlink" title="实例对象"></a>实例对象</h4><p>把实例和对象对比来看，或许更容易理解。</p>
+<p>实例对象和对象的区别，从定义上来讲：</p>
+<blockquote>
+<p>1、实例是类的具象化产品，<br>2、而对象是一个具有多种属性的内容结构。<br>3、实例都是对象，而对象（比如说Object.prototype）不全是实例。</p>
+</blockquote>
+<p>实例是相对而言，这话怎么理解了，我们看下面两个小栗子比如说：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a=<span class="keyword">new</span> <span class="built_in">Array</span>();</div><div class="line">a <span class="keyword">instanceof</span> <span class="built_in">Array</span><span class="comment">//true</span></div></pre></td></tr></table></figure>
+<p>我们可以说a是Array数组的一个实例；</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Array</span>(<span class="params"></span>)</span>&#123;</div><div class="line"></div><div class="line">[native code]</div><div class="line"></div><div class="line">&#125;</div><div class="line"><span class="built_in">Array</span> <span class="keyword">instanceof</span> <span class="built_in">Function</span><span class="comment">//true</span></div></pre></td></tr></table></figure>
+<p>我们知道Array也是一个函数，虽然他是一个构造函数，只要是函数，从上面的知识点可以知道，Array是Function的一个实例。</p>
+<p><strong>通俗的理解这几个的关系：</strong></p>
+<blockquote>
+<p>JavaScript引擎是个工厂。<br>最初，工厂做了一个最原始的产品原型。<br>这个原型叫Object.prototype，本质上就是一组无序key-value存储（{}）</p>
+<p>之后，工厂在Object.prototype的基础上，研发出了可以保存一段“指令”并“生产产品”的原型产品，叫函数。<br>起名为Function.prototype，本质上就是[Function: Empty]（空函数）</p>
+<p>为了规模化生产，工厂在函数的基础上，生产出了两个构造器：<br>生产函数的构造器叫Function，生产kv存储的构造器叫Object。</p>
+<p>你在工厂定制了一个产品，工厂根据Object.prototype给你做了一个Foo.prototype。<br>然后工厂发现你定制的产品很不错。就在Function.prototype的基础上做了一个Foo的构造器，叫Foo。</p>
+<p>工厂在每个产品上打了个标签<strong>proto</strong>，以标明这个产品是从哪个原型生产的。<br>为原型打了个标签constructor，标明哪个构造器可以依照这个原型生产产品。<br>为构造器打了标签prototype，标明这个构造器可以从哪个原型生产产品。</p>
+<p>所以，我觉得先有Function还是Object，就看工厂先造谁了。其实先做哪个都无所谓。因为在你定制之前，他们都做好了。</p>
+</blockquote>
+<h3 id="问题引出"><a href="#问题引出" class="headerlink" title="问题引出"></a>问题引出</h3><p><strong>我们知道，Array，Date，Number，String，Boolean，Error甚至Object都是Function的一个实例，那么Function是谁的实例呢？</strong></p>
+<p>先看一个简单的小栗子：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params"></span>)</span>&#123;</div><div class="line"></div><div class="line">...一些自定义的code</div><div class="line"></div><div class="line">&#125;</div><div class="line">Person.__proto__ === <span class="built_in">Function</span>.prototype;<span class="comment">//true</span></div><div class="line">Person.prototype <span class="keyword">instanceof</span> <span class="built_in">Object</span>;<span class="comment">//true</span></div></pre></td></tr></table></figure>
+<p>再来看看这个：Function<br>也就是浏览器显示的这个，我们暂且这么类比：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params"></span>)</span>&#123;</div><div class="line"></div><div class="line">...一些自定义的code</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Function</span>(<span class="params"></span>)</span>&#123;</div><div class="line"></div><div class="line">[native code]<span class="comment">//系统帮我们写的code</span></div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我们再来看看，先暂时忽略后面的：</p>
+<p><code>Person.__proto__=== Function.prototype;</code>//true</p>
+<p>Person函数是Function的一个实例。</p>
+<p><code>Function.__proto__=== Function.prototype;</code>//true</p>
+<p>上面说了，Person函数是Function的一个实例，这没有争议，那么这行代码是否可以说Function函数对象是由Function构造函数创建的一个实例？<br>因为我们普遍的认知就是：实例对象（A）的<strong>proto</strong>属性指向它的构造函数（B）的原型对象(prototype)。</p>
+<p>大白话就是：A（儿子）继承了B（父母）的一些特性(prototype)才有了A。所以问题就来了，当A===B的时候，该怎么理解了？这就是今天问题的引出了，下面就要探讨这个问题了。</p>
+<p>再来看：<br><code>Person.__proto__=== Person.prototype;</code>//false</p>
+<p>这个显而易见可以看出，Person函数不是由Person的实例，因为Person是Function的一个实例。</p>
+<h3 id="那么问题来了："><a href="#那么问题来了：" class="headerlink" title="那么问题来了："></a>那么问题来了：</h3><p><strong>Function构造函数的prototype属性和<strong>proto</strong>属性都指向同一个原型，是否可以说Function对象是由Function构造函数创建的一个实例？</strong></p>
+<p><code>Function.prototype</code>和<code>Function.__proto__</code>都指向<code>Function.prototype</code>，这就是鸡和蛋的问题怎么出现的一样。</p>
+<p>在这之前，我一直有个误解就是，认为所有对象就是Object的实例，现在想起来真是Too young,Too simple.</p>
+<p><code>Object.prototype</code> 是对象吗？</p>
+<p>当然是。</p>
+<blockquote>
+<p>An object is a collection of properties and has a single prototype object. The prototype may be the null value.</p>
+</blockquote>
+<p> 这是object的定义，<code>Object.prototype</code>显然是符合这个定义的。但是，Object.prototype并不是Object的实例。 这也很好理解<code>Object.prototype.__proto__</code>是null。</p>
+<p>就如同刚才上面区分实例和对象一样，实例都是对象，而对象（比如说Object.prototype）不全是实例。</p>
+<p>这已经某种程度上解开了鸡和蛋的问题：Object.prototype是对象，但它不是通过Object函数创建的。Object.prototype谁创建的，它是v8引擎（假设用的都是chrome浏览器）按照ECMAScript规范创造的一个对象。我只能这么给你解释。</p>
+<p>未完待续，好累，歇一会儿~</p>
+<p>关于这个问题也困扰了我很久，功力不够，无法详细回答，但是经过一番查找和探究，在知乎上看到了这篇回答，引用一下，与大家共同学习。</p>
+<blockquote>
+<p>在JavaScript中，Function构造函数本身也算是Function类型的实例吗？Function构造函数的prototype属性和<strong>proto</strong>属性都指向同一个原型，是否可以说Function对象是由Function构造函数创建的一个实例？</p>
+</blockquote>
+<p>Yes and No.</p>
+<p>Yes 的部分：<br>按照JS中“实例”的定义，a 是 b 的实例即 <code>a instanceof b</code> 为 true，默认判断条件就是 <code>b.prototype</code> 在 a 的原型链上。而 <code>Function instanceof Function</code> 为 true，本质上即 <code>Object.getPrototypeOf(Function) === Function.prototype</code>，正符合此定义。</p>
+<p>No 的部分：</p>
+<p>Function 是 <code>built-in</code> 的对象，也就是并不存在“Function对象由Function构造函数创建”这样显然会造成鸡生蛋蛋生鸡的问题。实际上，当你直接写一个函数时（如 <code>function f() {}</code> 或 <code>x =&gt; x</code>），也不存在调用 Function 构造器，只有在你显式调用 Function 构造器时（如 <code>new Function(&#39;x&#39;, &#39;return x&#39;)</code> ）才有。</p>
+<p>注意，本质上，<code>a instanceof b</code> 只是一个运算，即满足某种条件就返回 true/false，当我们说 a 是 b 的实例时，也只是表示他们符合某种关系。JS 是一门强大的动态语言，你甚至可以在运行时改变这种关系，比如修改对象的原型从而改变 instanceof 运算的结果。此外，ES6+ 已允许通过 <code>Symbol.hasInstance</code> 来自定义 instanceof 运算。</p>
+<p>我知道很多 JS 学习者会迷恋于对象和函数之间的 instanceof 关系，并希望探究到底谁更本源？我当初也在这个问题上浪费了很多时间。但这是一个伪问题。参见：<a href="https://www.zhihu.com/question/24804474" target="_blank" rel="external">JavaScript 里 Function 也算一种基本类型？</a>以上。</p>
+<h3 id="收获"><a href="#收获" class="headerlink" title="收获"></a>收获</h3><p>对JavaScript的原型和原型链相比以前有了一个更深刻的认识，同时也对函数，构造函数，实例对象的一些概念有了一个更具体的认知，以前对这些概念都是模模糊糊，没有一个明确的概念，导致在理解一些问题上出现盲点，比如说：function和Function的问题，现在总是认知清楚了，也了解到没有十全十美的语言，任何语言也有它的一些缺陷和漏洞，比如说Function对象是由Function构造函数创建的一个实例？typeof null的返回值是Object的问题，历史的车轮滚滚向前，语言也是向前发展，但愿JavaScript发展越来越好，越来越完善，一统天下😄。</p>
+<h3 id="最后感觉还是有疑问，很纠结，越陷越深，慢慢回答自己的问题"><a href="#最后感觉还是有疑问，很纠结，越陷越深，慢慢回答自己的问题" class="headerlink" title="最后感觉还是有疑问，很纠结，越陷越深，慢慢回答自己的问题"></a>最后感觉还是有疑问，很纠结，越陷越深，慢慢回答自己的问题</h3><p>结论：先有 Object.prototype（原型链顶端），Function.prototype 继承 Object.prototype 而产生，最后，Function 和 Object 和其它构造函数继承 Function.prototype 而产生。</p>
+<blockquote>
+<ol>
+<li><p>先有 Object.prototype，再有 Object，那么先有 Object.prototype 里面的这个 Object 代表的是什么呢？</p>
+</li>
+<li><p>Function.<strong>proto</strong>=== Function.prototype;<br>Function 构造函数的 prototype 属性和<strong>proto</strong>属性都指向同一个原型，是否可以说 Function 对象是由 Function 构造函数创建的一个实例？</p>
+</li>
+<li><p>Object instanceof Function // true<br>Function instanceof Object // true<br>Object 本身是构造函数，继承了 Function.prototype;Function 也是对象，继承了 Object.prototype。感觉成了鸡和蛋的问题了。</p>
+</li>
+<li><p>比如说：<br>function Person(){}<br>Person.prototype 是一个对象，为什么 Function.prototype 却是一个函数呢，当然函数也是一个对象，为什么要这么设计呢？</p>
+</li>
+</ol>
+</blockquote>
+<h3 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h3><p><a href="https://www.zhihu.com/question/24076626/answer/55284360?utm_source=weibo&amp;utm_medium=weibo_share&amp;utm_content=share_answer&amp;utm_campaign=share_button" target="_blank" rel="external">JavaScript 的语言设计有哪些缺陷？</a><br><a href="https://zhuanlan.zhihu.com/p/23987456?utm_medium=social&amp;utm_source=wechat_session" target="_blank" rel="external">JS 的 new 到底是干什么的？</a><br><a href="https://github.com/creeperyang/blog/issues/9" target="_blank" rel="external">从<strong>proto</strong>和prototype来深入理解JS对象和原型链 </a><br><a href="https://www.zhihu.com/question/31333084/answer/152086175" target="_blank" rel="external">在JavaScript中，Function构造函数本身也算是Function类型的实例吗？</a><br><a href="https://www.zhihu.com/question/35442532" target="_blank" rel="external">JS中先有Object还是先有Function？</a><br><a href="https://zhuanlan.zhihu.com/p/22989691" target="_blank" rel="external">JavaScript 世界万物诞生记</a></p>
+
+      
+      
+        <div class="page-reward">
+          <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang" title="打赏，支持一下">赏</a></p>
+          <div class="hide_box"></div>
+          <div class="shang_box">
+            <a class="shang_close" href="javascript:void(0)" onclick="dashangToggle()" title="关闭">×</a>
+            <div class="shang_tit">
+              <p>纯属好玩</p>
+            </div>
+            <div class="shang_payimg">
+              <img src="/img/alipayimg.jpg" alt="扫码支持" title="扫一扫" />
+            </div>
+              <div class="pay_explain">扫码打赏，你说多少就多少，买房就差你们打赏之外那部分钱</div>
+            <div class="shang_payselect">
+              
+                <div class="pay_item checked" data-id="alipay">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/alipay.png" alt="支付宝" /></span>
+                </div>
+              
+              
+                <div class="pay_item" data-id="wechat">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/weixin.png" alt="微信" /></span>
+                </div>
+              
+            </div>
+            <div class="shang_info">
+              <p>打开<span id="shang_pay_txt">支付宝</span>扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+        <script type="text/javascript">
+          $(".pay_item").click(function(){
+            $(this).addClass('checked').siblings('.pay_item').removeClass('checked');
+            var dataid=$(this).attr('data-id');
+            $(".shang_payimg img").attr("src","/img/"+dataid+"img.jpg");
+            $("#shang_pay_txt").text(dataid=="alipay"?"支付宝":"微信");
+          });
+          function dashangToggle(){
+            $(".hide_box").fadeToggle();
+            $(".shang_box").fadeToggle();
+          }
+        </script>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/04/20/从探究Function-proto-Function-prototype过程中的一些收获/"> 从探究Function.__proto__===Function.prototype过程中的一些收获</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 前端小密圈 的个人博客">前端小密圈</a></p>
+        <p><span>发布时间:</span>2017年04月20日 - 13时09分</p>
+        <p><span>最后更新:</span>2017年04月30日 - 17时55分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/04/20/从探究Function-proto-Function-prototype过程中的一些收获/" title=" 从探究Function.__proto__===Function.prototype过程中的一些收获">http://qdxmq.com/2017/04/20/从探究Function-proto-Function-prototype过程中的一些收获/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://qdxmq.com/2017/04/20/从探究Function-proto-Function-prototype过程中的一些收获/　　作者: 前端小密圈" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2017/05/01/通俗大白话来理解TCP协议的三次握手和四次分手/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          通俗大白话来理解TCP协议的三次握手和四次分手
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/04/12/神器！解放你的双手——UI设计稿全自动切图和标注的工具推荐/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">神器！解放你的双手——UI设计稿全自动切图和标注的工具推荐</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是函数-function-？"><span class="toc-number">1.</span> <span class="toc-text">什么是函数(function)？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JavaScript函数的new关键字到底是干什么的？"><span class="toc-number">2.</span> <span class="toc-text">JavaScript函数的new关键字到底是干什么的？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是构造函数？"><span class="toc-number">3.</span> <span class="toc-text">什么是构造函数？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是实例对象，什么是原型对象？"><span class="toc-number">4.</span> <span class="toc-text">什么是实例对象，什么是原型对象？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#原型"><span class="toc-number">4.1.</span> <span class="toc-text">原型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#proto"><span class="toc-number">4.2.</span> <span class="toc-text">__proto__</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#实例对象"><span class="toc-number">4.3.</span> <span class="toc-text">实例对象</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#问题引出"><span class="toc-number">5.</span> <span class="toc-text">问题引出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#那么问题来了："><span class="toc-number">6.</span> <span class="toc-text">那么问题来了：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#收获"><span class="toc-number">7.</span> <span class="toc-text">收获</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#最后感觉还是有疑问，很纠结，越陷越深，慢慢回答自己的问题"><span class="toc-number">8.</span> <span class="toc-text">最后感觉还是有疑问，很纠结，越陷越深，慢慢回答自己的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考文章"><span class="toc-number">9.</span> <span class="toc-text">参考文章</span></a></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+<script>
+var cloudTieConfig = {
+  url: document.location.href,
+  sourceId: "",
+  productKey: "f4eaa09d046240cfacb415bc5435e021",
+  target: "cloud-tie-wrapper"
+};
+var yunManualLoad = true;
+Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true);
+</script>
+
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/05/01/通俗大白话来理解TCP协议的三次握手和四次分手/" title="上一篇: 通俗大白话来理解TCP协议的三次握手和四次分手">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2017/04/12/神器！解放你的双手——UI设计稿全自动切图和标注的工具推荐/" title="下一篇: 神器！解放你的双手——UI设计稿全自动切图和标注的工具推荐">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/05/02/一道面试题：不用call和apply方法用原生JavaScript模拟实现ES5的bind方法/">不用call和apply方法模拟实现ES5的bind方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/01/奇文共欣赏，疑义相与析/">奇文共欣赏，疑义相与析</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/01/通俗大白话来理解TCP协议的三次握手和四次分手/">通俗大白话来理解TCP协议的三次握手和四次分手</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/20/从探究Function-proto-Function-prototype过程中的一些收获/"> 从探究Function.__proto__===Function.prototype过程中的一些收获</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/12/神器！解放你的双手——UI设计稿全自动切图和标注的工具推荐/">神器！解放你的双手——UI设计稿全自动切图和标注的工具推荐</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/09/工作中经常用到github上优秀、实用、轻量级、无依赖的插件和库/">工作中经常用到github上优秀、实用、轻量级、无依赖的插件和库</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/05/深入浅出DOM基础——《DOM探索之基础详解篇》学习笔记/"> 深入浅出DOM基础——《DOM探索之基础详解篇》学习笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/01/纯CSS实现网站常用的五角星评分和分数展示交互效果/">纯CSS实现网站常用的五角星评分和分数展示交互效果</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/16/关于Node进程管理器PM2使用技巧和需要注意的地方/">关于Node进程管理器PM2使用技巧和需要注意的地方</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/05/从-10-深入浅出弱类型JS的隐式转换 17-04-47-592/">从++[[]][+[]]+[+[]]==10?深入浅出弱类型JS的隐式转换</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/01/来自掘金的你——挖-掘-淘-金-之-前端闯关历险记学习资料汇总/">来自掘金的你——挖 掘 淘 金 之 前端闯关历险记学习资料汇总</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/26/一道JS面试题所引发的血案，透过现象寻本质，再从本质看现象/">一道JS面试题所引发的血案，透过现象寻本质，再从本质看现象</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/24/吹毛求疵的追求优雅高性能JavaScript/">吹毛求疵的追求优雅高性能JavaScript</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/22/从-为-true-来剖析-JavaScript-各种蛋疼的类型转换/">从 []==为 true 来剖析 JavaScript 各种蛋疼的类型转换</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2017 💕 前端小密圈
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/jawil/" target="_blank">hexo-theme-xmq</a> by jawil modify
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >本日小蜜蜂🐝:
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页阅读量:
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+</body>
+</html>
